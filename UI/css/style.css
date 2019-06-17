@@ -549,13 +549,17 @@ ul.nav-links.nav-active {
 
 /***login form***/
 
-#login {
+#login, #signup {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 80%;
     padding-bottom: 1rem;
+}
+
+#signup form {
+    width: 80%;
 }
 
 #login form {
@@ -567,11 +571,15 @@ ul.nav-links.nav-active {
     margin: 8vh 0;
 }
 
-#login .logo img {
+#signup .logo {
+    margin-bottom: 4vh;
+}
+
+#login .logo img, #signup .logo img {
     width: 300px;
 }
 
-#login label {
+#login label, #signup label {
     font-size: 0.92rem;
     font-weight: 500;
     line-height: 2rem;
@@ -588,12 +596,29 @@ ul.nav-links.nav-active {
     line-height: 1.3rem;
 }
 
-#login .primary-btn {
+#signup input {
+    margin-bottom: 1.1rem;
+    width: 100%;
+    border-radius: 2px;
+    background: inherit;
+    border: 1px solid #f4f4f4;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    line-height: 1.2rem;
+}
+
+.primary-btn {
     width: 100%;
 }
 
 #login .secondary-btn, #login .links {
     width: 60%;
+}
+
+#signup .links {
+    margin-top: 1.3em;
+    padding: 1.3em;
+    width: 70%;
 }
 
 #login .links a {
@@ -658,6 +683,14 @@ ul.nav-links.nav-active {
 
 #right #image-showcase {
     background: url("../images/apartment-architecture-bookcase-271816.jpg") no-repeat center center / cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#right #signup-showcase {
+    background: url("../images/living-room-4013531_1280.jpg") no-repeat center center / cover;
     height: 100vh;
     display: flex;
     justify-content: center;
