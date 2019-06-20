@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <nav class="bg-dark">
+        <div class="logo">
+          <a href="index.html">
+            <img src="./images/Logo.png" alt="Property PRO-LITE"
+          /></a>
+        </div>
+        <ul class="nav-links ">
+          <li><a href="viewProperties.html" class="text-dark">Buy</a></li>
+          <li><a href="viewProperties.html">Rent</a></li>
+
+          <li><a href="signup.html">Sign Up</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+        <div class="hamburger-menu">
+          <div class="line-1"></div>
+          <div class="line-2"></div>
+          <div class="line-3"></div>
+        </div>
+      </nav>
+    </header>
+    <section id="listProperty">
+      <div class="modal">
+        <div class="modal-content text-dark">
+          <span class="close-modal-button">&times;</span>
+          <h1 class="text-dark">
+            Success Listing is being processed. please check your email for
+            lisitng status
+          </h1>
+        </div>
+      </div>
+      <div class="list-info text-dark">
+        <h2>Single Enhaced Listing</h2>
+        <p>
+          With Property-Pro-Lite Real Estate, you will have the advantage of
+          selling your home like a professional local real estate sales
+          associate who knows the ins and outs of home sales in your
+          neighborhood, plus the reach of a global brand presence.
+        </p>
+        <p>Complete the form below to create your property listing.</p>
+        <p><strong>Have a question? Please call 080 8333 1011</strong></p>
+      </div>
+      <div class="form-style">
+        <form class="text-dark" id="listing-form">
+          <fieldset>
+            <legend><span class="number">1</span>Contact Info</legend>
+            <span class="col-2">
+              <label for="firstName">First Name</label>
+              <input type="text" placeholder="First Name" id="firstName" />
+            </span>
+            <span class="col-2">
+              <label for="lastName">Last Name</label>
+              <input type="text" placeholder="Last Name" id="lastName" />
+            </span>
+            <label for="listing-email">Email</label>
+            <input
+              type="email"
+              placeholder="e.g. joe@ymail.com"
+              id="listing-email"
+            />
+            <span class="col-2">
+              <label for="telephone">Phone Number</label>
+              <input
+                type="text"
+                class="tel-number-field"
+                name="tel_no_1"
+                value=""
+                maxlength="11"
+              />
+            </span>
+            <span class="col-2">
+              <label for="advertiser" class="select-label"
+                >Advertiser Type</label
+              >
+              <select>
+                <option value="Advertiser Type" disabled
+                  >Advertiser Type</option
+                >
+                <option value="Agent">Agent</option>
+                <option value="Owner">Owner</option>
+              </select>
+            </span>
+          </fieldset>
+
+          <fieldset>
+            <legend><span class="number">2</span>Listing Details</legend>
+            <label for="listing-address">Address</label>
+            <input type="text" placeholder="Address" id="listing-address" />
+            <span class=" col-2">
+              <label for="city">City</label>
+              <input type="text" placeholder="City" id="city" />
+            </span>
+            <span class="col-2">
+              <label for="state" class="select-label">State</label>
+              <select>
+                <option value="state" disabled>State</option>
+                <option value="Abuja">Abuja</option>
+                <option value="Lagos">Lagos</option>
+                <option value="Kano">Kano</option>
+                <option value="Enugu">Enugu</option>
+                <option value="Osun">Osun</option>
+              </select>
+            </span>
+            <span class="col-2">
+              <label for="price">Price</label>
+              <input type="number" placeholder="Price" id="listing-price" />
+            </span>
+            <span class="col-2">
+              <label for="propery-type">Property Type</label>
+              <select>
+                <option value="type" disabled>Property Type</option>
+                <option value="Duplex">Duplex</option>
+                <option value="Bungalow">Bungalow</option>
+                <option value="Condomonium">Condomonium</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Single Family">Single Family</option>
+                <option value="Raw Land">Raw Land</option>
+                <option value="other">Other</option>
+              </select>
+            </span>
+            <span class="col-4">
+              <label for="bedroom">Bedrooms</label>
+              <select>
+                <option value="bedrooms" disabled>No. of bedrooms</option>
+                <option value="1 bedroom">1 bedroom</option>
+                <option value="2 bedrooms">2 bedrooms</option>
+                <option value="3 bedrooms">3 bedrooms</option>
+                <option value="4 bedrooms">4 bedrooms</option>
+                <option value="5 bedrooms">5 bedrooms</option>
+                <option value="6 bedrooms">6 bedrooms</option>
+                <option value="7 bedrooms">7 bedrooms</option>
+                <option value="8 bedrooms">8 bedrooms</option>
+                <option value="9 bedrooms">9 bedrooms</option>
+                <option value="10 bedrooms">10 bedrooms</option>
+              </select>
+            </span>
+            <span class="col-4">
+              <label for="bath"> Full Bath</label>
+              <select>
+                <option value="bathrooms" disabled
+                  >Select no of bathrooms</option
+                >
+                <option value="1 bathroom">1 bedroom</option>
+                <option value="2 bathrooms">2 bathrooms</option>
+                <option value="3 bathrooms">3 bathrooms</option>
+                <option value="4 bathrooms">4 bathrooms</option>
+                <option value="5 bathrooms">5 bathrooms</option>
+                <option value="6 bathrooms">6 bathrooms</option>
+                <option value="7 bathrooms">7 bathrooms</option>
+                <option value="8 bathrooms">8 bathrooms</option>
+                <option value="9 bathrooms">9 bathrooms</option>
+                <option value="10 bathrooms">10 bathrooms</option>
+              </select>
+            </span>
+            <span class="col-4">
+              <label for="bath"> Half Bath</label>
+              <select>
+                <option value="bathrooms" disabled
+                  >Select no of half bathrooms</option
+                >
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </span>
+            <span class="col-4">
+              <label for="option">Rent or Sale</label>
+              <select>
+                <option value="option" disabled>For Rent or Sale</option>
+                <option value="Rent">Rent</option>
+                <option value="Sale">Sale</option>
+              </select>
+            </span>
+
+            <textarea
+              name="listing description"
+              placeholder="Describe the property"
+            ></textarea>
+          </fieldset>
+          <fieldset>
+            <legend><span class="number">3</span>Image Upload</legend>
+
+            <label for="files">Select multiple files: </label>
+
+            <input
+              type="file"
+              id="image-input"
+              multiple
+              onchange="handleFiles(this.files)"
+              accept="image/*"
+            />
+            <div id="preview"></div>
+
+            <div class="image-upload-wrapper">
+              <input
+                class="file-upload-input"
+                type="file"
+                id="dropzone"
+                accept="image/*"
+                multiple
+                onchange="handleFiles(this.files)"
+              />
+              <div class="drag-text">
+                <h3>Drag and drop files or click to add Image(s)</h3>
+              </div>
+            </div>
+            <div class="image-title-wrapper">
+              <button
+                type="button"
+                onclick="removeUpload()"
+                class="remove-image"
+              >
+                Remove <span class="image-title">Uploaded Image</span>
+              </button>
+            </div>
+          </fieldset>
+          <input type="submit" id="modal-trigger" value="List Property" />
+        </form>
+      </div>
+    </section>
+
+    <footer class="home-footer">
+      <p>Molyktech 2019</p>
+    </footer>
+
+    <script src="./js/index.js"></script>
+  </body>
+</html>
