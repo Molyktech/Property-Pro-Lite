@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type="text/css" href="./css/loggedIn.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="dash-container">
+      <div class="menu-icon">
+        <div class="line-1"></div>
+        <div class="line-2"></div>
+        <div class="line-3"></div>
+      </div>
+      <header class="header">
+        <div class="header-search">
+          <input type="search" placeholder="seach..." />
+        </div>
+        <div class="header-avatar">
+          Avatar
+        </div>
+      </header>
+
+      <aside class="sidenav">
+        <div class="sidenav-brand">
+            <a href="./index.html">
+              <img
+                src="./images/Logo.png"
+                alt="logo"
+                style="width:195px; margin:3rem 0 1rem 0;"
+              />
+            </a>
+       
+        <div class="sidenav-close-icon">
+          <span class="close-sidenav">&times;</span>
+        </div>
+      </div>
+        <ul class="sidenav-list">
+           
+          </li>
+          <li class="sidenav-listItem">
+            <a href="./index.html" class="nav-link">Home</a>
+          </li>
+          <li class="sidenav-listItem">
+            <a href="#" class="nav-link">Edit Profile</a>
+          </li>
+          <li class="sidenav-listItem">
+            <a href="./listProperty.html" class="nav-link">Create Listing</a>
+          </li>
+
+          <li class="sidenav-listItem">
+            <a href="./viewProperties.html" class="nav-link">View Properties</a>
+          </li>
+          <li class="sidenav-listItem">
+            <a href="./index.html" class="nav-link">Log Out</a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main">
+        <div class="main-header">
+          <div class="heading">Hello User</div>
+          <div class="updates">Recent Lisitng</div>
+        </div>
+
+        <div class="main-overview">
+            <h2 style="text-align: center;"> Recent Listing</h2>
+          <div class="overviewcard">
+            
+            <div class="boxes-item">
+              <div class="box">
+                <div class="box-image box-1"></div>
+                <div class="box-content">
+                  <div class="box-title">Single Family (Detached)</div>
+                  <p class="box-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quis, minus velit molestiae perspiciatis fuga quibusdam
+                    consequatur quod repellendus doloribus asperiores.
+                  </p>
+
+                  <div class="user-actions">
+                    <a href="./listProperty.html" class="btn primary-button"
+                      >Edit</a
+                    >
+                    <a href="#" class="btn primary-button"
+                    >Move to Sold</a
+                  >
+                    <a href="#" class="btn danger-button" id="delete-listing"
+                      >Delete</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="boxes-item">
+              <div class="box">
+                <div class="box-image box-2"></div>
+                <div class="box-content">
+                  <div class="box-title">Duplex</div>
+                  <p class="box-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quis, minus velit molestiae perspiciatis fuga quibusdam
+                    consequatur quod repellendus doloribus asperiores.
+                  </p>
+                  <div class="user-actions">
+                    <a
+                      href="./listProperty.html"
+                      class="btn primary-button"
+                      type="button"
+                      >Edit</a
+                    >
+                    <a href="#" class="btn primary-button"
+                    >Move to Sold</a
+                  >
+                    <a
+                      href="#"
+                      class="btn danger-button"
+                      id="delete-listing"
+                      type="button"
+                      >Delete</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="main-cards">
+          <!-- <div class="card">card</div>
+          <div class="card">card</div>
+          <div class="card">card</div> -->
+        </div>
+      </main>
+      <footer class="dash-footer">
+        <div class="footer-copyright">&copy; 2019</div>
+        <div class="footer-signature">Molyktech</div>
+      </footer>
+    </div>
+    <script>
+      const menuIcon = document.querySelector(".menu-icon");
+      const sideNav = document.querySelector(".sidenav");
+      const closeSideNav = document.querySelector(".close-sidenav");
+
+      // Add and remove provided class names
+      function toggleClassName(el, className) {
+        if (el.classList.contains(className)) {
+          el.classList.remove(className);
+        } else {
+          el.classList.add(className);
+        }
+      }
+
+      // Open the side nav on click
+      menuIcon.addEventListener("click", function() {
+        toggleClassName(sideNav, "active");
+      });
+
+      // Close the side nav on click
+      closeSideNav.addEventListener("click", function() {
+        toggleClassName(sideNav, "active");
+      });
+    </script>
+  </body>
+</html>
