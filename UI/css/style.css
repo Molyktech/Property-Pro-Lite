@@ -24,9 +24,7 @@ body {
   background-color: #181818;
 }
 
-#listed-properties,
-#tab-content,
-footer.home-footer {
+#listed-properties, #tab-content, footer.home-footer {
   background: #00d2ff;
   background: -webkit-linear-gradient(to right, #3a7bd5, #00d2ff);
   background: linear-gradient(to right, #3a7bd5, #00d2ff);
@@ -38,10 +36,7 @@ ul {
   list-style: none;
 }
 
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
   color: #fff;
 }
 
@@ -79,6 +74,10 @@ img {
   border-radius: 5px;
 }
 
+a.btn-white {
+  margin: 1rem 0;
+}
+
 .btn {
   display: inline-block;
   background: transparent;
@@ -96,7 +95,10 @@ img {
 
 .btn:hover {
   opacity: 0.9;
-  background-color: #2196f3;
+  background-color: #0099d8;
+  color: #fff;
+  border: 1px dashed #00ccff;
+  padding: .7rem;
 }
 
 .btn-large {
@@ -138,9 +140,7 @@ nav {
 }
 
 div.logo a {
-  color: #00d2ff;
-  letter-spacing: 2px;
-  font-size: 1.3em;
+  margin-top: .7rem;
 }
 
 ul.nav-links {
@@ -153,10 +153,12 @@ ul.nav-links a {
   color: #fff;
   letter-spacing: 2px;
 }
+
 ul.nav-links a:hover {
   color: #00d2ff;
 }
-.nav-link li :nth-child(2) ~ a {
+
+.nav-link li :nth-child(2)~a {
   margin-top: 20px;
 }
 
@@ -207,8 +209,7 @@ ul.nav-links.nav-active {
   width: 100%;
   height: 100vh;
   position: relative;
-  background: url("../images/condominium-690086_1280.jpg") no-repeat center
-    center / cover;
+  background: url("../images/condominium-690086_1280.jpg") no-repeat center center / cover;
 }
 
 #hero::after {
@@ -239,7 +240,7 @@ ul.nav-links.nav-active {
 
 #hero .hero-content h1 {
   font-weight: 700;
-  font-size: 5.2rem;
+  font-size: 4rem;
   line-height: 1.1em;
   margin-bottom: 0 0 2rem;
 }
@@ -260,8 +261,7 @@ ul.nav-links.nav-active {
   border-radius: 10px;
 }
 
-.form-inline,
-.queryForm-inline {
+.form-inline, .queryForm-inline {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -273,8 +273,7 @@ ul.nav-links.nav-active {
   margin: 5px 10px 5px 0;
 }
 
-.form-inline input.location-input,
-.form-inline select {
+.form-inline input.location-input, .form-inline select {
   vertical-align: middle;
   margin: 5px 10px 5px 0;
   padding: 10px;
@@ -425,11 +424,11 @@ ul.nav-links.nav-active {
 
 /***for each div inside the propert tab**/
 
-#propety-tab-options .tab-container > div {
+#propety-tab-options .tab-container>div {
   padding: 1.5rem;
 }
 
-#propety-tab-options .tab-container > div:hover {
+#propety-tab-options .tab-container>div:hover {
   color: #660a11;
   cursor: pointer;
 }
@@ -473,17 +472,23 @@ ul.nav-links.nav-active {
 
 /****Hide tab until clicked***/
 
-#tab-1-content,
-#tab-2-content,
-#tab-3-content {
+#tab-1-content, #tab-2-content, #tab-3-content {
   display: none;
 }
 
 /***Property cards***/
 
-/* #listed-properties {
-  background-color: #fff;
-} */
+section#listed-properties {
+  background: #dbdce0;
+}
+
+#listed-properties h1 {
+  color: #141414;
+  padding: 1rem 0;
+  font-weight: 700;
+  font-size: 2.5rem;
+  text-align: center;
+}
 
 #property-cards {
   display: grid;
@@ -549,8 +554,7 @@ ul.nav-links.nav-active {
   text-align: center;
 }
 
-.property-stats th,
-.property-stats td {
+.property-stats th, .property-stats td {
   width: 50%;
   padding: 0.25em 0.5em 0;
 }
@@ -601,8 +605,7 @@ ul.nav-links.nav-active {
 
 /***login form***/
 
-#login,
-#signup {
+#login, #signup {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -628,13 +631,11 @@ ul.nav-links.nav-active {
   margin-bottom: 4vh;
 }
 
-#login .logo img,
-#signup .logo img {
+#login .logo img, #signup .logo img {
   width: 300px;
 }
 
-#login label,
-#signup label {
+#login label, #signup label {
   font-size: 0.92rem;
   font-weight: 500;
   line-height: 2rem;
@@ -666,8 +667,7 @@ ul.nav-links.nav-active {
   width: 100%;
 }
 
-#login .secondary-btn,
-#login .links {
+#login .secondary-btn, #login .links {
   width: 60%;
 }
 
@@ -700,8 +700,7 @@ ul.nav-links.nav-active {
 
 /*button*/
 
-.primary-btn,
-.secondary-btn {
+.primary-btn, .secondary-btn {
   padding: 0.8rem 1rem;
   height: 2.7rem;
   border-radius: 2px;
@@ -739,8 +738,7 @@ ul.nav-links.nav-active {
 }
 
 #right #image-showcase {
-  background: url("../images/apartment-architecture-bookcase-271816.jpg")
-    no-repeat center center / cover;
+  background: url("../images/apartment-architecture-bookcase-271816.jpg") no-repeat center center / cover;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -748,8 +746,7 @@ ul.nav-links.nav-active {
 }
 
 #right #signup-showcase {
-  background: url("../images/living-room-4013531_1280.jpg") no-repeat center
-    center / cover;
+  background: url("../images/living-room-4013531_1280.jpg") no-repeat center center / cover;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -789,8 +786,7 @@ ul.nav-links.nav-active {
   cursor: pointer;
 }
 
-.slide-btn:hover,
-.slide-btn:focus {
+.slide-btn:hover, .slide-btn:focus {
   color: #00d2ff;
   box-shadow: 0 0 0 0 #f4f4f4, inset 6em 3.5em 0 0 #ffffff;
 }
@@ -897,6 +893,7 @@ ul.nav-links.nav-active {
 .search-fields {
   margin: 2rem 0;
 }
+
 .mobile-form {
   display: -webkit-box;
   display: flex;
@@ -905,11 +902,13 @@ ul.nav-links.nav-active {
   box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.3);
   margin: 1rem;
 }
+
 .queryForm-inline label {
   margin: 3x 5px 5px 0;
   font-size: 0.9rem;
   color: #555;
 }
+
 #submit-query {
   background: #00ccff;
   border: 1px solid #00ccff;
@@ -921,11 +920,13 @@ ul.nav-links.nav-active {
   transition: all 0.2s;
   margin: 0 1rem;
 }
+
 #submit-query:hover {
   background: transparent;
   border: 1px solid #00d2ff;
   color: #00d2ff;
 }
+
 select.filter {
   background: #fff;
   border: 1px solid #fff;
@@ -935,7 +936,7 @@ select.filter {
   padding: 1rem;
 }
 
-.mobile-form > * {
+.mobile-form>* {
   border: 0;
   padding: 0 0 0 10px;
   background: #fff;
@@ -951,6 +952,7 @@ select.filter {
 }
 
 /***radio buttton toggler**/
+
 .toggle {
   margin: 0 0;
   font-size: 0;
@@ -958,13 +960,15 @@ select.filter {
   display: flex;
   flex-flow: row nowrap;
 }
+
 .toggle input {
   width: 0;
   height: 0;
   position: absolute;
   left: -9999px;
 }
-.toggle input + label {
+
+.toggle input+label {
   margin: 0;
   padding: 0.75rem 1.2rem;
   position: relative;
@@ -978,26 +982,29 @@ select.filter {
   text-align: center;
   transition: all 0.15s ease-out;
 }
-.toggle input + label:first-of-type {
+
+.toggle input+label:first-of-type {
   border-radius: 6px 0 0 6px;
   border-right: none;
 }
 
-.toggle input + label:last-of-type {
+.toggle input+label:last-of-type {
   border-radius: 0 6px 6px 0;
   border-left: none;
 }
 
-.toggle input:hover + label {
+.toggle input:hover+label {
   border-color: #00b3b4;
 }
-.toggle input:checked + label {
+
+.toggle input:checked+label {
   background-color: #cdd;
   color: #fff;
   border-color: #cdd;
   z-index: 1;
 }
-.toggle input:focus + label {
+
+.toggle input:focus+label {
   outline: dotted 1px #ddd;
   outline-offset: 0.45rem;
 }
@@ -1031,8 +1038,7 @@ select.filter {
   cursor: pointer;
 }
 
-.slide-btn:hover,
-.slide-btn:focus {
+.slide-btn:hover, .slide-btn:focus {
   color: #00d2ff;
   box-shadow: 0 0 0 0 #f4f4f4, inset 6em 3.5em 0 0 #ffffff;
 }
@@ -1133,7 +1139,9 @@ select.filter {
 }
 
 /***login media queries**/
+
 /***end of radio toggle style***/
+
 .boxes {
   display: flex;
   flex-wrap: wrap;
@@ -1145,6 +1153,7 @@ select.filter {
   display: flex;
   padding: 1rem;
 }
+
 .box {
   background-color: #fff;
   border-radius: 0.25rem;
@@ -1153,6 +1162,7 @@ select.filter {
   flex-direction: column;
   overflow: hidden;
 }
+
 .box:hover .box-image {
   filter: contrast(100%);
 }
@@ -1173,6 +1183,7 @@ select.filter {
   overflow: hidden;
   position: relative;
 }
+
 .box-image::before {
   content: "";
   display: block;
@@ -1199,9 +1210,11 @@ select.filter {
 .box-image.box-5 {
   background-image: url("../images/architectural-design-architecture-country-home-2287310.jpg");
 }
+
 .box-image.box-6 {
   background-image: url("../images/architecture-clouds-daylight-259588.jpg");
 }
+
 .box-title {
   color: #111111;
   font-size: 1.2rem;
@@ -1218,25 +1231,30 @@ select.filter {
 }
 
 /***styles for listing form****/
+
 .list-info {
   text-align: center;
   margin: 1.5rem auto;
   width: 80%;
 }
+
 .list-info h2 {
   color: #00ccff;
   text-transform: uppercase;
   font-size: 1.5rem;
 }
+
 .list-info p {
   letter-spacing: 2px;
   line-height: 1.5;
 }
+
 .list-info strong {
   color: #00ccff;
   font-weight: bold;
   font-size: 1.2rem;
 }
+
 .form-style {
   padding: 10px 20px;
   background: #fff;
@@ -1244,23 +1262,26 @@ select.filter {
   border: 2px solid #fff;
   padding: 20px;
   box-shadow: 4px 8px 10px 2px #aaa;
-
   font-family: Georgia, "Times New Roman", Times, serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 70vw;
 }
+
 .form-style form {
   margin: 1rem;
 }
+
 .form-style fieldset {
   border: none;
 }
+
 .form-style fieldset legend {
   font-size: 1.4em;
   margin-bottom: 10px;
 }
+
 .form-style .number {
   background: #00b3b4;
   color: #fff;
@@ -1274,11 +1295,13 @@ select.filter {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
   border-radius: 15px 15px 15px 0px;
 }
+
 .form-style span.col-2 {
   display: inline-block;
   margin: 0 10px 10px 0;
   width: 48%;
 }
+
 .form-style span.col-4 {
   display: inline-block;
   margin: 0 10px 10px 0;
@@ -1289,11 +1312,8 @@ select.filter {
   display: block;
   padding: 1.5em 0 0 0;
 }
-.form-style input[type="text"],
-.form-style input[type="email"],
-.form-style input[type="number"],
-.form-style textarea,
-.form-style select {
+
+.form-style input[type="text"], .form-style input[type="email"], .form-style input[type="number"], .form-style textarea, .form-style select {
   font-family: Georgia, "Times New Roman", Times, serif;
   background: #fff;
   border: 1px solid #ccc;
@@ -1305,20 +1325,16 @@ select.filter {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-
   color: #8a97a0;
   -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
   margin-bottom: 15px;
 }
 
-.form-style input[type="text"]:focus,
-.form-style input[type="email"]:focus,
-.form-style input[type="number"]:focus,
-.form-style textarea:focus,
-.form-style select:focus {
+.form-style input[type="text"]:focus, .form-style input[type="email"]:focus, .form-style input[type="number"]:focus, .form-style textarea:focus, .form-style select:focus {
   background: #fff;
 }
+
 .form-style select {
   -webkit-appearance: menulist-button;
 }
@@ -1335,6 +1351,7 @@ select.filter {
   position: relative;
   margin-top: 2em;
 }
+
 .form-style .file-upload-input {
   position: absolute;
   margin: 0;
@@ -1346,8 +1363,7 @@ select.filter {
   cursor: pointer;
 }
 
-.image-dropping,
-.form-style .image-upload-wrapper:hover {
+.image-dropping, .form-style .image-upload-wrapper:hover {
   background-color: #ccc;
   border: 4px dashed #1cb5e0;
 }
@@ -1355,6 +1371,7 @@ select.filter {
 .form-style .drag-text {
   text-align: center;
 }
+
 .form-style .drag-text h3 {
   font-weight: bold;
   color: #1cb5e0;
@@ -1389,6 +1406,7 @@ select.filter {
   border: 0;
   transition: all 0.2s ease;
 }
+
 .form-style input[type="submit"] {
   position: relative;
   display: block;
@@ -1404,25 +1422,36 @@ select.filter {
   border-width: 1px 1px 3px;
   margin-bottom: 10px;
 }
+
 .form-style input[type="submit"]:hover {
   background: #00d2ff;
 }
 
 /***modal styles***/
+
 /**for transparent background behing modal**/
+
 .modal {
   display: none;
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 .modal-content {
   position: absolute;
   top: 50%;
@@ -1451,6 +1480,7 @@ select.filter {
 #form-modal .close-modal-button:hover {
   background-color: #181818;
 }
+
 /**
 *login media queries**/
 
@@ -1528,8 +1558,7 @@ select.filter {
   .form-inline input {
     margin: 10px 0;
   }
-  .form-inline,
-  .queryForm-inline {
+  .form-inline, .queryForm-inline {
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
@@ -1545,8 +1574,7 @@ select.filter {
   .form-inline label {
     margin: 2px 5px 2px 0;
   }
-  .form-inline input.location-input,
-  select {
+  .form-inline input.location-input, select {
     margin: 3px 7px 3px 0;
     padding: 5px;
   }
@@ -1560,15 +1588,13 @@ select.filter {
   .mobile-form input[type="search"] {
     flex-basis: 100%;
   }
-
-  .mobile-form > * {
+  .mobile-form>* {
     font-size: 0.9rem;
   }
-
   .toggle {
     margin: 1rem;
   }
-  .toggle input + label {
+  .toggle input+label {
     padding: 0.25rem 0.25rem;
     flex: 0 0 50%;
     display: flex;
@@ -1617,17 +1643,14 @@ select.filter {
     flex-direction: column;
     width: 93vw;
   }
-
   .mobile-form input[type="search"] {
     flex-basis: 0;
   }
   .mobile-form label {
     display: none;
   }
-
   /**styles for listProperty***/
-  .form-style span.col-4,
-  .form-style span.col-2 {
+  .form-style span.col-4, .form-style span.col-2 {
     display: block;
     width: 100%;
   }
@@ -1678,8 +1701,7 @@ select.filter {
   .wrap .banner {
     padding-top: 20px;
   }
-  .wrap .banner .banner-left,
-  .wrap .banner .banner-right {
+  .wrap .banner .banner-left, .wrap .banner .banner-right {
     grid-column: span 2;
   }
   .wrap .banner .banner-right {
