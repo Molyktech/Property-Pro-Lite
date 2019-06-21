@@ -757,6 +757,126 @@ section#listed-properties {
   font-size: 4rem;
 }
 
+/***forgot Password styles****/
+
+#reset-wrapper {
+  width: 90vw;
+  height: 100vh;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reset-container {
+  width: 100%;
+  max-width: 40rem;
+  border-radius: 1rem;
+  z-index: 1;
+  background-color: #fff;
+  color: #555;
+  position: relative;
+  padding: 10rem 0;
+  box-shadow: 2px 2px 1.5rem rgba(0, 0, 0, 0.2);
+}
+
+.reset-container:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25rem;
+  background: #00d2ff;
+  background: -webkit-linear-gradient(to right, #00ccff, #00d2ff);
+  background: linear-gradient(to right, #00ccff, #00d2ff);
+  border-bottom-right-radius: 100%;
+  border-bottom-left-radius: 100%;
+  z-index: -1;
+}
+
+.reset-form-heading {
+  color: #fff;
+  font-size: 2.3rem;
+  position: absolute;
+  top: 3.5rem;
+  left: 10rem;
+}
+
+form#reset-form {
+  transform: translateX(8rem);
+  padding: 2rem 0;
+  background-color: #fff;
+  box-shadow: 0 1px 1.5rem rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+}
+
+.reset-input-group {
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: baseline;
+}
+
+.reset-input-group input {
+  position: relative;
+  width: 100%;
+  padding: 1rem 0;
+  margin-top: .7rem;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  color: #111111;
+}
+
+.reset-input-group>i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  color: #00d2ff;
+}
+
+.reset-input-group .reset-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 1px;
+}
+
+.reset-input-group .reset-bar:before {
+  content: "";
+  position: absolute;
+  background-color: #00d2ff;
+  width: 0;
+  height: 2px;
+  transition: width 650ms;
+}
+
+.reset-input-group input:focus+.reset-bar:before {
+  width: 100%;
+}
+
+.reset-info {
+  text-align: center;
+  margin: 2rem 1rem;
+}
+
+.reset-input-group a {
+  margin: 3rem auto;
+  padding: 1rem;
+  background: #00ccff;
+  color: #fff;
+  cursor: pointer;
+  transition: all .3s
+}
+
+.reset-input-group a:hover, .reset-input-group a:focus {
+  border-radius: 3rem;
+  border-bottom: 5px solid #1cb5e0;
+}
+
 /****Property Details***/
 
 .wrap {
@@ -1547,6 +1667,10 @@ select.filter {
   .card {
     margin: 10px 7px;
   }
+  form#reset-form {
+    border-radius: initial;
+    transform: translateX(3rem);
+  }
 }
 
 /***breakpoint for form in the header***/
@@ -1687,6 +1811,23 @@ select.filter {
   /* #hero::after {
     box-shadow: inset 80px 80px 250px #660a11, inset -800px -80px 250px #080102;
   } */
+  /**resetPassword for ForgotPASSWORD**/
+  .reset-container::before {
+    height: 10rem;
+  }
+  .reset-form-heading {
+    left: 50%;
+    /**center it**/
+    transform: translateX(-50%);
+    font-size: 1.8rem;
+  }
+  form#reset-form {
+    border-radius: initial;
+    transform: initial;
+  }
+  #reset-wrapper {
+    margin-top: 2rem;
+  }
 }
 
 /***media for propertydetails***/
@@ -1730,5 +1871,9 @@ select.filter {
   }
   .wrap .features {
     grid-template-columns: repeat(2, 140px);
+  }
+  .reset-form-heading {
+    font-size: 1.3rem;
+    font-weight: bolder;
   }
 }
