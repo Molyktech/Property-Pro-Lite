@@ -2,8 +2,7 @@ console.log("connected");
 
 const rangeSlider = document.querySelector("#range-line");
 let rangePoint = document.querySelector("#range-span");
-const tabIcons = document.querySelectorAll(".list-tab");
-const tabContent = document.querySelectorAll(".tab-text");
+
 const dropbox = document.getElementById("dropzone");
 const imageInput = document.querySelector("#image-input");
 const modal = document.querySelector(".modal");
@@ -54,28 +53,6 @@ const showSliderValue = () => {
 
 rangeSlider.addEventListener("input", showSliderValue, false);
 
-//for the tabs
-const tabSwitch = () => {
-  const removeBorder = () => {
-    tabIcons.forEach(item => item.classList.remove("tab-border"));
-  };
-
-  const removeShowClass = () => {
-    tabContent.forEach(item => item.classList.remove("show"));
-  };
-  tabIcons.forEach((item, index) => {
-    item.addEventListener("click", () => {
-      removeBorder();
-      removeShowClass();
-      item.classList.add("tab-border");
-      // console.log(item.id);
-      const tabContentItem = document.querySelector(`#${item.id}-content`);
-      //Add show class
-      tabContentItem.classList.add("show");
-    });
-  });
-};
-tabSwitch();
 function handleFiles(files) {
   let preview = document.getElementById("preview");
   for (let i = 0; i < files.length; i++) {

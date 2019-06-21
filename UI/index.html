@@ -20,8 +20,8 @@
           <li><a href="viewProperties.html">Buy</a></li>
           <li><a href="viewProperties.html">Rent</a></li>
           <li><a href="listProperty.html">List</a></li>
-          <li><a href="signup.html" class="btn">Sign Up</a></li>
-          <li><a href="login.html" class="btn">Login</a></li>
+          <li><a href="signup.html" >Sign Up</a></li>
+          <li><a href="login.html" >Login</a></li>
         </ul>
         <div class="hamburger-menu">
           <div class="line-1"></div>
@@ -30,12 +30,12 @@
         </div>
         </nav>
         <div class="hero-content">
-          <h1>PROPERTY PRO</h1>
+          <h1>My Home My World</h1>
           <P
             >Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
             laudantium!</P
           >
-          <a href="#" class="btn btn-large">Hello</a>
+          
           <div class="hero-tabs"></div>
           <div class="property-search-form">
               
@@ -115,8 +115,8 @@
             <div id="tab-1-content" class="tab-text show">
                 <div class="tab-1-content tab-wrapper">
                     <div class="content-grid">
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore optio debitis exercitationem facilis omnis illo ratione dolore! Autem, quis quod.</p>
-                        <a href="#" class="btn btn-brick">Get Started</a>
+                        <p>Selling a house goes beyond putting up an ad. Join our reliable team of real estate experts with vast knowledge about your neighbourhood to help you achieve the best sales.Furthermore, Property Pro Lite offers a wide network overage with over a million clients. Inventore optio debitis exercitationem facilis omnis illo ratione dolore! Autem, quis quod.</p>
+                        <a href="./listProperty.html" class="btn btn-brick">Get Started</a>
                     </div>
                    
                     <img src="./images/architecture-building-buy-259098.jpg" alt="Foreclosed Building"/>
@@ -127,8 +127,8 @@
             <div id="tab-2-content" class="tab-text">
                     <div class="tab-2-content tab-wrapper">
                         <div class="content-grid">
-                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore optio debitis exercitationem facilis omnis illo ratione dolore! Autem, quis quod.</p>
-                            <a href="#" class="btn btn-brick">Get Started</a>
+                            <p>New home loading? Look no further. We offer house sales across the 36 states in Nigeria in collaboration with the best agents and house owners. Inventore optio debitis exercitationem facilis omnis illo ratione dolore! Autem, quis quod.</p>
+                            <a href="./viewProperties.html" class="btn btn-brick">View Properties</a>
                         </div>
                        
                         <img src="./images/architecture-building-driveway-164522.jpg" alt="Foreclosed Building"/>
@@ -141,10 +141,10 @@
               <div class="tab-3-content tab-wrapper">
                   <div class="content-grid">
                       <p>Lorem this ipsum, dolor sit amet consectetur adipisicing elit. Inventore optio debitis exercitationem facilis omnis illo ratione dolore! Autem, quis quod.</p>
-                      <a href="#" class="btn btn-brick">Get Started</a>
+                      <a href="./viewProperties.html" class="btn btn-brick">Get Started</a>
                   </div>
                  
-                  <img src="./images/architecture-building-driveway-164522.jpg" alt="Foreclosed Building"/>
+                  <img src="./images/architecture-beautiful-exterior-106399.jpg" alt="Foreclosed Building"/>
                   
           </div>
           </div>
@@ -153,6 +153,7 @@
         </div>
     </section>
     <section id="listed-properties">
+      <h1>Latest</h1>
       <div id="property-cards" class="container">
         <figure class="card card-colored">
             <div class="card-image-container">
@@ -188,7 +189,8 @@
               </table>
               <div class="property-info">
                   <h4 class="address">27, Alakija Street, Lekki Phase One</h4>
-                <button class="btn-white">View Details</button>
+              </br>
+                <a href="./propertyDetails.html" class="btn-white">View Details</a>
               </div>
             </figcaption>
 
@@ -227,7 +229,8 @@
               </table>
               <div class="property-info">
                   <h4 class="address">27, Alakija Street, Lekki Phase One</h4>
-                <button class="btn-white">View Details</button>
+                </br>
+                <a  href="./propertyDetails.html"class="btn-white">View Details</a>
               </div>
             </figcaption>
 
@@ -266,7 +269,8 @@
               </table>
               <div class="property-info">
                   <h4 class="address">27, Alakija Street, Lekki Phase One</h4>
-                <button class="btn-white">View Details</button>
+                </br>
+                <a class="btn-white">View Details</a>
               </div>
             </figcaption>
 
@@ -307,7 +311,8 @@
               </table>
               <div class="property-info">
                   <h4 class="address">27, Alakija Street, Lekki Phase One</h4>
-                <button class="btn-white">View Details</button>
+                </br>
+                <a href="./propertyDetails.html" class="btn-white">View Details</a>
               </div>
             </figcaption>
 
@@ -347,7 +352,8 @@
               </table>
               <div class="property-info">
                   <h4 class="address">27, Alakija Street, Lekki Phase One</h4>
-                <button class="btn-white">View Details</button>
+                </br>
+                <a href="./propertyDetails.html" class="btn-white">View Details</a>
               </div>
             </figcaption>
 
@@ -387,7 +393,8 @@
               </table>
               <div class="property-info">
                   <h4 class="address">27, Alakija Street, Lekki Phase One</h4>
-                <button class="btn-white">View Details</button>
+                </br>
+                <a href="./propertyDetails.html" class="btn-white">View Details</a>
               </div>
             </figcaption>
 
@@ -398,5 +405,33 @@
         <p>Molyktech 2019</p>
     </footer>
     <script src="./js/index.js"></script>
+    <script>
+
+      //for the tabs
+
+      const tabIcons = document.querySelectorAll(".list-tab");
+const tabContent = document.querySelectorAll(".tab-text");
+const tabSwitch = () => {
+  const removeBorder = () => {
+    tabIcons.forEach(item => item.classList.remove("tab-border"));
+  };
+
+  const removeShowClass = () => {
+    tabContent.forEach(item => item.classList.remove("show"));
+  };
+  tabIcons.forEach((item, index) => {
+    item.addEventListener("click", () => {
+      removeBorder();
+      removeShowClass();
+      item.classList.add("tab-border");
+      // console.log(item.id);
+      const tabContentItem = document.querySelector(`#${item.id}-content`);
+      //Add show class
+      tabContentItem.classList.add("show");
+    });
+  });
+};
+tabSwitch();
+    </script>
   </body>
 </html>
