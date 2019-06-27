@@ -8,5 +8,7 @@ const router = express.Router();
 
 router.get('/', propertyController.getAllProperty);
 
+router.get('/:id', propertyController.getOneProperty);
+
 
 export default router;
