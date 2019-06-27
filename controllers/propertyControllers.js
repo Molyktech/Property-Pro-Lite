@@ -31,6 +31,68 @@ class Property {
     });
   }
 
+
+  createProperty(req, res) {
+    if (!isEmpty(req.body.status)) {
+      return res.status(400).json({
+        status: 'Error',
+        error: 'Status is required',
+      });
+    }
+    if (!isEmpty(req.body.state)) {
+      return res.status(400).json({
+        status: 'Error',
+        error: 'State is required',
+      });
+    }
+    if (!isEmpty(req.body.city)) {
+      return res.status(400).json({
+        status: 'Error',
+        error: 'City is required',
+      });
+    }
+    if (!isEmpty(req.body.address)) {
+      return res.status(400).json({
+        status: 'Error',
+        error: 'Address is required',
+      });
+    }
+    if (!isEmpty(req.body.type)) {
+      return res.status(400).json({
+        status: 'Error',
+        error: 'type is required',
+      });
+    }
+    if (!isNumber(req.body.price) || !isEmpty(req.body.price)) {
+      return res.status(400).json({
+        status: 'Error',
+        error: 'Price is required and should be a number',
+      });
+    }
+
+
+    const newProperty = {
+      id: db.length + 1,
+      owner: req.body.owner,
+      status: req.body.status,
+      state: req.body.state,
+      price: req.body.price,
+      city: req.body.city,
+      address: req.body.address,
+      type: req.body.type,
+      created_on: req.body.created_on,
+      reason: req.body.reason,
+      description: req.body.description,
+
+    };
+    db.push(newProperty);
+
+    return res.status(200).json({
+      status: 'Success',
+      data: newProperty,
+    });
+  }
+
   updateProperty(req, res) {
     const id = parseInt(req.params.id, 10);
     let foundProperty;
