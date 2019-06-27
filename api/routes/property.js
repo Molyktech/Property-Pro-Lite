@@ -14,6 +14,8 @@ router.post('/', propertyController.createProperty);
 
 router.patch('/:id', propertyController.updateProperty);
 
+router.patch('/:id/sold', propertyController.soldProperty);
+
 router.delete('/:id', propertyController.deleteProperty);
 
 

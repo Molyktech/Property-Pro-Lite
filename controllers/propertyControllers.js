@@ -163,7 +163,46 @@ class Property {
 
     db.splice(propertyIndex, 1, updatedProperty);
     return res.status(201).json({
-      status: 'sucsess',
+      status: 'success',
+      data: updatedProperty,
+    });
+  }
+
+  soldProperty(req, res) {
+    const id = parseInt(req.params.id, 10);
+    let foundProperty;
+    let propertyIndex;
+    db.map((property, index) => {
+      if (property.id === id) {
+        foundProperty = property;
+        propertyIndex = index;
+      }
+    });
+    if (!foundProperty) {
+      return res.status(404).json({
+        status: 'error',
+        data: {
+          message: 'property not found',
+        },
+      });
+    }
+    const updatedProperty = {
+      id: foundProperty.id,
+      owner: foundProperty.owner,
+      status: 'sold',
+      state: foundProperty.state,
+      price: foundProperty.price,
+      city: foundProperty.city,
+      address: foundProperty.address,
+      type: foundProperty.type,
+      created_on: foundProperty.created_on,
+      reason: foundProperty.reason,
+      description: foundProperty.description,
+    };
+
+    db.splice(propertyIndex, 1, updatedProperty);
+    return res.status(201).json({
+      status: 'success',
       data: updatedProperty,
     });
   }
