@@ -12,8 +12,9 @@ router.get('/:id', propertyController.getOneProperty);
 
 router.post('/', propertyController.createProperty);
 
-
 router.patch('/:id', propertyController.updateProperty);
+
+router.delete('/:id', propertyController.deleteProperty);
 
 
 export default router;
