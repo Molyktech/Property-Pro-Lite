@@ -10,6 +10,8 @@ router.get('/', propertyController.getAllProperty);
 
 router.get('/:id', propertyController.getOneProperty);
 
+router.post('/', propertyController.createProperty);
+
 
 router.patch('/:id', propertyController.updateProperty);
 
