@@ -13,6 +13,23 @@ class Property {
       data: db,
     });
   }
+
+  getOneProperty(req, res) {
+    const id = parseInt(req.params.id, 10);
+    db.forEach((property) => {
+      if (property.id === id) {
+        return res.status(200).json({
+          status: 'Success',
+          data: property,
+
+        });
+      }
+    });
+    return res.status(404).json({
+      status: 'Error',
+      error: 'Property does not exist',
+    });
+  }
 }
 
 
