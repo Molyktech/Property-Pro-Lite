@@ -8,6 +8,13 @@ import {
 
 class Property {
   getAllProperty(req, res) {
+    if (req.query.type) {
+      const filteredProperty = db.filter(property => property.type.includes(`${req.query.type}`));
+      return res.status(201).json({
+        status: 'success',
+        data: filteredProperty,
+      });
+    }
     return res.status(200).json({
       status: 'Success',
       data: db,
@@ -16,21 +23,19 @@ class Property {
 
   getOneProperty(req, res) {
     const id = parseInt(req.params.id, 10);
-    db.forEach((property) => {
-      if (property.id === id) {
-        return res.status(200).json({
-          status: 'Success',
-          data: property,
-
-        });
-      }
-    });
+    const foundProperty = db.find(property => property.id === id);
+    console.log(foundProperty);
+    if (foundProperty) {
+      return res.status(200).json({
+        status: 'Success',
+        data: foundProperty,
+      });
+    }
     return res.status(404).json({
       status: 'Error',
       error: 'Property does not exist',
     });
   }
-
 
   createProperty(req, res) {
     if (!isEmpty(req.body.status)) {
@@ -70,7 +75,6 @@ class Property {
       });
     }
 
-
     const newProperty = {
       id: db.length + 1,
       owner: req.body.owner,
@@ -83,7 +87,6 @@ class Property {
       created_on: req.body.created_on,
       reason: req.body.reason,
       description: req.body.description,
-
     };
     db.push(newProperty);
 
@@ -92,6 +95,7 @@ class Property {
       data: newProperty,
     });
   }
+
 
   updateProperty(req, res) {
     const id = parseInt(req.params.id, 10);
@@ -107,7 +111,6 @@ class Property {
       return res.status(404).json({
         status: 'Error',
         error: 'Property not found',
-
       });
     }
     if (!isEmpty(req.body.status)) {
@@ -217,7 +220,6 @@ class Property {
           data: {
             message: 'Property deleted',
           },
-
         });
       }
     });
@@ -227,7 +229,6 @@ class Property {
     });
   }
 }
-
 
 const propertyController = new Property();
 export default propertyController;
