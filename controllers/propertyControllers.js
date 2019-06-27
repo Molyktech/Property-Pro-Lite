@@ -167,6 +167,26 @@ class Property {
       data: updatedProperty,
     });
   }
+
+  deleteProperty(req, res) {
+    const id = parseInt(req.params.id, 10);
+    db.map((property, index) => {
+      if (property.id === id) {
+        db.splice(index, 1);
+        return res.status(200).json({
+          status: 'Success',
+          data: {
+            message: 'Property deleted',
+          },
+
+        });
+      }
+    });
+    return res.status(404).json({
+      status: 'Error',
+      error: 'Property not found',
+    });
+  }
 }
 
 
