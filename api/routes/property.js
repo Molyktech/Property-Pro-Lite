@@ -11,4 +11,7 @@ router.get('/', propertyController.getAllProperty);
 router.get('/:id', propertyController.getOneProperty);
 
 
+router.patch('/:id', propertyController.updateProperty);
+
+
 export default router;
