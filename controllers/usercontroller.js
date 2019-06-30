@@ -10,12 +10,13 @@ const schema = Joi.object().keys({
     .required(),
   lastName: Joi.string().regex(/(^[a-zA-Z]+$)/).min(2).max(30)
     .required(),
-  // accepts alphanumeric strings at least 7 characters long
-  password: Joi.string().min(7).alphanum().required(),
+  // accepts alphanumeric strings at least 7 characters long and is not empty
+  password: Joi.string().min(7).alphanum().trim()
+    .required(),
   email: Joi.string().email({
     minDomainSegments: 2,
   }).required(),
-  address: Joi.string().required(),
+  address: Joi.string().trim().required(),
   // phone is required
   // and must be a string of the format XXX-XXX-XXXX
   // where X is a digit (0-9)
@@ -35,7 +36,7 @@ const userController = {
   createUser(req, res, next) {
     const newUser = Joi.validate(req.body, schema);
     if (newUser.error === null) {
-      // make sure email and  is unique
+      // make sure email and is unique
       users.map((user) => {
         if (user.email === req.body.email) {
           const err = new Error('Email already exist');
@@ -59,6 +60,10 @@ const userController = {
               password: hashedPassword,
             };
             const createdUser = userService.addUser(dbUser);
+            Object.defineProperty(createdUser, 'password', {
+              writable: true,
+              enumerable: false,
+            });
             return res.json({
               status: 'success',
               data: createdUser,
