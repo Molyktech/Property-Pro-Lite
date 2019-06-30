@@ -16,7 +16,7 @@ app.use(
 app.use(bodyParser.json());
 
 // handle CORS
-// app.use((req, res, next) => {
+// app.use((req, res) => {
 //   res.header('Access-Control-Allow-Origin', '*');
 //   res.header(
 //     'Access-Control-Allow-Headers',
@@ -43,12 +43,13 @@ app.use((req, res, next) => {
 });
 
 // handle error from anywhere else inn the app
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
   res.status(error.status || 500);
   res.json({
     error: {
       status: 'error',
       error: error.message,
+      stack: error.stack,
     },
   });
 });

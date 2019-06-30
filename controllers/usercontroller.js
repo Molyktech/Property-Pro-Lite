@@ -1,38 +1,76 @@
-class Users {
-  getUsers() {
-    return this.usersArray;
-  }
+import bcrypt from 'bcryptjs';
+import userService from '../Services/userService';
+import users from '../models/db/userDb';
 
-  addUser(firstName, lastName, emailId, phoneNum) {
-    this.i += 1;
+const Joi = require('@hapi/joi');
 
-    this.usersArray = [...this.usersArray, {
-      id: this.i,
-      fname: firstName,
-      lName: lastName,
-      email: emailId,
-      phone: phoneNum,
-    }];
-  }
 
-  updateUser(id, firstName, lastName, emailId, phoneNum) {
-    this.usersArray = this.usersArray.map((element) => {
-      if (element.id == id) {
-        return {
-          id,
-          fname: firstName,
-          lName: lastName,
-          email: emailId,
-          phone: phoneNum,
-        };
-      }
-      return element;
+const schema = Joi.object().keys({
+  firstName: Joi.string().regex(/(^[a-zA-Z]+$)/).min(2).max(30)
+    .required(),
+  lastName: Joi.string().regex(/(^[a-zA-Z]+$)/).min(2).max(30)
+    .required(),
+  // accepts alphanumeric strings at least 7 characters long
+  password: Joi.string().min(7).alphanum().required(),
+  email: Joi.string().email({
+    minDomainSegments: 2,
+  }).required(),
+  address: Joi.string().required(),
+  // phone is required
+  // and must be a string of the format XXX-XXX-XXXX
+  // where X is a digit (0-9)
+  phoneNumber: Joi.string().regex(/^\d{3}-\d{3}-\d{5}$/).required(),
+});
+
+const userController = {
+
+  fetchUser(req, res) {
+    const allUsers = userService.getAllUsers();
+    return res.status(200).json({
+      status: 'success',
+      data: allUsers,
     });
-  }
+  },
 
-  deleteUser(id) {
-    this.usersArray = this.usersArray.filter(element => (element.id != id));
-  }
-}
+  createUser(req, res, next) {
+    const newUser = Joi.validate(req.body, schema);
+    if (newUser.error === null) {
+      // make sure email and  is unique
+      users.map((user) => {
+        if (user.email === req.body.email) {
+          const err = new Error('Email already exist');
+          next(err);
+        } else {
+          // /hash password and add to db
+          bcrypt.hash(req.body.password, 12).then((hashedPassword) => {
+            const {
+              firstName,
+              lastName,
+              email,
+              address,
+              phoneNumber,
+            } = req.body;
+            const dbUser = {
+              firstName,
+              lastName,
+              email,
+              address,
+              phoneNumber,
+              password: hashedPassword,
+            };
+            const createdUser = userService.addUser(dbUser);
+            return res.json({
+              status: 'success',
+              data: createdUser,
+            });
+          });
+        }
+      });
+    } else {
+      next(newUser.error);
+    }
+  },
 
-module.exports = Users;
+};
+
+export default userController;

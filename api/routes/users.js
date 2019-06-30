@@ -1,37 +1,14 @@
 /* eslint-disable linebreak-style */
 import express from 'express';
+import userController from '../../controllers/usercontroller';
+
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-  res.status(200).json({
-    message: 'Handling GET requests to /users',
-  });
-});
 
-router.post('/', (req, res, next) => {
-  // const user
-  res.status(201).json({
-    message: 'Handling POST requests to /users',
-  });
-});
+router.get('/', userController.fetchUser);
 
-router.get('/:userId', (req, res, next) => {
-  res.status(200).json({
-    message: 'user details',
-  });
-});
+router.post('/signup', userController.createUser);
 
-router.patch('/:userId', (req, res, next) => {
-  res.status(200).json({
-    message: 'You updated a user',
-  });
-});
-
-router.delete('/:userId', (req, res, next) => {
-  res.status(200).json({
-    message: 'You deleted a user',
-  });
-});
 
 export default router;
