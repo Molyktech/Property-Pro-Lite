@@ -1,18 +1,14 @@
+/* eslint-disable camelcase */
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import userService from '../Services/userService';
 import users from '../models/db/userDb';
 import {
-  loginSchema,
   signupSchema,
 } from '../middleware.js/schemas';
 import {
-  responseError,
-  dataError,
+  createTokenAndSend,
 } from '../middleware.js/helpers';
 
-dotenv.config();
 const Joi = require('@hapi/joi');
 
 const userController = {
@@ -37,18 +33,18 @@ const userController = {
           // /hash password and add to db
           bcrypt.hash(req.body.password, 12).then((hashedPassword) => {
             const {
-              firstName,
-              lastName,
+              first_name,
+              last_name,
               email,
               address,
-              phoneNumber,
+              phone_number,
             } = req.body;
             const dbUser = {
-              firstName,
-              lastName,
+              first_name,
+              last_name,
               email,
               address,
-              phoneNumber,
+              phone_number,
               password: hashedPassword,
             };
             const createdUser = userService.addUser(dbUser);
@@ -56,10 +52,7 @@ const userController = {
               writable: true,
               enumerable: false,
             });
-            return res.json({
-              status: 'success',
-              data: createdUser,
-            });
+            return createTokenAndSend(createdUser, res);
           });
         }
       });
@@ -68,56 +61,7 @@ const userController = {
       next(newUser.error);
     }
   },
-  loginUser(req, res) {
-    const newUser = Joi.validate(req.body, loginSchema);
-    let foundUser;
-    if (newUser.error === null) {
-      // query the db for the user
-      users.filter((user) => {
-        if (user.email === req.body.email) {
-          foundUser = user;
-        }
-        return foundUser;
-      });
 
-      if (foundUser) {
-        // woot woot compare password
-        bcrypt.compare(req.body.password, foundUser.password).then((result) => {
-          if (result) {
-            // correct password
-            const payload = {
-              id: foundUser.id,
-              email: foundUser.email,
-            };
-            jwt.sign(payload, process.env.TOKEN_SECRET, {
-              expiresIn: '1d',
-            },
-            (err, token) => {
-              if (err) {
-                responseError(res);
-              } else {
-                res.status(200).json({
-                  status: 'success',
-                  message: 'login successful',
-                  data: {
-                    user: foundUser,
-                    token,
-                  },
-                });
-              }
-            });
-          } else {
-            responseError(res);
-          }
-        });
-      } else {
-        // throw error
-        responseError(res);
-      }
-    } else {
-      dataError(res, newUser);
-    }
-  },
 
 };
 

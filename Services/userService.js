@@ -7,12 +7,12 @@ const userFunctions = {
     const allUsers = users.map((user) => {
       const newUser = new User();
       newUser.id = user.id;
-      newUser.firstName = user.firstName;
-      newUser.lastName = user.lastName;
+      newUser.first_name = user.first_name;
+      newUser.last_name = user.last_name;
       newUser.email = user.email;
       newUser.password = user.password;
       newUser.address = user.address;
-      newUser.phoneNumber = user.phoneNumber;
+      newUser.phone_number = user.phone_number;
       return newUser;
     });
     return allUsers;

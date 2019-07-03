@@ -1,5 +1,9 @@
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
 import users from '../models/db/userDb';
 
+dotenv.config();
 export const getNewId = (array) => {
   if (array.length > 0) {
     return array[array.length - 1].id + 1;
@@ -36,10 +40,38 @@ export const responseError = (res) => {
   });
 };
 
+
 export const dataError = (res, data) => {
   res.status(422).json({
     status: 'error',
     message: 'Invalid login details',
     error: data.error,
+  });
+};
+export const createTokenAndSend = (user, res) => {
+  const payload = {
+    id: user.id,
+    email: user.email,
+  };
+
+  jwt.sign(payload, process.env.TOKEN_SECRET, {
+    expiresIn: '1d',
+  },
+  (err, token) => {
+    if (err) {
+      res.status(400).json({
+        status: 'error',
+        error: err,
+      });
+    } else {
+      res.status(201).json({
+        status: 'success',
+        data: {
+          token,
+          user,
+
+        },
+      });
+    }
   });
 };
