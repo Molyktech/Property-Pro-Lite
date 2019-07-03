@@ -7,6 +7,7 @@ const userFunctions = {
     const allUsers = users.map((user) => {
       const newUser = new User();
       newUser.id = user.id;
+      newUser.is_admin = user.is_admin;
       newUser.first_name = user.first_name;
       newUser.last_name = user.last_name;
       newUser.email = user.email;
@@ -21,7 +22,9 @@ const userFunctions = {
   addUser(details) {
     const userLength = users.length;
     const newId = userLength + 1;
+
     details.id = newId;
+    details.is_admin = false;
     users.push(details);
     return details;
   },

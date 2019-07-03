@@ -48,7 +48,7 @@ export const dataError = (res, data) => {
     error: data.error,
   });
 };
-export const createTokenAndSend = (user, res) => {
+export const createTokenAndSend = (user, res, statusCode) => {
   const payload = {
     id: user.id,
     email: user.email,
@@ -61,10 +61,11 @@ export const createTokenAndSend = (user, res) => {
     if (err) {
       res.status(400).json({
         status: 'error',
+        message: 'Unable to process request',
         error: err,
       });
     } else {
-      res.status(201).json({
+      res.status(statusCode).json({
         status: 'success',
         data: {
           token,

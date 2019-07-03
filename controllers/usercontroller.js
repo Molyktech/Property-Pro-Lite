@@ -1,12 +1,17 @@
 /* eslint-disable camelcase */
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import userService from '../Services/userService';
 import users from '../models/db/userDb';
 import {
+  loginSchema,
   signupSchema,
 } from '../middleware.js/schemas';
 import {
   createTokenAndSend,
+  responseError,
+  dataError,
 } from '../middleware.js/helpers';
 import authUser from '../middleware.js/auth';
 
@@ -19,6 +24,8 @@ const userController = {
     return res.status(200).json({
       status: 'success',
       data: allUsers,
+
+      // return user object from the token if the user is loggedin
       user: req.user,
 
     });
@@ -55,13 +62,44 @@ const userController = {
               writable: true,
               enumerable: false,
             });
-            return createTokenAndSend(createdUser, res);
+            return createTokenAndSend(createdUser, res, 201);
           });
         }
       });
     } else {
       res.status(422);
       next(newUser.error);
+    }
+  },
+
+  loginUser(req, res) {
+    const newUser = Joi.validate(req.body, loginSchema);
+    let foundUser;
+    if (newUser.error === null) {
+      // query the db for the user
+      users.filter((user) => {
+        if (user.email === req.body.email) {
+          foundUser = user;
+        }
+        return foundUser;
+      });
+
+      if (foundUser) {
+        // woot woot compare password
+        bcrypt.compare(req.body.password, foundUser.password).then((result) => {
+          if (result) {
+            // correct password
+            createTokenAndSend(foundUser, res, 200);
+          } else {
+            // throw error
+            responseError(res);
+          }
+        });
+      } else {
+        responseError(res);
+      }
+    } else {
+      dataError(res, newUser);
     }
   },
 
