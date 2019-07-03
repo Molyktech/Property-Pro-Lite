@@ -3,7 +3,10 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import propertyRoute from './api/routes/property';
 import userRoute from './api/routes/users';
-import authUser from './middleware.js/auth';
+import {
+  authUser,
+  authLoggedIn,
+} from './middleware.js/auth';
 
 const app = express();
 
