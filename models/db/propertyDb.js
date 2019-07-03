@@ -25,6 +25,4 @@ const Properties = [{
   description: 'simple 2 bed and bath bungalow, fenced and gated.',
 },
 ];
-module.exports = Properties;
-
-// export default Properties;
+export default Properties;

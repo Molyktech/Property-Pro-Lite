@@ -24,7 +24,7 @@ class Property {
   getOneProperty(req, res) {
     const id = parseInt(req.params.id, 10);
     const foundProperty = db.find(property => property.id === id);
-    console.log(foundProperty);
+
     if (foundProperty) {
       return res.status(200).json({
         status: 'Success',
