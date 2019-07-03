@@ -8,6 +8,7 @@ import {
 import {
   createTokenAndSend,
 } from '../middleware.js/helpers';
+import authUser from '../middleware.js/auth';
 
 const Joi = require('@hapi/joi');
 
@@ -18,6 +19,8 @@ const userController = {
     return res.status(200).json({
       status: 'success',
       data: allUsers,
+      user: req.user,
+
     });
   },
 
