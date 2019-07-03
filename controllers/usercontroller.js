@@ -1,27 +1,19 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import userService from '../Services/userService';
 import users from '../models/db/userDb';
+import {
+  loginSchema,
+  signupSchema,
+} from '../middleware.js/schemas';
+import {
+  responseError,
+  dataError,
+} from '../middleware.js/helpers';
 
+dotenv.config();
 const Joi = require('@hapi/joi');
-
-
-const schema = Joi.object().keys({
-  firstName: Joi.string().regex(/(^[a-zA-Z]+$)/).min(2).max(30)
-    .required(),
-  lastName: Joi.string().regex(/(^[a-zA-Z]+$)/).min(2).max(30)
-    .required(),
-  // accepts alphanumeric strings at least 7 characters long and is not empty
-  password: Joi.string().min(7).alphanum().trim()
-    .required(),
-  email: Joi.string().email({
-    minDomainSegments: 2,
-  }).required(),
-  address: Joi.string().trim().required(),
-  // phone is required
-  // and must be a string of the format XXX-XXX-XXXX
-  // where X is a digit (0-9)
-  phoneNumber: Joi.string().regex(/^\d{3}-\d{3}-\d{5}$/).required(),
-});
 
 const userController = {
 
@@ -34,7 +26,7 @@ const userController = {
   },
 
   createUser(req, res, next) {
-    const newUser = Joi.validate(req.body, schema);
+    const newUser = Joi.validate(req.body, signupSchema);
     if (newUser.error === null) {
       // make sure email and is unique
       users.map((user) => {
@@ -72,7 +64,58 @@ const userController = {
         }
       });
     } else {
+      res.status(422);
       next(newUser.error);
+    }
+  },
+  loginUser(req, res) {
+    const newUser = Joi.validate(req.body, loginSchema);
+    let foundUser;
+    if (newUser.error === null) {
+      // query the db for the user
+      users.filter((user) => {
+        if (user.email === req.body.email) {
+          foundUser = user;
+        }
+        return foundUser;
+      });
+
+      if (foundUser) {
+        // woot woot compare password
+        bcrypt.compare(req.body.password, foundUser.password).then((result) => {
+          if (result) {
+            // correct password
+            const payload = {
+              id: foundUser.id,
+              email: foundUser.email,
+            };
+            jwt.sign(payload, process.env.TOKEN_SECRET, {
+              expiresIn: '1d',
+            },
+            (err, token) => {
+              if (err) {
+                responseError(res);
+              } else {
+                res.status(200).json({
+                  status: 'success',
+                  message: 'login successful',
+                  data: {
+                    user: foundUser,
+                    token,
+                  },
+                });
+              }
+            });
+          } else {
+            responseError(res);
+          }
+        });
+      } else {
+        // throw error
+        responseError(res);
+      }
+    } else {
+      dataError(res, newUser);
     }
   },
 
