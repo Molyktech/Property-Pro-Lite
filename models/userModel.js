@@ -1,11 +1,11 @@
 class User {
   constructor() {
     this.id = null;
-    this.firstName = null;
-    this.lastName = null;
+    this.first_name = null;
+    this.last_name = null;
     this.email = null;
     this.password = null;
-    this.phoneNumber = null;
+    this.phone_number = null;
     this.address = null;
     this.is_admin = null;
   }
