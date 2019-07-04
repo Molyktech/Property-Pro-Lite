@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 // express middleware to check for token and pull a user out of it and if not just move along
-export const authUser = (req, res, next) => {
+const authUser = (req, res, next) => {
   const authHeader = req.get('authorization');
   if (authHeader && req.headers.authorization.split(' ')[0] === 'Bearer') {
     const token = req.headers.authorization.split(' ')[1];
@@ -26,8 +26,7 @@ export const authUser = (req, res, next) => {
   }
 };
 
-
-export const authLoggedIn = (req, res, next) => {
+const authLoggedIn = (req, res, next) => {
   if (req.user) {
     next();
   } else {
@@ -35,4 +34,9 @@ export const authLoggedIn = (req, res, next) => {
     res.status(401);
     next(error);
   }
+};
+
+export {
+  authUser,
+  authLoggedIn,
 };
