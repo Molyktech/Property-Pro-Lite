@@ -19,12 +19,13 @@ app.use(
 );
 app.use(bodyParser.json());
 
+
 app.use(authUser);
 // Users Routes/
 app.use('/api/v1/auth', userRoute);
 
 // Property Routes/
-app.use('/api/v1/property', propertyRoute);
+app.use('/api/v1/property', authLoggedIn, propertyRoute);
 
 // handle error the routes cant take
 app.use((req, res, next) => {
@@ -36,13 +37,11 @@ app.use((req, res, next) => {
 
 // handle error from anywhere else inn the app
 app.use((error, req, res) => {
-  res.status(error.status || 500);
+  res.status(res.statusCode || 500);
   res.json({
-    error: {
-      status: 'error',
-      error: error.message,
-      stack: error.stack,
-    },
+    status: 'error',
+    message: error.message,
+    stack: error.stack,
   });
 });
 

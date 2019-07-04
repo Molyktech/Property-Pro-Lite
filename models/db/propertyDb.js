@@ -1,6 +1,6 @@
 const Properties = [{
   id: 1,
-  owner: 'userID',
+  owner: 1,
   status: 'available',
   state: 'Lagos',
   price: 1000000,
@@ -10,19 +10,10 @@ const Properties = [{
   created_on: new Date(),
   reason: 'Rent',
   description: 'simple 1 bed and bath boys quartes, fenced and gated.',
+  image_url: 'https://res.cloudinary.com/molyktech/image/upload/v1562204763/architecture-building-driveway-164522.jpg',
+  owner_email: 'me@gmail.com',
+  owner_phone_number: '070-622-78182',
 },
-{
-  id: 2,
-  owner: 'userID',
-  status: 'available',
-  state: 'Lagos',
-  price: 10000000,
-  city: 'Lagos',
-  address: 'No. 1 Admiralty way Lekki, Lagos',
-  type: '2 bedroom bungalow',
-  created_on: new Date(),
-  reason: 'Sale',
-  description: 'simple 2 bed and bath bungalow, fenced and gated.',
-},
+
 ];
 export default Properties;
