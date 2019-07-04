@@ -11,6 +11,20 @@ chai.should();
 // user auth test
 let testToken;
 
+describe('Home endpoint', () => {
+  describe('GET /', () => {
+    it('should welcome you to Property-Pro Lite', (done) => {
+      chai.request(app)
+        .get('/')
+        .end((err, res) => {
+          if (err) return done(err);
+          res.text.should.be.a('string');
+          done();
+        });
+    });
+  });
+});
+
 describe('User endpoints', () => {
   describe('POST /auth', () => {
     it('should create a new user/ signup a new user to the database', (done) => {
@@ -99,9 +113,85 @@ describe('Property endpoints', () => {
         });
     });
 
+    it('should update property advert previously created by the user', (done) => {
+      chai.request(app)
+        .patch('/api/v1/property/2')
+        .set('Authorization', `Bearer ${testToken}`)
+        .send({
+          status: 'available',
+          state: 'Lagos',
+          price: 2000000,
+          city: 'Lagos',
+          address: 'No. 23 oniru estate, Lekki, Lagos',
+          type: '1 bedroom',
+          image_url: 'https://res.cloudinary.com/molyktech/image/upload/v1562204763/architecture-building-driveway-164522.jpg',
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          res.should.have.status(201);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'data');
+          res.body.data.should.be.an('object');
+          res.body.data.state.should.be.a('string');
+          res.body.data.city.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.type.should.be.a('string');
+          res.body.data.status.should.be.a('string');
+          res.body.data.price.should.be.a('number');
+          res.body.data.id.should.be.a('number');
+          // res.body.image_url.should.be.a('string');
+          done();
+        });
+    });
+
+    // update property as sold
+    it('should update a property adver posted by the user as sold', (done) => {
+      chai.request(app)
+        .patch('/api/v1/property/2/sold')
+        .set('Authorization', `Bearer ${testToken}`)
+        .end((err, res) => {
+          if (err) done(err);
+          res.should.have.status(201);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'data');
+          res.body.data.should.be.an('object');
+          res.body.data.state.should.be.a('string');
+          res.body.data.city.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.type.should.be.a('string');
+          res.body.data.status.should.be.a('string');
+          res.body.data.price.should.be.a('number');
+          res.body.data.id.should.be.a('number');
+          // res.body.image_url.should.be.a('string');
+          done();
+        });
+    });
+
     it('should get all property record', (done) => {
       chai.request(app)
         .get('/api/v1/property')
+        .end((err, res) => {
+          if (err) done(err);
+          res.body.should.have.keys('status', 'data');
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          res.body.data[0].id.should.be.a('number');
+          res.body.data[0].status.should.be.a('string');
+          res.body.data[0].state.should.be.a('string');
+          res.body.data[0].type.should.be.a('string');
+          res.body.data[0].city.should.be.a('string');
+          res.body.data[0].address.should.be.a('string');
+          res.body.data[0].image_url.should.be.a('string');
+          res.body.data[0].price.should.be.a('number');
+          res.body.data[0].owner_email.should.be.a('string');
+          res.body.data[0].owner_phone_number.should.be.a('string');
+          done();
+        });
+    });
+
+    it('should get all property advert of a specific type posted on the application', (done) => {
+      chai.request(app)
+        .get('/api/v1/property?type=1 bedroom')
         .end((err, res) => {
           if (err) done(err);
           res.body.should.have.keys('status', 'data');
@@ -142,12 +232,51 @@ describe('Property endpoints', () => {
         });
     });
     // for failure to get a single record
-    it('should not get a single record', (done) => {
+    it('should not get a property and return a message indicating why', (done) => {
       chai.request(app).get('/api/v1/property/9').end((err, res) => {
         res.body.should.have.keys('status', 'error');
         res.should.have.status(404);
+        res.body.should.be.an('object');
+        res.body.status.should.be.a('string');
+        res.body.error.should.be.an('string');
+        res.body.error.should.equal('Property does not exist');
         done();
       });
+    });
+
+    // delete a property
+    it('should delete a property advert provided by the user', (done) => {
+      chai.request(app)
+        .delete('/api/v1/property/2')
+        .set('Authorization', `Bearer ${testToken}`)
+        .end((err, res) => {
+          if (err) done(err);
+          res.body.should.have.keys('status', 'data');
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          res.body.status.should.be.a('string');
+          res.body.data.should.be.an('object');
+          res.body.data.message.should.be.an('string');
+          done();
+        });
+    });
+
+    // /handle delete error
+
+    it('should not delete a property and return a message indicating why ', (done) => {
+      chai.request(app)
+        .delete('/api/v1/property/10')
+        .set('Authorization', `Bearer ${testToken}`)
+        .end((err, res) => {
+          if (err) done(err);
+          res.body.should.have.keys('status', 'error');
+          res.should.have.status(404);
+          res.body.should.be.an('object');
+          res.body.status.should.be.a('string');
+          res.body.error.should.be.an('string');
+          res.body.error.should.equal('Property not found');
+          done();
+        });
     });
   });
 });

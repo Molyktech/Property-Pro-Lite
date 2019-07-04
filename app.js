@@ -26,6 +26,10 @@ app.use('/api/v1/auth', userRoute);
 // Property Routes/
 app.use('/api/v1/property', propertyRoute);
 
+app.get('/', (req, res) => {
+  res.send('Welcome to Property-Pro Lite');
+});
+
 // handle error the routes cant take
 app.use((req, res, next) => {
   res.status(404);
