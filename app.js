@@ -5,8 +5,7 @@ import propertyRoute from './api/routes/property';
 import userRoute from './api/routes/users';
 import {
   authUser,
-  authLoggedIn,
-} from './middleware.js/auth';
+} from './middleware/auth';
 
 const app = express();
 
@@ -25,7 +24,7 @@ app.use(authUser);
 app.use('/api/v1/auth', userRoute);
 
 // Property Routes/
-app.use('/api/v1/property', authLoggedIn, propertyRoute);
+app.use('/api/v1/property', propertyRoute);
 
 // handle error the routes cant take
 app.use((req, res, next) => {

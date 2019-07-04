@@ -4,7 +4,7 @@
   "description": "A Node.js restful api and project back end",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --recursive --exit",
+    "test": "mocha test/*.js --recursive --require @babel/register  --exit",
     "start": "nodemon --exec babel-node server.js"
   },
   "repository": {
@@ -21,6 +21,7 @@
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.0.0",
     "@hapi/joi": "^15.1.0",
     "babel-cli": "^6.26.0",
     "bcryptjs": "^2.4.3",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-http": "^4.0.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.17.3",

@@ -1,19 +1,18 @@
 /* eslint-disable camelcase */
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+
 import userService from '../Services/userService';
 import users from '../models/db/userDb';
 import {
   loginSchema,
   signupSchema,
-} from '../middleware.js/schemas';
+} from '../middleware/schemas';
 import {
   createTokenAndSend,
   responseError,
   dataError,
-} from '../middleware.js/helpers';
-import authUser from '../middleware.js/auth';
+} from '../middleware/helpers';
+import authUser from '../middleware/auth';
 
 const Joi = require('@hapi/joi');
 
