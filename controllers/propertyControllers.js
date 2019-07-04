@@ -11,7 +11,7 @@ class Property {
   getAllProperty(req, res) {
     if (req.query.type) {
       const filteredProperty = db.filter(property => property.type.includes(`${req.query.type}`));
-      return res.status(201).json({
+      return res.status(200).json({
         status: 'success',
         data: filteredProperty,
       });
