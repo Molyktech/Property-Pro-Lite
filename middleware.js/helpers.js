@@ -52,6 +52,7 @@ export const createTokenAndSend = (user, res, statusCode) => {
   const payload = {
     id: user.id,
     email: user.email,
+    phone_number: user.phone_number,
   };
 
   jwt.sign(payload, process.env.TOKEN_SECRET, {

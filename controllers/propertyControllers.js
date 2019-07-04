@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 
 import db from '../models/db/propertyDb';
+
 import {
   isEmpty,
   isNumber,
@@ -18,13 +19,14 @@ class Property {
     return res.status(200).json({
       status: 'Success',
       data: db,
+
     });
   }
 
   getOneProperty(req, res) {
     const id = parseInt(req.params.id, 10);
     const foundProperty = db.find(property => property.id === id);
-    console.log(foundProperty);
+
     if (foundProperty) {
       return res.status(200).json({
         status: 'Success',
@@ -77,7 +79,7 @@ class Property {
 
     const newProperty = {
       id: db.length + 1,
-      owner: req.body.owner,
+      owner: req.user.id,
       status: req.body.status,
       state: req.body.state,
       price: req.body.price,
@@ -87,12 +89,22 @@ class Property {
       created_on: req.body.created_on,
       reason: req.body.reason,
       description: req.body.description,
+      owner_email: req.user.email,
+      owner_phone_number: req.user.phone_number,
     };
-    db.push(newProperty);
+    const filterdb = db.find(property => property.address === req.body.address);
 
-    return res.status(200).json({
-      status: 'Success',
-      data: newProperty,
+    if (!filterdb) {
+      db.push(newProperty);
+
+      return res.status(200).json({
+        status: 'Success',
+        data: newProperty,
+      });
+    }
+    res.status(400).json({
+      status: 'Error',
+      message: 'a property advert has already been created with this address',
     });
   }
 
@@ -152,7 +164,7 @@ class Property {
 
     const updatedProperty = {
       id: foundProperty.id,
-      owner: req.body.owner || foundProperty.owner,
+      owner: req.user.id || foundProperty.owner,
       status: req.body.status || foundProperty.status,
       state: req.body.state || foundProperty.state,
       price: req.body.price || foundProperty.price,
@@ -162,6 +174,8 @@ class Property {
       created_on: req.body.created_on || foundProperty.created_on,
       reason: req.body.reason || foundProperty.reason,
       description: req.body.description || foundProperty.description,
+      owner_email: req.user.email || foundProperty.owner_email,
+      owner_phone_number: req.user.phone_number || foundProperty.owner_phone_number,
     };
 
     db.splice(propertyIndex, 1, updatedProperty);
@@ -192,7 +206,7 @@ class Property {
     const updatedProperty = {
       id: foundProperty.id,
       owner: foundProperty.owner,
-      status: 'sold',
+      status: req.body.status || 'sold',
       state: foundProperty.state,
       price: foundProperty.price,
       city: foundProperty.city,
@@ -201,6 +215,8 @@ class Property {
       created_on: foundProperty.created_on,
       reason: foundProperty.reason,
       description: foundProperty.description,
+      owner_email: foundProperty.owner_email,
+      owner_phone_number: foundProperty.owner_phone_number,
     };
 
     db.splice(propertyIndex, 1, updatedProperty);

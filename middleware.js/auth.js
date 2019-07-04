@@ -16,7 +16,6 @@ export const authUser = (req, res, next) => {
           });
         }
         req.user = payload;
-        // next();
       });
     } else {
       next();
