@@ -4,7 +4,7 @@
   "description": "A Node.js restful api and project back end",
   "main": "server.js",
   "scripts": {
-    "test": "mocha test/*.js --recursive --require @babel/register --require babel-polyfill --exit",
+    "test": "mocha test/*.js --recursive --require @babel/register --require babel-polyfill --timeout 10000 --exit",
     "start": "nodemon --exec babel-node server.js"
   },
   "repository": {

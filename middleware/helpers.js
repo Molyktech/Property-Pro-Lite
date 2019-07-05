@@ -34,12 +34,17 @@ export const verrifyUserExist = (req, res, next) => {
 
 export const responseError = (res) => {
   res.status(401).json({
-    status: 'error',
-    message: 'Invalid login details, wrong email/password',
+    status: 'Error',
+    error: 'Invalid login details, wrong email/password',
 
   });
 };
-
+export const userExist = (res, err) => {
+  res.status(409).json({
+    status: 'Error',
+    error: err.message,
+  });
+};
 
 export const dataError = (res, data) => {
   res.status(422).json({

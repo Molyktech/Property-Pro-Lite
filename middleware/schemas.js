@@ -27,12 +27,13 @@ const loginSchema = Joi.object().keys({
   password,
 });
 const propertySchema = Joi.object().keys({
-  price: Joi.number().required(),
+  price: Joi.number().required().integer().min(1000)
+    .max(1000000000),
   state: Joi.string().required(),
   city: Joi.string().required(),
   type: Joi.string().required(),
-  address: Joi.string().required(),
-  status: Joi.string().required(),
+  address: Joi.string().required().min(10).max(500),
+  status: Joi.string().valid('sold', 'available').required(),
 });
 
 const propertyValidator = (req, res, next) => {
@@ -45,7 +46,7 @@ const propertyValidator = (req, res, next) => {
   return Joi.validate(req.body, propertySchema, (err) => {
     if (err) {
       return res.status(422).json({
-        status: 'failed',
+        status: 'Error',
         error: err,
       });
     }
