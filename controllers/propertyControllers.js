@@ -1,6 +1,9 @@
 /* eslint-disable class-methods-use-this */
 
 import db from '../models/db/propertyDb';
+import {
+  imageUpload,
+} from '../middleware/multer';
 
 import {
   isEmpty,
@@ -39,42 +42,15 @@ class Property {
     });
   }
 
-  createProperty(req, res) {
-    if (!isEmpty(req.body.status)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'Status is required',
-      });
-    }
-    if (!isEmpty(req.body.state)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'State is required',
-      });
-    }
-    if (!isEmpty(req.body.city)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'City is required',
-      });
-    }
-    if (!isEmpty(req.body.address)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'Address is required',
-      });
-    }
-    if (!isEmpty(req.body.type)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'type is required',
-      });
-    }
-    if (!isNumber(req.body.price) || !isEmpty(req.body.price)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'Price is required and should be a number',
-      });
+  async createProperty(req, res) {
+    let imageUrl;
+    if (req.file) {
+      const fileUrl = await imageUpload(req);
+      if (fileUrl) {
+        imageUrl = fileUrl;
+      } else {
+        imageUrl = 'https://via.placeholder.com/250/92c952';
+      }
     }
 
     const newProperty = {
@@ -89,6 +65,7 @@ class Property {
       created_on: req.body.created_on,
       reason: req.body.reason,
       description: req.body.description,
+      image_url: imageUrl,
       owner_email: req.user.email,
       owner_phone_number: req.user.phone_number,
     };
@@ -109,7 +86,16 @@ class Property {
   }
 
 
-  updateProperty(req, res) {
+  async updateProperty(req, res) {
+    let imageUrl;
+    if (req.file) {
+      const fileUrl = await imageUpload(req);
+      if (fileUrl) {
+        imageUrl = fileUrl;
+      } else {
+        imageUrl = 'https://via.placeholder.com/250/92c952';
+      }
+    }
     const id = parseInt(req.params.id, 10);
     let foundProperty;
     let propertyIndex;
@@ -125,42 +111,7 @@ class Property {
         error: 'Property not found',
       });
     }
-    if (!isEmpty(req.body.status)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'Status is required',
-      });
-    }
-    if (!isEmpty(req.body.state)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'State is required',
-      });
-    }
-    if (!isEmpty(req.body.city)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'City is required',
-      });
-    }
-    if (!isEmpty(req.body.address)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'Address is required',
-      });
-    }
-    if (!isEmpty(req.body.type)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'type is required',
-      });
-    }
-    if (!isNumber(req.body.price) || !isEmpty(req.body.price)) {
-      return res.status(400).json({
-        status: 'Error',
-        error: 'Price is required and should be a number',
-      });
-    }
+
 
     const updatedProperty = {
       id: foundProperty.id,
@@ -174,6 +125,7 @@ class Property {
       created_on: req.body.created_on || foundProperty.created_on,
       reason: req.body.reason || foundProperty.reason,
       description: req.body.description || foundProperty.description,
+      image_url: imageUrl || foundProperty.image_url,
       owner_email: req.user.email || foundProperty.owner_email,
       owner_phone_number: req.user.phone_number || foundProperty.owner_phone_number,
     };
