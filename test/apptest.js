@@ -83,7 +83,7 @@ describe('User endpoints', () => {
 // property test
 describe('Property endpoints', () => {
   describe('GET, POST /property', () => {
-    it('should create and a save a property advert provided by rgistered user to the db', (done) => {
+    it('should create and a save a property advert provided by registered user to the db', (done) => {
       chai.request(app)
         .post('/api/v1/property')
         .set('Authorization', `Bearer ${testToken}`)
