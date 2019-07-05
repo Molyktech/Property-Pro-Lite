@@ -27,7 +27,7 @@ router.get('/:id', propertyController.getOneProperty);
 
 router.post('/', authLoggedIn, cloudinaryConfig, multerUploads, propertyValidator, propertyController.createProperty);
 
-router.patch('/:id', authLoggedIn, multerUploads, cloudinaryConfig, propertyValidator, propertyController.updateProperty);
+router.patch('/:id', authLoggedIn, cloudinaryConfig, multerUploads, propertyValidator, propertyController.updateProperty);
 
 router.patch('/:id/sold', authLoggedIn, propertyController.soldProperty);
 
