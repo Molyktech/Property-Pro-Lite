@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git+https://github.com/Molyktech/Property-Pro-Lite.git"
   },
+  "engines": {
+    "node": "10.13.0"
+  },
   "author": "\"Modupe Adebayo\"",
   "license": "ISC",
   "bugs": {
