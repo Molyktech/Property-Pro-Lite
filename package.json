@@ -4,7 +4,7 @@
   "description": "A Node.js restful api and project back end",
   "main": "server.js",
   "scripts": {
-    "test": "mocha test/*.js --recursive --require @babel/register  --exit",
+    "test": "mocha test/*.js --recursive --require @babel/register --require babel-polyfill --exit",
     "start": "nodemon --exec babel-node server.js"
   },
   "repository": {
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Molyktech/Property-Pro-Lite#readme",
   "dependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/polyfill": "^7.2.5",
     "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.0.0",
@@ -44,6 +45,7 @@
     "eslint-plugin-react": "^7.13.0",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "babel-polyfill": "^6.26.0"
   }
 }
