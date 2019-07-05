@@ -156,7 +156,7 @@ class Property {
     const updatedProperty = {
       id: foundProperty.id,
       owner: foundProperty.owner,
-      status: req.body.status || 'sold',
+      status: 'sold',
       state: foundProperty.state,
       price: foundProperty.price,
       city: foundProperty.city,
