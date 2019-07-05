@@ -34,12 +34,8 @@ app.get('/', (req, res) => {
 app.use((req, res, next) => {
   res.status(404);
   const error = new Error(`Not found -${req.originalUrl}`);
-  const errorFormat = {
-    status: 'Error',
-    error: error.message,
-  };
   error.status = 404;
-  next(errorFormat);
+  next(error);
 });
 
 // handle error from anywhere else inn the app
