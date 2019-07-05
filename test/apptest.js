@@ -1,6 +1,7 @@
 /* eslint disable import/no-extraneous-dependencies */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import path from 'path';
 import app from '../app';
 
 
@@ -86,16 +87,13 @@ describe('Property endpoints', () => {
       chai.request(app)
         .post('/api/v1/property')
         .set('Authorization', `Bearer ${testToken}`)
-        .send({
-          status: 'available',
-          state: 'Lagos',
-          price: 2000000,
-          city: 'Lagos',
-          address: 'No. 3 oniru, Lekki, Lagos',
-          type: '1 bedroom',
-          image_url: 'https://res.cloudinary.com/molyktech/image/upload/v1562204763/architecture-building-driveway-164522.jpg',
-
-        })
+        .field('price', 5000000)
+        .field('state', 'Lagos')
+        .field('city', 'Lekki')
+        .field('address', 'No 1 Admiralty way,Lekki')
+        .field('type', '2 bedroom')
+        .field('status', 'available')
+        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
           if (err) done(err);
           res.should.have.status(201);
