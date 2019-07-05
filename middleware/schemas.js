@@ -1,5 +1,4 @@
-const Joi = require('@hapi/joi');
-
+import Joi from '@hapi/joi';
 
 const email = Joi.string().email({
   minDomainSegments: 2,
@@ -8,7 +7,7 @@ const email = Joi.string().email({
 const password = Joi.string().min(7).alphanum().trim()
   .required();
 
-export const signupSchema = Joi.object().keys({
+const signupSchema = Joi.object().keys({
   first_name: Joi.string().regex(/(^[a-zA-Z]+$)/).min(2).max(30)
     .required(),
   last_name: Joi.string().regex(/(^[a-zA-Z]+$)/).min(2).max(30)
@@ -23,12 +22,40 @@ export const signupSchema = Joi.object().keys({
   phone_number: Joi.string().regex(/^\d{3}-\d{3}-\d{5}$/).required(),
 });
 
-export const loginSchema = Joi.object().keys({
+const loginSchema = Joi.object().keys({
   email,
   password,
 });
+const propertySchema = Joi.object().keys({
+  price: Joi.number().required(),
+  state: Joi.string().required(),
+  city: Joi.string().required(),
+  type: Joi.string().required(),
+  address: Joi.string().required(),
+  status: Joi.string().required(),
+});
 
-export default {
+const propertyValidator = (req, res, next) => {
+  let {
+    price,
+  } = req.body;
+  price = Number(price);
+  req.body.price = price;
+
+  return Joi.validate(req.body, propertySchema, (err) => {
+    if (err) {
+      return res.status(422).json({
+        status: 'failed',
+        error: err,
+      });
+    }
+    return next();
+  });
+};
+
+
+export {
+  propertyValidator,
   signupSchema,
   loginSchema,
 };

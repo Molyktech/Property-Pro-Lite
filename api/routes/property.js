@@ -4,6 +4,17 @@ import {
 
   authLoggedIn,
 } from '../../middleware/auth';
+import {
+  multerUploads,
+} from '../../middleware/multer';
+
+import {
+  propertyValidator,
+} from '../../middleware/schemas';
+import {
+  cloudinaryConfig,
+} from '../../config/cloudinaryConfig';
+
 
 import propertyController from '../../controllers/propertyControllers';
 
@@ -14,9 +25,9 @@ router.get('/', propertyController.getAllProperty);
 
 router.get('/:id', propertyController.getOneProperty);
 
-router.post('/', authLoggedIn, propertyController.createProperty);
+router.post('/', authLoggedIn, cloudinaryConfig, multerUploads, propertyValidator, propertyController.createProperty);
 
-router.patch('/:id', authLoggedIn, propertyController.updateProperty);
+router.patch('/:id', authLoggedIn, multerUploads, cloudinaryConfig, propertyValidator, propertyController.updateProperty);
 
 router.patch('/:id/sold', authLoggedIn, propertyController.soldProperty);
 
