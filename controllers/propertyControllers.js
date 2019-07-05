@@ -5,11 +5,6 @@ import {
   imageUpload,
 } from '../middleware/multer';
 
-import {
-  isEmpty,
-  isNumber,
-} from '../api/validator';
-
 class Property {
   getAllProperty(req, res) {
     if (req.query.type) {
@@ -169,6 +164,7 @@ class Property {
       description: foundProperty.description,
       owner_email: foundProperty.owner_email,
       owner_phone_number: foundProperty.owner_phone_number,
+      image_url: foundProperty.image_url,
     };
 
     db.splice(propertyIndex, 1, updatedProperty);
