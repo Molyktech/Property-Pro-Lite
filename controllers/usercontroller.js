@@ -11,6 +11,7 @@ import {
   createTokenAndSend,
   responseError,
   dataError,
+  userExist,
 } from '../middleware/helpers';
 import authUser from '../middleware/auth';
 
@@ -30,14 +31,14 @@ const userController = {
     });
   },
 
-  createUser(req, res, next) {
+  createUser(req, res) {
     const newUser = Joi.validate(req.body, signupSchema);
     if (newUser.error === null) {
       // make sure email and is unique
       users.map((user) => {
         if (user.email === req.body.email) {
-          const err = new Error('Email already exist');
-          next(err);
+          const err = new Error('User with that email already exists');
+          userExist(res, err);
         } else {
           // /hash password and add to db
           bcrypt.hash(req.body.password, 12).then((hashedPassword) => {
@@ -66,8 +67,10 @@ const userController = {
         }
       });
     } else {
-      res.status(422);
-      next(newUser.error);
+      res.status(422).json({
+        status: 'Error',
+        error: newUser.error,
+      });
     }
   },
 

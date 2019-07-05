@@ -4,6 +4,9 @@ import db from '../models/db/propertyDb';
 import {
   imageUpload,
 } from '../middleware/multer';
+import {
+  newDate,
+} from '../middleware/helpers';
 
 class Property {
   getAllProperty(req, res) {
@@ -51,13 +54,13 @@ class Property {
     const newProperty = {
       id: db.length + 1,
       owner: req.user.id,
-      status: req.body.status,
+      status: req.body.status || 'available',
       state: req.body.state,
       price: req.body.price,
       city: req.body.city,
       address: req.body.address,
       type: req.body.type,
-      created_on: req.body.created_on,
+      created_on: newDate(),
       reason: req.body.reason,
       description: req.body.description,
       image_url: imageUrl,
@@ -74,9 +77,9 @@ class Property {
         data: newProperty,
       });
     }
-    res.status(400).json({
+    res.status(409).json({
       status: 'Error',
-      message: 'a property advert has already been created with this address',
+      error: 'a property advert has already been created with this address',
     });
   }
 
