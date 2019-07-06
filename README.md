@@ -1,10 +1,37 @@
+[![Build Status](https://travis-ci.org/Molyktech/Property-Pro-Lite.svg?branch=develop)](https://travis-ci.org/Molyktech/Property-Pro-Lite)
+
+[![Coverage Status](https://coveralls.io/repos/github/Molyktech/Property-Pro-Lite/badge.svg)](https://coveralls.io/github/Molyktech/Property-Pro-Lite)
+
 # Property Pro Lite
 
 ---
 
 Property Pro Lite is a platform where people can create and/or search properties for sale or rent.
 
-##Features /User stories
+#### Table of Contents
+
+- [Technologies](#Technologies)
+- [Features](#Features//User stories)
+- [Tools and Modules](#Tools-and-Modules)
+- [Development Setup](#Development-Setup)
+- [Running Tests](#Running-Tests)
+- [Author(s)](<#Author(s)>)
+
+### Technologies
+
+This Project was created with:
+
+- HTML - A markup language for documents designed to be displayed in a web browser.
+- Cascading Stylesheet(CSS) - A style sheet language used for describing the presentation of a document written in a markup language like HTML
+- JavaScript - The Programming Language for the Web
+- NodeJS - An open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser. ( A javascript server-side engine)
+- Express Library - A web application framework for Node.js
+- Cloudinary - A file storage platform
+- Pivotal Tracker - A project management/planning tool
+- Travis CI - A continuous integration and testing platform
+- Coveralls - A hosted analysis tool, providing statistics about your code coverage
+
+### Features/User stories
 
 *o User can sign up. 
 *○ User can sign in. 
@@ -16,35 +43,70 @@ Property Pro Lite is a platform where people can create and/or search properties
 *○ User can view all properties of a specific type - 2 bedroom, 3 bedroom, mini flat  etc. 
 \*○ User can view a specific property.
 
-## Installation
+### Installation
 
 For now, simply clone the repo or download the zip file
 
 ```bash
 git clone https://github.com/Molyktech/Property-Pro-Lite.git
-cd Propert-Pro-Lite
+cd Property-Pro-Lite
+run npm install
+run npm run dev
 ```
 
-## Usage
+#### Tools and Modules
 
-NIL
+The tools and modules employed in this project are:
 
-## Contributing
+- Git
+- npm
+- A test suite e.g Mocha and Chai
+- JSON Web Token
+- Multer
+- bcryptjs
+- JOI validation module
 
-# Bug Reports & Feature Requests
+#### Running Tests
+
+Tests are set up using:
+
+- Mocha
+- Chai
+- Chai HTTP
+
+* Testing
+
+---
+
+```bash
+
+run npm test
+or
+npm t
+```
+
+##### Usage Example
+
+```
+  Testing endpoints
+    √ It should create a new user/ signup a new user to the database (1275ms)
+    √ It should allow a signedup user stored in the database to login (655ms)
+```
+
+#### Bug Reports & Feature Requests
 
 Please use the issue tracker to report any bugs or file feature requests.
 
 NIL
 
-## Project status
+#### Project status
 
-In development (UI)
+In development (API)
 
-## Author
+#### Author
 
 Modupe Adebayo
 
-## License
+#### License
 
 [MIT](https://choosealicense.com/licenses/mit/)
