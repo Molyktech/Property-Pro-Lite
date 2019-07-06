@@ -57,7 +57,7 @@ describe('User endpoints', () => {
     });
     it('should allow a signedup user stored in the database to login', (done) => {
       chai.request(app)
-        .post('/api/v1/auth/login')
+        .post('/api/v1/auth/signin')
         .send({
           email: 'janed@gmail.com',
           password: 'Janedbso1',

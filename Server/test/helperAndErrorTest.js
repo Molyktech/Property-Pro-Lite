@@ -194,7 +194,7 @@ describe('Users Authentication', () => {
 describe('POST /api/v1/auth/login', () => {
   it('should check if login details match user in the db', (done) => {
     chai.request(app)
-      .post('/api/v1/auth/login')
+      .post('/api/v1/auth/signin')
       .send({
         email: 'janesanta@ymail.com',
         password: 'janetsanta',
@@ -211,7 +211,7 @@ describe('POST /api/v1/auth/login', () => {
   });
   it('should return an error status code 422 if the email is empty', (done) => {
     chai.request(app)
-      .post('/api/v1/auth/login')
+      .post('/api/v1/auth/signin')
       .send({
         email: '',
         password: 'Jabowe1',
@@ -230,7 +230,7 @@ describe('POST /api/v1/auth/login', () => {
 
   it('should return an error status code 422 if the password is empty', (done) => {
     chai.request(app)
-      .post('/api/v1/auth/login')
+      .post('/api/v1/auth/signin')
       .send({
         email: 'jacob@test.com',
         password: '',
