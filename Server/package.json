@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "clean": "rm -rf build && mkdir build",
-    "build-server": "babel ./src --out-dir ./build -s  --copy-files",
-    "build": "npm run clean && npm run build-server",
+    "build": "babel ./src --out-dir build",
     "start": "set NODE_ENV='PROD' && node ./build/server.js",
     "test": "nyc mocha ./src/test/*.js --recursive --require @babel/register --require @babel/polyfill --timeout=6000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
