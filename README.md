@@ -11,13 +11,13 @@ Property Pro Lite is a platform where people can create and/or search properties
 #### Table of Contents
 
 - [Technologies](#Technologies)
-- [Features](#Features//User stories)
+- [Features](#Features)
+- [Installation](#Installation)
 - [Tools and Modules](#Tools-and-Modules)
-- [Development Setup](#Development-Setup)
 - [Running Tests](#Running-Tests)
-- [Author(s)](<#Author(s)>)
+- [Author](#Author)
 
-### Technologies
+#### Technologies
 
 This Project was created with:
 
@@ -31,17 +31,17 @@ This Project was created with:
 - Travis CI - A continuous integration and testing platform
 - Coveralls - A hosted analysis tool, providing statistics about your code coverage
 
-### Features/User stories
+#### Features/User stories
 
-*o User can sign up. 
-*○ User can sign in. 
-*○ User (agent) can post a property advert. 
-*○ User (agent) can update the details of a property advert. 
-*○ User (agent) can mark his/her posted advert as sold. 
-*○ User (agent) can delete an advert. 
-*○ User can view all properties. 
-*○ User can view all properties of a specific type - 2 bedroom, 3 bedroom, mini flat  etc. 
-\*○ User can view a specific property.
+- User can sign up.
+- User can sign in.
+- User (agent) can post a property advert.
+- User (agent) can update the details of a property advert.
+- User (agent) can mark his/her posted advert as sold.
+- User (agent) can delete an advert.
+- User can view all properties.
+- User can view all properties of a specific type - 2 bedroom, 3 bedroom, mini flat  etc.
+- User can view a specific property.
 
 ### Installation
 
