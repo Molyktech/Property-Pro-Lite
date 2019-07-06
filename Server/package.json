@@ -4,9 +4,13 @@
   "description": "A Node.js restful api and project back end",
   "main": "server.js",
   "scripts": {
-    "test": "nyc mocha test/*.js --recursive --require @babel/register --require @babel/polyfill --timeout=3000 --exit",
+    "clean": "rm -rf build && mkdir build",
+    "build-server": "babel ./src --out-dir ./build -s  --copy-files",
+    "build": "npm run clean && npm run build-server",
+    "start": "set NODE_ENV='PROD' && node ./build/server.js",
+    "test": "nyc mocha ./src/test/*.js --recursive --require @babel/register --require @babel/polyfill --timeout=6000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "start": "nodemon --exec @babel/node server.js"
+    "dev": "nodemon --exec @babel/node ./src/server.js"
   },
   "repository": {
     "type": "git",

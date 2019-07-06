@@ -1,9 +1,10 @@
-module.exports = {
+export default {
   env: {
     browser: true,
     commonjs: true,
     es6: true,
-    node: true
+    node: true,
+    mocha: true
   },
   extends: ["airbnb"],
   globals: {
@@ -18,8 +19,8 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
-   "linebreak-style": 0,
-"global-require": 0,
-"eslint linebreak-style": [0, "error", "windows"]
+    "linebreak-style": 0,
+    "global-require": 0,
+    "eslint linebreak-style": [0, "error", "windows"]
   }
 };
