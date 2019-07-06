@@ -4,12 +4,9 @@
   "description": "A Node.js restful api and project back end",
   "main": "server.js",
   "scripts": {
-    "test": " nyc  --reporter=text --reporter=text-summary mocha test/*.js --recursive --require @babel/register --require babel-polyfill --timeout 50000  --exit",
+    "test": "nyc mocha test/*.js --recursive --require @babel/register --require @babel/polyfill --timeout=3000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "coveralls": "npm run test -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
-    "dev": "nodemon --exec babel-node server.js",
-    "start": "babel-node server.js"
-
+    "start": "nodemon --exec @babel/node server.js"
   },
   "repository": {
     "type": "git",
@@ -22,13 +19,13 @@
   },
   "homepage": "https://github.com/Molyktech/Property-Pro-Lite#readme",
   "dependencies": {
+    "@babel/cli": "^7.5.0",
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.0.0",
     "@hapi/joi": "^15.1.0",
-    "babel-cli": "^6.26.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.14.0",
