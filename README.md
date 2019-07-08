@@ -13,6 +13,7 @@ Property Pro Lite is a platform where people can create and/or search properties
 - [Technologies](#Technologies)
 - [Features](#Features)
 - [Installation](#Installation)
+- [UI](#UI)
 - [Tools and Modules](#Tools-and-Modules)
 - [Running Tests](#Running-Tests)
 - [Author](#Author)
@@ -43,7 +44,19 @@ This Project was created with:
 - User can view all properties of a specific type - 2 bedroom, 3 bedroom, mini flat  etc.
 - User can view a specific property.
 
-### Installation
+## Installation
+
+#### Getting Started
+
+To run the application locally, simply follow the instructions below:
+
+#### Prerequisites
+
+You need to have or install the following:
+
+1. Git
+2. Node
+3. Postman
 
 For now, simply clone the repo or download the zip file
 
@@ -53,6 +66,27 @@ cd Property-Pro-Lite
 run npm install
 run npm run dev
 ```
+
+#### API
+
+Heroku: [Property-Pro Lite](https://propertymo.herokuapp.com/api/v1/)
+
+Documentation:
+
+| Endpoints                       | Functionality                                  |
+| ------------------------------- | ---------------------------------------------- |
+| GET /property                   | Get all property adverts                       |
+| GET /property?type=propertyType | Get a specific type of property                |
+| POST /auth/signup               | Create user account                            |
+| POST /auth/signin               | Login a user                                   |
+| POST /property                  | Create a property advert                       |
+| PATCH /property/:id             | Update proeprty advert by id                   |
+| DELETE /property/:id            | Delete a specific property advert using the id |
+| PATCH /property/:id/sold        | Upadate a property status to sold              |
+
+#### UI
+
+View user interface: [UI](https://molyktech.github.io/Property-Pro-Lite/UI/)
 
 #### Tools and Modules
 
