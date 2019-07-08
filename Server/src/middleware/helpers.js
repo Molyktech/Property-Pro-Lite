@@ -61,24 +61,24 @@ export const createTokenAndSend = (user, res, statusCode) => {
   };
 
   jwt.sign(payload, process.env.TOKEN_SECRET, {
-    expiresIn: '1d',
-  },
-  (err, token) => {
-    if (err) {
-      res.status(400).json({
-        status: 'error',
-        message: 'Unable to process request',
-        error: err,
-      });
-    } else {
-      res.status(statusCode).json({
-        status: 'success',
-        data: {
-          token,
-          user,
+      expiresIn: '1d',
+    },
+    (err, token) => {
+      if (err) {
+        res.status(400).json({
+          status: 'error',
+          message: 'Unable to process request',
+          error: err,
+        });
+      } else {
+        res.status(statusCode).json({
+          status: 'success',
+          data: {
+            token,
+            user,
 
-        },
-      });
-    }
-  });
+          },
+        });
+      }
+    });
 };
