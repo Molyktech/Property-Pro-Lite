@@ -11,61 +11,41 @@ let testToken;
 
 describe('Property Validation', () => {
   describe('POST', () => {
-    it('should create a new user/ signup a new user to the database', (done) => {
+    it('should allow a signedup user stored in the database to login', (done) => {
       chai.request(app)
-        .post('/api/v1/auth/signup')
+        .post('/api/v1/auth/signin')
         .send({
-          email: 'janedoe@ymail.com',
-          first_name: 'Janeb',
-          last_name: 'Lawson',
-          password: 'doeisgood1',
-          address: 'No 1 Adebowale avenue lekki, Lagos',
-          phone_number: '070-622-78182',
+          email: 'selena@gmail.com',
+          password: 'selenah1',
         })
         .end((err, res) => {
-          if (err) done(err);
-          res.should.have.status(201);
+          if (err) return done(err);
+          res.should.have.status(200);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'data');
+          res.body.should.have.property('status').that.equals('success');
           res.body.data.should.be.an('object');
-          res.body.data.user.email.should.be.a('string');
-          res.body.data.user.first_name.should.be.a('string');
-          res.body.data.user.last_name.should.be.a('string');
           res.body.data.token.should.be.a('string');
           res.body.data.user.should.be.an('object');
           res.body.data.user.id.should.be.a('number');
+          res.body.data.user.email.should.be.a('string');
+          res.body.data.user.first_name.should.be.a('string');
+          res.body.data.user.last_name.should.be.a('string');
+          res.body.data.user.address.should.be.a('string');
+          res.body.data.user.phone_number.should.be.a('string');
+          res.body.data.user.is_admin.should.be.a('boolean');
+          res.body.data.should.have.property('message').that.is.a('string');
           testToken = res.body.data.token;
+
           done();
         });
     });
 
-    it('should check if property exists', (done) => {
-      chai.request(app)
-        .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
-        .field('price', 5000000)
-        .field('state', 'Lagos')
-        .field('city', 'Lekki')
-        .field('address', 'No. 1 Admiralty way Lekki, Lagos')
-        .field('type', '2 bedroom')
-        .field('status', 'available')
-        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
-        .then((res) => {
-          res.should.have.status(409);
-          res.body.should.be.an('object');
-          res.body.should.have.keys('status', 'error');
-          res.body.status.should.be.a('string');
-          res.body.status.should.equal('Error');
-          res.body.error.should.be.a('string');
-          res.body.error.should.equal('a property advert has already been created with this address');
-          done();
-        });
-    });
 
     it('should check for wrong state formats /empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
+        .set('x-access-token', testToken)
         .field('price', 5000000)
         .field('state', '')
         .field('city', 'Lekki')
@@ -74,10 +54,10 @@ describe('Property Validation', () => {
         .field('status', 'available')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .then((res) => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
+          res.body.error.should.be.an('string');
           res.body.status.should.equal('Error');
           done();
         });
@@ -86,7 +66,7 @@ describe('Property Validation', () => {
     it('should check for wrong price formats', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
+        .set('x-access-token', testToken)
         .field('price', 'five thousand')
         .field('state', 'lagos')
         .field('city', 'Lekki')
@@ -95,10 +75,10 @@ describe('Property Validation', () => {
         .field('status', 'available')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .then((res) => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
+          res.body.error.should.be.an('string');
           res.body.status.should.equal('Error');
           done();
         });
@@ -107,7 +87,7 @@ describe('Property Validation', () => {
     it('should check if price empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
+        .set('x-access-token', testToken)
         .field('price', '')
         .field('state', 'lagos')
         .field('city', 'Lekki')
@@ -116,10 +96,10 @@ describe('Property Validation', () => {
         .field('status', 'available')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .then((res) => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
+          res.body.error.should.be.an('string');
           res.body.status.should.equal('Error');
           done();
         });
@@ -128,7 +108,7 @@ describe('Property Validation', () => {
     it('should check if city empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
+        .set('x-access-token', testToken)
         .field('price', 'five thousand')
         .field('state', 'lagos')
         .field('city', '')
@@ -137,10 +117,10 @@ describe('Property Validation', () => {
         .field('status', 'available')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .then((res) => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
+          res.body.error.should.be.an('string');
           res.body.status.should.equal('Error');
           done();
         });
@@ -149,7 +129,7 @@ describe('Property Validation', () => {
     it('should check if address empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
+        .set('x-access-token', testToken)
         .field('price', 'five thousand')
         .field('state', 'lagos')
         .field('city', 'Lagos')
@@ -158,10 +138,10 @@ describe('Property Validation', () => {
         .field('status', 'available')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .then((res) => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
+          res.body.error.should.be.an('string');
           res.body.status.should.equal('Error');
           done();
         });
@@ -170,7 +150,7 @@ describe('Property Validation', () => {
     it('should check if address is a formatted properly', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
+        .set('x-access-token', testToken)
         .field('price', 'five thousand')
         .field('state', 'lagos')
         .field('city', '')
@@ -179,10 +159,10 @@ describe('Property Validation', () => {
         .field('status', 'available')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .then((res) => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
+          res.body.error.should.be.an('string');
           res.body.status.should.equal('Error');
           done();
         });
@@ -191,7 +171,7 @@ describe('Property Validation', () => {
     it('should check if type empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
+        .set('x-access-token', testToken)
         .field('price', 'five thousand')
         .field('state', 'lagos')
         .field('city', 'Lagos')
@@ -200,40 +180,20 @@ describe('Property Validation', () => {
         .field('status', 'available')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .then((res) => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
+          res.body.error.should.be.an('string');
           res.body.status.should.equal('Error');
           done();
         });
     });
 
-    it('should check if status is empty', (done) => {
-      chai.request(app)
-        .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
-        .field('price', '100000')
-        .field('state', 'lagos')
-        .field('city', 'Lagos')
-        .field('address', 'no, 1 florina street off admiralty way lekki')
-        .field('type', '2 bedroom')
-        .field('status', '')
-        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
-        .then((res) => {
-          res.should.have.status(422);
-          res.body.should.be.an('object');
-          res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
-          res.body.status.should.equal('Error');
-          done();
-        });
-    });
 
     it('should check if status is a string', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('Authorization', `Bearer ${testToken}`)
+        .set('x-access-token', testToken)
         .field('price', '100000')
         .field('state', 'lagos')
         .field('city', 'Lagos')
@@ -242,13 +202,44 @@ describe('Property Validation', () => {
         .field('status', 333)
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .then((res) => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'error');
-          res.body.error.should.be.an('object');
+          res.body.error.should.be.an('string');
           res.body.status.should.equal('Error');
           done();
         });
     });
+
+
+    it('should save property advert details provided selecting a file (image)', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', 3500000)
+        .field('state', 'Lagos')
+        .field('city', 'Lekki')
+        .field('address', 'Lekki, Lagos State')
+        .field('type', '2 bedroom')
+        .end((err, res) => {
+          if (err) done(err);
+          res.body.should.have.keys('status', 'message', 'data');
+          res.status.should.equal(201);
+          res.body.should.be.an('object');
+          res.body.should.have.property('status').that.equals('success');
+          res.body.should.have.property('data');
+          res.body.data.should.be.an('object')
+          res.body.data.id.should.be.a('number');
+          res.body.data.status.should.be.a('string');
+          res.body.data.state.should.be.a('string');
+          res.body.data.type.should.be.a('string');
+          res.body.data.city.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.image_url.should.be.a('string');
+          res.body.data.price.should.be.a('number');
+          done();
+        });
+    });
+
   });
 });

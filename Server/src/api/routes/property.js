@@ -1,8 +1,7 @@
 /* eslint-disable linebreak-style */
 import express from 'express';
 import {
-
-  authLoggedIn,
+  authUser,
 } from '../../middleware/auth';
 import {
   multerUploads,
@@ -21,17 +20,17 @@ import propertyController from '../../controllers/propertyControllers';
 const router = express.Router();
 
 
-router.get('/', propertyController.getAllProperty);
+router.get('/', authUser, propertyController.getAllProperty);
 
-router.get('/:id', propertyController.getOneProperty);
+router.get('/:id', authUser, propertyController.getOneProperty);
 
-router.post('/', authLoggedIn, cloudinaryConfig, multerUploads, propertyValidator, propertyController.createProperty);
+router.post('/', authUser, cloudinaryConfig, multerUploads, propertyValidator, propertyController.createProperty);
 
-router.patch('/:id', authLoggedIn, cloudinaryConfig, multerUploads, propertyValidator, propertyController.updateProperty);
+router.patch('/:id', authUser, cloudinaryConfig, multerUploads, propertyValidator, propertyController.updateProperty);
 
-router.patch('/:id/sold', authLoggedIn, propertyController.soldProperty);
+router.patch('/:id/sold', authUser, propertyController.soldProperty);
 
-router.delete('/:id', authLoggedIn, propertyController.deleteProperty);
+router.delete('/:id', authUser, propertyController.deleteProperty);
 
 
 export default router;

@@ -1,11 +1,11 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
 import propertyRoute from './api/routes/property';
 import userRoute from './api/routes/users';
-import {
-  authUser,
-} from './middleware/auth';
+import swaggerDoc from '../../swagger.json';
+
 
 const app = express();
 
@@ -17,6 +17,7 @@ app.use(
   }),
 );
 app.use(bodyParser.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -24,7 +25,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(authUser);
 // Users Routes/
 app.use('/api/v1/auth', userRoute);
 
