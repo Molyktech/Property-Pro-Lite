@@ -1,90 +1,154 @@
 /* eslint-disable class-methods-use-this */
+import {
+  Pool
+} from 'pg';
+import dotenv from 'dotenv';
 
-import db from '../models/db/propertyDb';
+
+
 import {
   imageUpload,
 } from '../middleware/multer';
-import {
-  newDate,
-} from '../middleware/helpers';
+
+import db from '../models/index';
+import Util from '../utils/Utils';
+
+
+dotenv.config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL
+});
 
 class Property {
-  getAllProperty(req, res) {
-    if (req.query.type) {
-      const filteredProperty = db.filter(property => property.type.includes(`${req.query.type}`));
-      return res.status(200).json({
-        status: 'success',
-        data: filteredProperty,
-      });
-    }
-    return res.status(200).json({
-      status: 'Success',
-      data: db,
-
-    });
-  }
-
-  getOneProperty(req, res) {
-    const id = parseInt(req.params.id, 10);
-    const foundProperty = db.find(property => property.id === id);
-
-    if (foundProperty) {
-      return res.status(200).json({
-        status: 'Success',
-        data: foundProperty,
-      });
-    }
-    return res.status(404).json({
-      status: 'Error',
-      error: 'Property does not exist',
-    });
-  }
 
   async createProperty(req, res) {
-    let imageUrl;
-    if (req.file) {
-      const fileUrl = await imageUpload(req);
-      if (fileUrl) {
-        imageUrl = fileUrl;
-      } else {
-        imageUrl = 'https://via.placeholder.com/250/92c952';
+    try {
+      let imageUrl = 'https://via.placeholder.com/250/92c952';
+      if (req.file) {
+        const fileUrl = await imageUpload(req);
+        if (fileUrl) {
+          imageUrl = fileUrl;
+        } else {
+          imageUrl = 'https://via.placeholder.com/250/92c952';
+        }
+
       }
+
+      const {
+        price,
+        state,
+        city,
+        address,
+        type
+      } = req.body;
+      const createQuery = `INSERT INTO Properties( price, state, city, address, type, image_url, owner)
+    VALUES( $1, $2, $3, $4, $5, $6, $7)  returning *`;
+
+      const values = [
+        price,
+        state,
+        city,
+        address,
+        type,
+        imageUrl,
+        req.user.id
+
+      ];
+
+      const {
+        rows
+      } = await db.query(createQuery, values);
+      if (rows) {
+        Util.setSuccess(201, 'Property created succesfully', rows[0]);
+        return Util.send(res);
+      }
+      Util.setError(400, 'failed');
+      return Util.send(res);
+
+    } catch (error) {
+      Util.setError(500, error.message);
+      return Util.send(res);
+
     }
 
-    const newProperty = {
-      id: db.length + 1,
-      owner: req.user.id,
-      status: req.body.status || 'available',
-      state: req.body.state,
-      price: req.body.price,
-      city: req.body.city,
-      address: req.body.address,
-      type: req.body.type,
-      created_on: newDate(),
-      reason: req.body.reason,
-      description: req.body.description,
-      image_url: imageUrl,
-      owner_email: req.user.email,
-      owner_phone_number: req.user.phone_number,
-    };
-    const filterdb = db.find(property => property.address === req.body.address);
+  }
 
-    if (!filterdb) {
-      db.push(newProperty);
+  async getAllProperty(req, res) {
 
-      return res.status(201).json({
-        status: 'Success',
-        data: newProperty,
-      });
+    try {
+      const findTables = 'SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id';
+      if (req.query.type) {
+        const {
+          type
+        } = req.query;
+        const queryTables = `SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id WHERE type = '${type}'`;
+        const {
+          rows,
+          rowCount
+        } = await pool.query(queryTables);
+        if (!rows.length) {
+          Util.setError(404, 'No property found');
+          return Util.send(res);
+        }
+        Util.setSuccess(200, 'Succesful', ({
+          rows,
+          rowCount
+        }));
+        return Util.send(res);
+      }
+
+      const {
+        rows,
+        rowCount
+      } = await pool.query(findTables);
+      if (!rows.length) {
+        Util.setError(404, 'No property found');
+        return Util.send(res);
+      }
+
+      Util.setSuccess(200, 'Success', ({
+        rows,
+        rowCount
+      }));
+      return Util.send(res);
+
+    } catch (error) {
+      Util.setError(500, error.message);
+      return Util.send(res);
     }
-    res.status(409).json({
-      status: 'Error',
-      error: 'a property advert has already been created with this address',
-    });
+  }
+
+
+  async getOneProperty(req, res) {
+    const id = parseInt(req.params.id);
+    const queryTables = `SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id WHERE Properties.id = '${id}'`;
+    try {
+      const {
+        rows
+      } = await pool.query(queryTables);
+      if (!rows[0]) {
+        Util.setError(404, 'Property not found');
+        return Util.send(res);
+      }
+      Util.setSuccess(200, `Found Property with an id of ${req.params.id}`, rows[0]);
+      return Util.send(res);
+    } catch (error) {
+      Util.setError(500, error.message)
+      return Util.send(res);
+    }
   }
 
 
   async updateProperty(req, res) {
+    const {
+      state,
+      city,
+      address,
+      type,
+      price
+    } = req.body;
+    const id = parseInt(req.params.id);
     let imageUrl;
     if (req.file) {
       const fileUrl = await imageUpload(req);
@@ -94,106 +158,84 @@ class Property {
         imageUrl = 'https://via.placeholder.com/250/92c952';
       }
     }
-    const id = parseInt(req.params.id, 10);
-    let foundProperty;
-    let propertyIndex;
-    db.map((property, index) => {
-      if (property.id === id) {
-        foundProperty = property;
-        propertyIndex = index;
+    const findOneQuery = 'SELECT * FROM Properties WHERE id = $1 AND owner = $2';
+    const updateOneQuery = `UPDATE Properties SET state = $1, price = $2, address = $3, city = $4, type = $5, image_url = $6 WHERE id = $7 AND owner = $8 returning *`;
+    try {
+      const {
+        rows
+      } = await db.query(findOneQuery, [parseInt(req.params.id), req.user.id]);
+      if (!rows[0]) {
+        Util.setError(404, 'Property not found, input a correct id and try again');
+        return Util.send(res);
       }
-    });
-    if (!foundProperty) {
-      return res.status(404).json({
-        status: 'Error',
-        error: 'Property not found',
-      });
+      const values = [
+        state || rows[0].state,
+        price || rows[0].price,
+        address || rows[0].address,
+        city || rows[0].city,
+        type || rows[0].type,
+        imageUrl || rows[0].image_url,
+        id,
+        req.user.id
+      ];
+
+      const response = await db.query(updateOneQuery, values);
+      Util.setSuccess(200, 'Update Successful', response.rows[0]);
+      return Util.send(res);
+
+    } catch (error) {
+      Util.setError(500, error.message);
+      return Util.send(res);
     }
 
-
-    const updatedProperty = {
-      id: foundProperty.id,
-      owner: req.user.id || foundProperty.owner,
-      status: req.body.status || foundProperty.status,
-      state: req.body.state || foundProperty.state,
-      price: req.body.price || foundProperty.price,
-      city: req.body.city || foundProperty.city,
-      address: req.body.address || foundProperty.address,
-      type: req.body.type || foundProperty.type,
-      created_on: req.body.created_on || foundProperty.created_on,
-      reason: req.body.reason || foundProperty.reason,
-      description: req.body.description || foundProperty.description,
-      image_url: imageUrl || foundProperty.image_url,
-      owner_email: req.user.email || foundProperty.owner_email,
-      owner_phone_number: req.user.phone_number || foundProperty.owner_phone_number,
-    };
-
-    db.splice(propertyIndex, 1, updatedProperty);
-    return res.status(201).json({
-      status: 'success',
-      data: updatedProperty,
-    });
   }
 
-  soldProperty(req, res) {
-    const id = parseInt(req.params.id, 10);
-    let foundProperty;
-    let propertyIndex;
-    db.map((property, index) => {
-      if (property.id === id) {
-        foundProperty = property;
-        propertyIndex = index;
+  async soldProperty(req, res) {
+    const id = parseInt(req.params.id);
+    const findOneQuery = 'SELECT * FROM Properties WHERE id = $1 AND owner = $2';
+    const updateOneQuery = `UPDATE Properties SET status = $1 WHERE id = $2 AND owner = $3 returning *`;
+    try {
+      const {
+        rows
+      } = await db.query(findOneQuery, [id, req.user.id]);
+      if (!rows[0]) {
+        Util.setError(404, 'Property not found, input a correct id and try again');
+        return Util.send(res);
       }
-    });
-    if (!foundProperty) {
-      return res.status(404).json({
-        status: 'error',
-        data: {
-          message: 'property not found',
-        },
-      });
+      const values = [
+        'sold',
+        id,
+        req.user.id
+      ];
+
+      const response = await db.query(updateOneQuery, values);
+      Util.setSuccess(200, 'Status update Successful', response.rows[0]);
+      return Util.send(res);
+
+    } catch (error) {
+      Util.setError(500, error.message);
+      return Util.send(res);
     }
-    const updatedProperty = {
-      id: foundProperty.id,
-      owner: foundProperty.owner,
-      status: 'sold',
-      state: foundProperty.state,
-      price: foundProperty.price,
-      city: foundProperty.city,
-      address: foundProperty.address,
-      type: foundProperty.type,
-      created_on: foundProperty.created_on,
-      reason: foundProperty.reason,
-      description: foundProperty.description,
-      owner_email: foundProperty.owner_email,
-      owner_phone_number: foundProperty.owner_phone_number,
-      image_url: foundProperty.image_url,
-    };
 
-    db.splice(propertyIndex, 1, updatedProperty);
-    return res.status(201).json({
-      status: 'success',
-      data: updatedProperty,
-    });
   }
 
-  deleteProperty(req, res) {
-    const id = parseInt(req.params.id, 10);
-    db.map((property, index) => {
-      if (property.id === id) {
-        db.splice(index, 1);
-        return res.status(200).json({
-          status: 'Success',
-          data: {
-            message: 'Property deleted',
-          },
-        });
+  async deleteProperty(req, res) {
+    const id = parseInt(req.params.id);
+    const deleteQuery = 'DELETE FROM Properties WHERE id = $1 AND owner = $2 returning *';
+    try {
+      const {
+        rows
+      } = await db.query(deleteQuery, [id, req.user.id]);
+      if (!rows[0]) {
+        Util.setError(404, 'Property not found');
+        return Util.send(res);
       }
-    });
-    return res.status(404).json({
-      status: 'Error',
-      error: 'Property not found',
-    });
+      Util.setSuccess(200, 'Property DELETED')
+      return Util.send(res);
+    } catch (error) {
+      Util.setError(500, error.message);
+      return Util.send(res);
+    }
   }
 }
 

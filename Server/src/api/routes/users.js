@@ -1,15 +1,14 @@
 /* eslint-disable linebreak-style */
 import express from 'express';
-import userController from '../../controllers/usercontroller';
+import UserMiddleware from '../../middleware/users';
+import User from '../../controllers/users';
 
 
 const router = express.Router();
 
 
-router.get('/', userController.fetchUser);
+router.post('/signup', UserMiddleware.checkIsValidBody, User.create);
 
-router.post('/signup', userController.createUser);
-
-router.post('/signin', userController.loginUser);
+router.post('/signin', UserMiddleware.checkLogin, User.login);
 
 export default router;

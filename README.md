@@ -13,6 +13,7 @@ Property Pro Lite is a platform where people can create and/or search properties
 - [Technologies](#Technologies)
 - [Features](#Features)
 - [Installation](#Installation)
+- [API Documentation](#API-Documentation)
 - [UI](#UI)
 - [Tools and Modules](#Tools-and-Modules)
 - [Running Tests](#Running-Tests)
@@ -83,6 +84,10 @@ Documentation:
 | PATCH /property/:id             | Update proeprty advert by id                   |
 | DELETE /property/:id            | Delete a specific property advert using the id |
 | PATCH /property/:id/sold        | Upadate a property status to sold              |
+
+#### API Documentation
+
+- http://localhost:8080/api-docs/
 
 #### UI
 

@@ -21,20 +21,20 @@ describe('Users Authentication', () => {
     chai.request(app)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'me@gmail.com',
-        first_name: 'Jacob',
+        email: 'selena@gmail.com',
+        first_name: 'Janeb',
         last_name: 'Lawson',
-        password: 'Jabowe1',
+        password: 'selenah1',
         address: 'No 1 Adebowale crescent lekki, Lagos',
-        phone_number: '070-622-78182',
+        phone_number: '070-6227-8182',
       })
       .then((res) => {
-        res.should.have.status(409);
+        res.should.have.status(500);
         res.body.should.be.an('object');
-        res.body.should.have.keys('status', 'error');
+        res.body.should.have.keys('status', 'message');
         res.body.status.should.be.a('string');
         res.body.status.should.equal('Error');
-        res.body.error.should.be.a('string');
+        res.body.message.should.be.a('string');
         done();
       });
   });
@@ -51,15 +51,15 @@ describe('Users Authentication', () => {
         phone_number: '070-622-78182',
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
         res.body.should.have.keys('status', 'error');
-        res.body.error.should.be.an('object');
+        res.body.error.should.be.a('string');
         res.body.status.should.equal('Error');
         done();
       });
   });
-  it('should return an error status code 422 if the email is empty', (done) => {
+  it('should return an error status code 400 if the email is empty', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
       .send({
@@ -71,10 +71,10 @@ describe('Users Authentication', () => {
         phone_number: '070-622-78182',
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
         res.body.should.have.keys('status', 'error');
-        res.body.error.should.be.an('object');
+        res.body.error.should.be.a('string');
         res.body.status.should.equal('Error');
         return done();
       });
@@ -86,7 +86,7 @@ describe('Users Authentication', () => {
       .post('/api/v1/auth/signup')
       .send({
 
-        firstname: 'J-12UJN',
+        first_name: 'J-12UJN',
         email: 'test@test.com',
         last_name: 'Lawson',
         password: 'Jabowe1',
@@ -94,16 +94,16 @@ describe('Users Authentication', () => {
         phone_number: '070-622-78182',
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
         res.body.should.have.keys('status', 'error');
-        res.body.error.should.be.an('object');
+        res.body.error.should.be.a('string');
         res.body.status.should.equal('Error');
         done();
       });
   });
 
-  it('should return an error status code 422 if the firstname field is empty', (done) => {
+  it('should return an error status code 400 if the firstname field is empty', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
       .send({
@@ -115,10 +115,10 @@ describe('Users Authentication', () => {
         phone_number: '070-622-78182',
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
         res.body.should.have.keys('status', 'error');
-        res.body.error.should.be.an('object');
+        res.body.error.should.be.a('string');
         res.body.status.should.equal('Error');
         return done();
       });
@@ -129,7 +129,7 @@ describe('Users Authentication', () => {
     chai.request(app)
       .post('/api/v1/auth/signup')
       .send({
-        firstname: 'Janet',
+        first_name: 'Janet',
         email: 'test@test.com',
         last_name: 'i77h-d',
         password: 'Jabowe1',
@@ -137,16 +137,16 @@ describe('Users Authentication', () => {
         phone_number: '070-622-78182',
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
         res.body.should.have.keys('status', 'error');
-        res.body.error.should.be.an('object');
+        res.body.error.should.be.a('string');
         res.body.status.should.equal('Error');
         done();
       });
   });
 
-  it('should return an error status code 422 if the lastname is empty', (done) => {
+  it('should return an error status code 400 if the lastname is empty', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
       .send({
@@ -158,10 +158,10 @@ describe('Users Authentication', () => {
         phone_number: '070-622-78182',
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
         res.body.should.have.keys('status', 'error');
-        res.body.error.should.be.an('object');
+        res.body.error.should.be.a('string');
         res.body.status.should.equal('Error');
         return done();
       });
@@ -172,7 +172,7 @@ describe('Users Authentication', () => {
     chai.request(app)
       .post('/api/v1/auth/signup')
       .send({
-        firstname: 'Janet',
+        first_name: 'Janet',
         email: 'test@test.com',
         last_name: 'Doe',
         password: '123',
@@ -180,10 +180,10 @@ describe('Users Authentication', () => {
         phone_number: '070-622-78182',
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
         res.body.should.have.keys('status', 'error');
-        res.body.error.should.be.an('object');
+        res.body.error.should.be.a('string');
         res.body.status.should.equal('Error');
         done();
       });
@@ -200,16 +200,16 @@ describe('POST /api/v1/auth/login', () => {
         password: 'janetsanta',
       })
       .then((res) => {
-        res.should.have.status(401);
+        res.should.have.status(400);
         res.body.should.be.an('object');
         res.body.should.have.keys('status', 'error');
         res.body.error.should.be.a('string');
-        res.body.status.should.equal('Error');
-        res.body.error.should.equal('Invalid login details, wrong email/password');
+        res.body.status.should.equal('error');
+        res.body.error.should.equal('Incorrect login details');
         done();
       });
   });
-  it('should return an error status code 422 if the email is empty', (done) => {
+  it('should return an error status code 400 if the email is empty', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signin')
       .send({
@@ -218,17 +218,17 @@ describe('POST /api/v1/auth/login', () => {
 
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
-        res.body.should.have.keys('status', 'message', 'error');
-        res.body.error.should.be.an('object');
-        res.body.status.should.equal('error');
-        res.body.message.should.equal('Invalid login details');
+        res.body.should.have.keys('status', 'error');
+        res.body.error.should.be.an('string');
+        res.body.status.should.equal('Error');
+
         return done();
       });
   });
 
-  it('should return an error status code 422 if the password is empty', (done) => {
+  it('should return an error status code 400 if the password is empty', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signin')
       .send({
@@ -237,12 +237,12 @@ describe('POST /api/v1/auth/login', () => {
 
       })
       .then((res) => {
-        res.should.have.status(422);
+        res.should.have.status(400);
         res.body.should.be.an('object');
-        res.body.should.have.keys('status', 'message', 'error');
-        res.body.error.should.be.an('object');
-        res.body.status.should.equal('error');
-        res.body.message.should.equal('Invalid login details');
+        res.body.should.have.keys('status', 'error');
+        res.body.error.should.be.an('string');
+        res.body.status.should.equal('Error');
+
         return done();
       });
   });

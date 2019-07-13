@@ -1,42 +1,46 @@
 import jwt from 'jsonwebtoken';
+import Util from '../utils/Utils';
+import db from '../models/index';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // express middleware to check for token and pull a user out of it and if not just move along
-const authUser = (req, res, next) => {
-  const authHeader = req.get('authorization');
-  if (authHeader && req.headers.authorization.split(' ')[0] === 'Bearer') {
-    const token = req.headers.authorization.split(' ')[1];
+const authUser = async (req, res, next) => {
+  const token = req.headers['x-access-token'];
 
-    if (token) {
-      jwt.verify(token, process.env.TOKEN_SECRET, (error, payload) => {
-        if (error) {
-          res.status(403).json({
-            status: 'error',
-            error,
-            message: 'No access token',
-          });
-        }
-        req.user = payload;
-      });
-    } else {
-      next();
+  if (!token) {
+    Util.setError(403, 'Token is not provided');
+    return Util.send(res);
+  }
+  try {
+    const decoded = await jwt.verify(token, process.env.TOKEN_SECRET);
+    const text = 'SELECT * FROM Users WHERE id = $1';
+    const {
+      rows
+    } = await db.query(text, [decoded.id]);
+
+    if (!rows[0]) {
+      Util.setError(400, 'Invalid Token');
+      return Util.send(res);
+
     }
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+    };
     next();
-  } else {
-    next();
+  } catch (error) {
+    Util.setError(500, error.message);
+    return Util.send(res);
+
   }
+
 };
 
-const authLoggedIn = (req, res, next) => {
-  if (req.user) {
-    next();
-  } else {
-    const error = new Error('Un-Authorised');
-    res.status(401);
-    next(error);
-  }
-};
+
 
 export {
   authUser,
-  authLoggedIn,
+
 };
