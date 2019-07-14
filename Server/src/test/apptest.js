@@ -9,7 +9,10 @@ import app from '../app';
 chai.use(chaiHttp);
 chai.should();
 
-
+const password = {
+  assword: 'Fiyjayc22',
+  new_password: 'hio'
+};
 // user auth test
 let testToken;
 console.log(process.env.NODE_ENV)
@@ -107,7 +110,7 @@ describe('Property endpoints', () => {
         .field('state', 'Lagos')
         .field('city', 'Lekki')
         .field('address', 'No 1 Admiralty way,Lekki')
-        .field('type', '2 bedroom')
+        .field('type', '2-bedroom')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
           if (err) done(err);
@@ -137,11 +140,11 @@ describe('Property endpoints', () => {
       chai.request(app)
         .patch('/api/v1/property/1')
         .set('x-access-token', testToken)
-        .field('price', 3000000)
+        .field('price', 1000000)
         .field('state', 'Lagos')
         .field('city', 'Lekki')
         .field('address', 'No 20 Admiralty way,Lekki')
-        .field('type', '1 bedroom')
+        .field('type', '2-bedroom')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
           if (err) done(err);
@@ -196,6 +199,7 @@ describe('Property endpoints', () => {
         .get('/api/v1/property')
         .set('x-access-token', testToken)
         .end((err, res) => {
+          console.log(res);
           if (err) done(err);
 
           res.should.have.status(200);
@@ -220,7 +224,7 @@ describe('Property endpoints', () => {
 
     it('should get all property advert of a specific type posted on the application', (done) => {
       chai.request(app)
-        .get('/api/v1/property?type= 2 bedroom')
+        .get('/api/v1/property?type=2-bedroom')
         .set('x-access-token', testToken)
         .end((err, res) => {
           if (err) done(err);
@@ -247,7 +251,7 @@ describe('Property endpoints', () => {
     // test to get a single property
     it('should get a single property record', (done) => {
       chai.request(app)
-        .get('/api/v1/property/1')
+        .get('/api/v1/property/2')
         .set('x-access-token', testToken)
         .end((err, res) => {
           if (err) done(err);
@@ -320,5 +324,60 @@ describe('Property endpoints', () => {
           done();
         });
     });
+
+    describe('Password Reset', () => {
+      it('should save a new password set by user and return a success message', (done) => {
+        chai.request(app)
+          .post('/api/v1/auth/selena@gmail.com/reset_password')
+          .set('x-access-token', testToken)
+          .send({
+            password: 'selenah1',
+            new_password: 'FetishBieb'
+          })
+          .end((err, res) => {
+            if (err) return done(err);
+            res.body.should.have.property('status');
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+            res.body.should.have.keys('status', 'message');
+            res.body.message.should.be.a('string');
+            done();
+          });
+      });
+
+      it('should send an email to user if password is not provided', (done) => {
+        chai.request(app)
+          .post('/api/v1/auth/selena@gmail.com/reset_password')
+          .set('x-access-token', testToken)
+          .end((err, res) => {
+            if (err) return done(err);
+            res.body.should.have.property('status');
+            res.status.should.equal(201);
+            res.body.should.be.an('object');
+            res.body.should.have.keys('status', 'message');
+            res.body.message.should.be.a('string');
+            done();
+          });
+      });
+
+      it('should return an error status code 403 if the password is invalid', (done) => {
+        chai.request(app)
+          .post('/api/v1/auth/selena@gmail.com/reset_password')
+          .send(password)
+          .end((err, res) => {
+            if (err) return done(err);
+            res.body.should.have.property('status');
+            res.status.should.equal(403);
+            res.body.should.be.an('object');
+            res.body.should.have.keys('status', 'error');
+            res.body.should.have.property('status').that.equals('error');
+            res.body.status.should.be.a('string');
+            res.body.error.should.be.a('string');
+            return done();
+          });
+      });
+    });
+
+
   });
 });
