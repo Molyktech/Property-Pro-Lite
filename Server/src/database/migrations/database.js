@@ -5,14 +5,12 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-let connectionString = process.env.DATABASE_URL;
+let connectionString = null;
 
-if (process.env.NODE_ENV == 'test') {
-    connectionString = process.env.DATABASE_URL_TEST;
-} else if (process.env.NODE_ENV == 'PROD') {
-    connectionString = process.env.DATABASE_URL_PROD;
+if (process.env.NODE_ENV === 'test') connectionString = process.env.DATABASE_URL_TEST;
+if (process.env.NODE_ENV === 'PROD') connectionString = process.env.DATABASE_URL_PROD;
+if (process.env.NODE_ENV === 'development') connectionString = process.env.DATABASE_URL;
 
-}
 console.log(connectionString)
 const pool = new Pool({
     connectionString: connectionString
@@ -21,6 +19,7 @@ const pool = new Pool({
 
 pool.on('connect', () => {
     console.log('connected to the db');
+    console.log(connectionString)
 });
 /*** CREATE TABLES */
 const createUserTable = () => {

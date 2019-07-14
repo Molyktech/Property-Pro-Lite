@@ -220,7 +220,7 @@ describe('Property endpoints', () => {
 
     it('should get all property advert of a specific type posted on the application', (done) => {
       chai.request(app)
-        .get('/api/v1/property?type=1 bedroom')
+        .get('/api/v1/property?type= 2 bedroom')
         .set('x-access-token', testToken)
         .end((err, res) => {
           if (err) done(err);
