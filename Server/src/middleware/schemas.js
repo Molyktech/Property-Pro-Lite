@@ -11,6 +11,11 @@ const password = Joi.string().min(7).alphanum().trim()
     message: 'Password is required and should be at least 7 characters long',
   }));
 
+
+const passwordSchema = Joi.object().keys({
+  password,
+  new_password: password
+})
 const signupSchema = Joi.object().keys({
   first_name: Joi.string().regex(/(^[a-zA-Z]+$)/).min(2).max(30)
     .required().error(() => ({
@@ -69,4 +74,6 @@ export {
   propertyValidator,
   signupSchema,
   loginSchema,
+  email,
+  passwordSchema
 };

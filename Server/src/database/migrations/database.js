@@ -13,7 +13,7 @@ if (process.env.NODE_ENV == 'test') {
     connectionString = process.env.DATABASE_URL_PROD;
 
 }
-
+console.log(connectionString)
 const pool = new Pool({
     connectionString: connectionString
 
