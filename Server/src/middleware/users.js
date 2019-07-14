@@ -25,7 +25,7 @@ export default class UserMiddleware {
     }
 
     static checkIsValidBody(req, res, next) {
-
+        console.log(req.body)
         Joi.validate(req.body, signupSchema, (error, value) => {
             if (error) {
                 return res.status(400).json({
