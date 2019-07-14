@@ -66,6 +66,49 @@ const User = {
                 error: error.message,
             })
         }
+    },
+
+    async resetPassword(req, res) {
+        const {
+            email
+        } = req.user;
+
+        let {
+            password,
+            new_password: newPassword
+        } = req.body;
+
+        const checkQuery = 'SELECT password FROM Users WHERE email = $1';
+        const value = [email];
+        try {
+            const {
+                rows
+            } = await db.query(checkQuery, value);
+
+            const comparePassword = await Helper.comparePassword(rows[0].password, password);
+
+            if (comparePassword) {
+                newPassword = await Helper.hashPassword(newPassword);
+
+                const updateOneQuery = `UPDATE Users SET password = $1 WHERE email = $2 returning *`;
+                const values = [newPassword, email]
+                const resetPassword = await db.query(updateOneQuery, values);
+                if (resetPassword) {
+                    Util.setSuccess(200, 'Password reset successful');
+                    return Util.send(res)
+                }
+
+            } else {
+                Util.setError(422, 'Incorrect Password, Password did not macth stored password, please check and try again');
+                return Util.send(res);
+            }
+
+
+        } catch (error) {
+            Util.setError(500, error.message)
+            return Util.send(res);
+        }
+
     }
 
 

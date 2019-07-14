@@ -159,7 +159,7 @@ describe('Property endpoints', () => {
           res.body.data.price.should.be.a('number');
           res.body.data.id.should.be.a('number');
           res.body.data.image_url.should.be.a('string');
-          res.body.data.owner.should.be.a('string');
+          res.body.data.owner.should.be.a('number');
           done();
         });
     });
@@ -220,7 +220,7 @@ describe('Property endpoints', () => {
 
     it('should get all property advert of a specific type posted on the application', (done) => {
       chai.request(app)
-        .get('/api/v1/property?type=2 bedroom')
+        .get('/api/v1/property?type=1 bedroom')
         .set('x-access-token', testToken)
         .end((err, res) => {
           if (err) done(err);
