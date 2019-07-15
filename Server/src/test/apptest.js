@@ -9,6 +9,20 @@ import app from '../app';
 chai.use(chaiHttp);
 chai.should();
 
+const signupUser = {
+  first_name: 'Modupes',
+  last_name: 'Grey',
+  email: 'motuswit@gmail.com',
+  password: 'MoBillionD',
+  phone_number: '080-8333-1011',
+  address: 'Hollywood,usa'
+}
+
+const loginUser = {
+  email: 'motuswit@gmail.com',
+  password: 'MoBillionD',
+}
+
 const password = {
   assword: 'Fiyjayc22',
   new_password: 'hio'
@@ -37,14 +51,7 @@ describe('User endpoints', () => {
     it('should create a new user/ signup a new user to the database', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
-        .send({
-          email: 'selraya@gmail.com',
-          first_name: 'Janet',
-          last_name: 'Lawson',
-          password: 'selrayaenah1',
-          address: 'No 1 Adebowale crescent lekki, Lagos',
-          phone_number: '070-6227-8182',
-        })
+        .send(signupUser)
         .end((err, res) => {
           if (err) return done(err);
           res.should.have.status(201);
@@ -70,10 +77,7 @@ describe('User endpoints', () => {
     it('should allow a signedup user stored in the database to login', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signin')
-        .send({
-          email: 'selraya@gmail.com',
-          password: 'selrayaenah1',
-        })
+        .send(loginUser)
         .end((err, res) => {
           if (err) return done(err);
           res.should.have.status(200);
@@ -110,7 +114,7 @@ describe('Property endpoints', () => {
         .field('state', 'Lagos')
         .field('city', 'Lekki')
         .field('address', 'No 1 Admiralty way,Lekki')
-        .field('type', '2 bedroom')
+        .field('type', '2-bedroom')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
           if (err) done(err);
@@ -144,7 +148,7 @@ describe('Property endpoints', () => {
         .field('state', 'Lagos')
         .field('city', 'Lekki')
         .field('address', 'No 20 Admiralty way,Lekki')
-        .field('type', '2 bedroom')
+        .field('type', '2-bedroom')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
           if (err) done(err);
@@ -199,8 +203,9 @@ describe('Property endpoints', () => {
         .get('/api/v1/property')
         .set('x-access-token', testToken)
         .end((err, res) => {
-          console.log(res, err);
+
           if (err) done(err);
+          console.log(res);
 
           res.should.have.status(200);
           res.body.should.be.an('object');
@@ -224,10 +229,10 @@ describe('Property endpoints', () => {
 
     it('should get all property advert of a specific type posted on the application', (done) => {
       chai.request(app)
-        .get('/api/v1/property?type=2 bedroom')
+        .get('/api/v1/property?type=2-bedroom')
         .set('x-access-token', testToken)
         .end((err, res) => {
-          console.log(err, res)
+
           if (err) done(err);
           res.should.have.status(200);
           res.body.should.have.keys('status', 'message', 'data');
@@ -235,17 +240,17 @@ describe('Property endpoints', () => {
           res.body.should.be.an('object');
           res.body.should.have.property('status').that.equals('success');
           res.body.message.should.be.a('string');
-          res.body.data[0].id.should.be.a('number');
-          res.body.data[0].status.should.be.a('string');
-          res.body.data[0].state.should.be.a('string');
-          res.body.data[0].type.should.be.a('string');
-          res.body.data[0].city.should.be.a('string');
-          res.body.data[0].address.should.be.a('string');
-          res.body.data[0].image_url.should.be.a('string');
-          res.body.data[0].price.should.be.a('number');
-          res.body.data[0].ownerEmail.should.be.a('string');
-          res.body.data[0].ownerPhoneNumber.should.be.a('string');
-          res.body.data[0].created_on.should.be.a('string');
+          res.body.data.id.should.be.a('number');
+          res.body.data.status.should.be.a('string');
+          res.body.data.state.should.be.a('string');
+          res.body.data.type.should.be.a('string');
+          res.body.data.city.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.image_url.should.be.a('string');
+          res.body.data.price.should.be.a('number');
+          res.body.data.ownerEmail.should.be.a('string');
+          res.body.data.ownerPhoneNumber.should.be.a('string');
+          res.body.data.created_on.should.be.a('string');
           done();
         });
     });
@@ -255,7 +260,7 @@ describe('Property endpoints', () => {
         .get('/api/v1/property/1')
         .set('x-access-token', testToken)
         .end((err, res) => {
-          console.log(err, res)
+
           if (err) done(err);
           res.should.have.status(200);
           res.body.should.be.an('object');
@@ -279,12 +284,11 @@ describe('Property endpoints', () => {
     // for failure to get a single record
     it('should not get a property and return a message indicating why', (done) => {
       chai.request(app)
-
         .get('/api/v1/property/39')
         .set('x-access-token', testToken)
         .end((err, res) => {
           if (err) done(err)
-          console.log(err, res)
+
           res.body.should.have.keys('status', 'error');
           res.should.have.status(404);
           res.body.should.be.an('object');
@@ -317,32 +321,32 @@ describe('Property endpoints', () => {
     });
 
     // delete a property
-    it('should delete a property advert provided by the user', (done) => {
-      chai.request(app)
-        .delete('/api/v1/property/1')
-        .set('x-access-token', testToken)
-        .end((err, res) => {
-          if (err) done(err);
+    // it('should delete a property advert provided by the user', (done) => {
+    //   chai.request(app)
+    //     .delete('/api/v1/property/1')
+    //     .set('x-access-token', testToken)
+    //     .end((err, res) => {
+    //       if (err) done(err);
 
-          res.should.have.status(200);
-          res.body.should.be.an('object');
-          res.body.status.should.be.a('string');
-          res.body.message.should.be.a('string');
-          done();
-        });
-    });
+    //       res.should.have.status(200);
+    //       res.body.should.be.an('object');
+    //       res.body.status.should.be.a('string');
+    //       res.body.message.should.be.a('string');
+    //       done();
+    //     });
+    // });
 
   });
 });
 
 describe('Password Reset', () => {
-  it('should save a new password set by user and return a success message', (done) => {
+  it('should save new password set by user and return a success message', (done) => {
     chai.request(app)
-      .post('/api/v1/auth/selraya@gmail.com/reset_password')
+      .post('/api/v1/auth/motuswit@gmail.com/reset_password')
       .set('x-access-token', testToken)
       .send({
-        password: 'selenah1',
-        new_password: 'FetishBieb'
+        password: 'MoBillionD',
+        new_password: 'MogotTrillions'
       })
       .end((err, res) => {
         if (err) return done(err);
@@ -357,7 +361,7 @@ describe('Password Reset', () => {
 
   it('should send an email to user if password is not provided', (done) => {
     chai.request(app)
-      .post('/api/v1/auth/selraya@gmail.com/reset_password')
+      .post('/api/v1/auth/motuswit@gmail.com/reset_password')
       .set('x-access-token', testToken)
       .end((err, res) => {
         if (err) return done(err);
@@ -373,7 +377,7 @@ describe('Password Reset', () => {
 
   it('should return an error status code 403 if the password is invalid', (done) => {
     chai.request(app)
-      .post('/api/v1/auth/selraya@gmail.com/reset_password')
+      .post('/api/v1/auth/motuswit@gmail.com/reset_password')
       .send(password)
       .end((err, res) => {
         if (err) return done(err);

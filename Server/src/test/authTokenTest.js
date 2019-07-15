@@ -8,16 +8,15 @@ chai.should();
 
 
 let testToken;
-let wrongToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJzjhdkidhiuhjhoiuowewiyydsgud9tIiwiaWF0IjoxNTYyODkxOTA1LCJqsjkdbhkdliudhwjqhbdbhks";
+
 describe("Testing Token verification on protected routes", () => {
   before(done => {
     chai
       .request(app)
       .post("/api/v1/auth/signin")
       .send({
-        email: 'selraya@gmail.com',
-        password: 'selrayaenah1',
+        email: 'motuswit@gmail.com',
+        password: 'MogotTrillions',
       })
       .end(async (err, res) => {
         testToken = await res.body.data.token;

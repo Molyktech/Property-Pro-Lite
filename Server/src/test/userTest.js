@@ -21,12 +21,12 @@ describe('Users Authentication', () => {
     chai.request(app)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'selena@gmail.com',
-        first_name: 'Janeb',
-        last_name: 'Lawson',
-        password: 'selenah1',
-        address: 'No 1 Adebowale crescent lekki, Lagos',
-        phone_number: '070-6227-8182',
+        first_name: 'Modupes',
+        last_name: 'Grey',
+        email: 'motuswit@gmail.com',
+        password: 'MoBillionD',
+        phone_number: '080-8333-1011',
+        address: 'Hollywood,usa'
       })
       .then((res) => {
         res.should.have.status(500);

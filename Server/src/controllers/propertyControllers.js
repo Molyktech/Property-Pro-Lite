@@ -63,7 +63,7 @@ class Property {
   async getAllProperty(req, res) {
     try {
       const findTables =
-        "SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id";
+        "SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Users.id = Properties.owner";
       if (req.query.type) {
         const {
           type
@@ -103,33 +103,32 @@ class Property {
       });
       return Util.send(res);
     } catch (error) {
-      console.log(error);
+
       Util.setError(500, error.message);
       return Util.send(res);
     }
   }
 
+
+
   async getOneProperty(req, res) {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     console.log(id);
-    const queryTables = `SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id WHERE Properties.id = '${id}'`;
+    const queryTables = `SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Users.id = Properties.owner WHERE Properties.id = ${id}`;
     try {
-      const {
-        rows
-      } = await pool.query(queryTables);
-      if (!rows[0]) {
-        Util.setError(404, "Property not found");
+      const property = await pool.query(queryTables);
+      console.log(property.rowCount);
+
+      if (property.rowCount < 1) {
+        Util.setError(404, 'Property not found');
         return Util.send(res);
       }
-      Util.setSuccess(
-        200,
-        `Found Property with an id of ${req.params.id}`,
-        rows[0]
-      );
+
+      Util.setSuccess(200, `Found Property with an id of ${req.params.id}`, property.rows[0]);
       return Util.send(res);
     } catch (error) {
-      console.log(error.message);
-      Util.setError(500, error.message);
+
+      Util.setError(500, error.message)
       return Util.send(res);
     }
   }
@@ -218,7 +217,7 @@ class Property {
 
   async deleteProperty(req, res) {
     const id = parseInt(req.params.id);
-    console.log(id)
+
     const deleteQuery =
       "DELETE FROM Properties WHERE id = $1 AND owner = $2 returning *";
     try {
@@ -232,7 +231,7 @@ class Property {
       Util.setSuccess(200, "Property DELETED");
       return Util.send(res);
     } catch (error) {
-      console.log(error)
+
       Util.setError(500, error.message);
       return Util.send(res);
     }

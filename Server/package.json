@@ -7,7 +7,7 @@
     "clean": "rm -rf build && mkdir build",
     "build": "babel ./src --out-dir build",
     "start": "set NODE_ENV='PROD' && node ./build/server.js",
-    "test": "set cross-env NODE_ENV=test npm run drop && cross-env NODE_ENV=test npm run migrations && cross-env NODE_ENV=test nyc mocha ./src/test/index.js --recursive --require @babel/register --require @babel/polyfill --timeout=80000 --exit",
+    "test": "set cross-env NODE_ENV=test npm run drop && cross-env NODE_ENV=test npm run migrations && cross-env NODE_ENV=test nyc mocha ./src/test/index.js --recursive --require @babel/register --require @babel/polyfill --timeout=90000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "dev": "nodemon --exec babel-node ./src/server.js",
     "create": "babel-node ./src/database/migrations/database createAllTables",
