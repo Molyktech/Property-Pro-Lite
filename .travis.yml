@@ -15,6 +15,10 @@ cache:
 
 before_install: cd ./Server
 
+env:
+  global:
+    - TOKEN_SECRET=juficasentimentalityandjabawockweezifeoluwapolorimitobegetikosefienuso
+
 install:
   - npm install
 
