@@ -22,6 +22,7 @@ const router = express.Router();
 
 router.get('/', authUser, propertyController.getAllProperty);
 
+
 router.get('/:id', authUser, propertyController.getOneProperty);
 
 router.post('/', authUser, cloudinaryConfig, multerUploads, propertyValidator, propertyController.createProperty);

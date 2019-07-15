@@ -60,77 +60,78 @@ class Property {
     }
   }
 
+
+
+
+
   async getAllProperty(req, res) {
     try {
-      const findTables =
-        "SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Users.id = Properties.owner";
-      if (req.query.type) {
-        const {
-          type
-        } = req.query;
-        const queryTables = `SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id WHERE type = '${type}'`;
-        const {
-          rows,
-          rowCount
-        } = await pool.query(queryTables);
-        if (!rows.length) {
-          Util.setError(404, "No property found");
+      const type = req.query.type;
+      const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
+      const userResult = await db.query(userQuery, [req.user.id]);
+      if (type) {
+        const propertyQuery = `SELECT * FROM Properties where type = $1`;
+        const propertyResult = await db.query(propertyQuery, [type]);
+        if (propertyResult.rowCount < 1) {
+          Util.setError(404, 'Property not found');
           return Util.send(res);
         }
         const data = {
-          ...rows
-        };
-
-        Util.setSuccess(200, "Succesful", {
-          data,
-          rowCount
-        });
+          ...propertyResult.rows[0],
+          ...userResult.rows[0]
+        }
+        Util.setSuccess(200, `Succesful`, data)
         return Util.send(res);
       }
-
-      const {
-        rows,
-        rowCount
-      } = await pool.query(findTables);
-      if (!rows.length) {
-        Util.setError(404, "No property found");
+      const propertyQuery = `SELECT * FROM Properties where owner = $1`;
+      const propertyResult = await db.query(propertyQuery, [req.user.id]);
+      if (propertyResult.rowCount < 1) {
+        Util.setError(404, 'No property available');
         return Util.send(res);
       }
-
-      Util.setSuccess(200, "Success", {
-        ...rows,
-        rowCount
-      });
+      const data = {
+        ...propertyResult.rows[0],
+        ...userResult.rows[0]
+      }
+      Util.setSuccess(200, `Succesful`, data)
       return Util.send(res);
+
     } catch (error) {
 
-      Util.setError(500, error.message);
+      Util.setError(500, error.message)
       return Util.send(res);
     }
   }
 
 
 
-  async getOneProperty(req, res) {
-    const id = req.params.id;
-    console.log(id);
-    const queryTables = `SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Users.id = Properties.owner WHERE Properties.id = ${id}`;
-    try {
-      const property = await pool.query(queryTables);
-      console.log(property.rowCount);
 
-      if (property.rowCount < 1) {
+  async getOneProperty(req, res) {
+    try {
+      const id = req.params.id
+      const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
+      const userResult = await db.query(userQuery, [req.user.id]);
+
+      const propertyQuery = `SELECT * FROM Properties where id = $1`;
+      const propertyResult = await db.query(propertyQuery, [id]);
+      if (propertyResult.rowCount < 1) {
         Util.setError(404, 'Property not found');
         return Util.send(res);
       }
 
-      Util.setSuccess(200, `Found Property with an id of ${req.params.id}`, property.rows[0]);
+      const data = {
+        ...propertyResult.rows[0],
+        ...userResult.rows[0]
+      }
+
+      Util.setSuccess(200, `Found Property with an id of ${req.params.id}`, data)
       return Util.send(res);
     } catch (error) {
 
       Util.setError(500, error.message)
       return Util.send(res);
     }
+
   }
 
   async updateProperty(req, res) {

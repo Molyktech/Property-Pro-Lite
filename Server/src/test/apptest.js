@@ -5,7 +5,9 @@ import chaiHttp from 'chai-http';
 import path from 'path';
 import app from '../app';
 
-
+const {
+  expect
+} = chai;
 chai.use(chaiHttp);
 chai.should();
 
@@ -171,6 +173,35 @@ describe('Property endpoints', () => {
         });
     });
 
+    // test to get a single property
+    it('should get a single property record', (done) => {
+      chai.request(app)
+        .get('/api/v1/property/1')
+        .set('x-access-token', testToken)
+        .end((err, res) => {
+
+          if (err) done(err);
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'message', 'data');
+          res.body.should.have.property('status').that.equals('success');
+          res.body.message.should.be.a('string');
+          res.body.data.should.be.an('object');
+          res.body.data.id.should.be.a('number');
+          res.body.data.status.should.be.a('string');
+          res.body.data.state.should.be.a('string');
+          res.body.data.type.should.be.a('string');
+          res.body.data.city.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.image_url.should.be.a('string');
+          res.body.data.price.should.be.a('number');
+          res.body.data.owneremail.should.be.a('string');
+          res.body.data.ownerphonenumber.should.be.a('string');
+          done();
+        });
+    });
+
+
     // update property as sold
     it('should update a property advert posted by the user as sold', (done) => {
       chai.request(app)
@@ -205,24 +236,22 @@ describe('Property endpoints', () => {
         .end((err, res) => {
 
           if (err) done(err);
-          console.log(res);
-
           res.should.have.status(200);
           res.body.should.be.an('object');
           res.body.should.have.keys('status', 'message', 'data');
           res.body.should.have.property('status').that.equals('success');
           res.body.message.should.be.a('string');
-          res.body.data[0].id.should.be.a('number');
-          res.body.data[0].status.should.be.a('string');
-          res.body.data[0].state.should.be.a('string');
-          res.body.data[0].type.should.be.a('string');
-          res.body.data[0].city.should.be.a('string');
-          res.body.data[0].address.should.be.a('string');
-          res.body.data[0].image_url.should.be.a('string');
-          res.body.data[0].price.should.be.a('number');
-          res.body.data[0].owneremail.should.be.a('string');
-          res.body.data[0].ownerphonenumber.should.be.a('string');
-          res.body.data[0].created_on.should.be.a('string');
+          res.body.data.id.should.be.a('number');
+          res.body.data.status.should.be.a('string');
+          res.body.data.state.should.be.a('string');
+          res.body.data.type.should.be.a('string');
+          res.body.data.city.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.image_url.should.be.a('string');
+          res.body.data.price.should.be.a('number');
+          res.body.data.owneremail.should.be.a('string');
+          res.body.data.ownerphonenumber.should.be.a('string');
+          res.body.data.created_on.should.be.a('string');
           done();
         });
     });
@@ -234,40 +263,12 @@ describe('Property endpoints', () => {
         .end((err, res) => {
 
           if (err) done(err);
+
+          console.log(res.body)
           res.should.have.status(200);
           res.body.should.have.keys('status', 'message', 'data');
-
           res.body.should.be.an('object');
-          res.body.should.have.property('status').that.equals('success');
           res.body.message.should.be.a('string');
-          res.body.data.id.should.be.a('number');
-          res.body.data.status.should.be.a('string');
-          res.body.data.state.should.be.a('string');
-          res.body.data.type.should.be.a('string');
-          res.body.data.city.should.be.a('string');
-          res.body.data.address.should.be.a('string');
-          res.body.data.image_url.should.be.a('string');
-          res.body.data.price.should.be.a('number');
-          res.body.data.ownerEmail.should.be.a('string');
-          res.body.data.ownerPhoneNumber.should.be.a('string');
-          res.body.data.created_on.should.be.a('string');
-          done();
-        });
-    });
-    // test to get a single property
-    it('should get a single property record', (done) => {
-      chai.request(app)
-        .get('/api/v1/property/1')
-        .set('x-access-token', testToken)
-        .end((err, res) => {
-
-          if (err) done(err);
-          res.should.have.status(200);
-          res.body.should.be.an('object');
-          res.body.should.have.keys('status', 'message', 'data');
-          res.body.should.have.property('status').that.equals('success');
-          res.body.message.should.be.a('string');
-          res.body.data.should.be.an('object');
           res.body.data.id.should.be.a('number');
           res.body.data.status.should.be.a('string');
           res.body.data.state.should.be.a('string');
@@ -278,9 +279,11 @@ describe('Property endpoints', () => {
           res.body.data.price.should.be.a('number');
           res.body.data.owneremail.should.be.a('string');
           res.body.data.ownerphonenumber.should.be.a('string');
+          res.body.data.created_on.should.be.a('string');
           done();
         });
     });
+
     // for failure to get a single record
     it('should not get a property and return a message indicating why', (done) => {
       chai.request(app)
@@ -321,20 +324,199 @@ describe('Property endpoints', () => {
     });
 
     // delete a property
-    // it('should delete a property advert provided by the user', (done) => {
-    //   chai.request(app)
-    //     .delete('/api/v1/property/1')
-    //     .set('x-access-token', testToken)
-    //     .end((err, res) => {
-    //       if (err) done(err);
+    it('should delete a property advert provided by the user', (done) => {
+      chai.request(app)
+        .delete('/api/v1/property/1')
+        .set('x-access-token', testToken)
+        .end((err, res) => {
+          if (err) done(err);
 
-    //       res.should.have.status(200);
-    //       res.body.should.be.an('object');
-    //       res.body.status.should.be.a('string');
-    //       res.body.message.should.be.a('string');
-    //       done();
-    //     });
-    // });
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          res.body.status.should.be.a('string');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+
+    it('should check for wrong state formats /empty', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', 5000000)
+        .field('state', '')
+        .field('city', 'Lekki')
+        .field('address', 'No. 1 Admiralty way Lekki, Lagos')
+        .field('type', '2 bedroom')
+        .field('status', 'available')
+        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'error');
+          res.body.error.should.be.an('string');
+          res.body.status.should.equal('Error');
+          done();
+        });
+    });
+
+    it('should check for wrong price formats', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', 'five thousand')
+        .field('state', 'lagos')
+        .field('city', 'Lekki')
+        .field('address', 'No. 1 Admiralty way Lekki, Lagos')
+        .field('type', '2 bedroom')
+        .field('status', 'available')
+        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'error');
+          res.body.error.should.be.an('string');
+          res.body.status.should.equal('Error');
+          done();
+        });
+    });
+
+    it('should check if price empty', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', '')
+        .field('state', 'lagos')
+        .field('city', 'Lekki')
+        .field('address', 'No. 32 off Admiralty way Lekki, Lagos')
+        .field('type', '2 bedroom')
+        .field('status', 'available')
+        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'error');
+          res.body.error.should.be.an('string');
+          res.body.status.should.equal('Error');
+          done();
+        });
+    });
+
+    it('should check if city empty', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', '5000000')
+        .field('state', 'lagos')
+        .field('city', '')
+        .field('address', 'No. 232 off Admiralty way Lekki, Lagos')
+        .field('type', '2 bedroom')
+        .field('status', 'available')
+        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'error');
+          res.body.error.should.be.an('string');
+          res.body.status.should.equal('Error');
+          done();
+        });
+    });
+
+    it('should check if address empty', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', '3000000')
+        .field('state', 'lagos')
+        .field('city', 'Lagos')
+        .field('address', '')
+        .field('type', '2 bedroom')
+        .field('status', 'available')
+        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'error');
+          res.body.error.should.be.an('string');
+          res.body.status.should.equal('Error');
+          done();
+        });
+    });
+
+    it('should check if address is a formatted properly', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', 'five thousand')
+        .field('state', 'lagos')
+        .field('city', '')
+        .field('address', 'No. 2')
+        .field('type', '2 bedroom')
+        .field('status', 'available')
+        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'error');
+          res.body.error.should.be.an('string');
+          res.body.status.should.equal('Error');
+          done();
+        });
+    });
+
+    it('should check if type empty', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', 'five thousand')
+        .field('state', 'lagos')
+        .field('city', 'Lagos')
+        .field('address', 'no, 1 florin street off admiralty way lekki')
+        .field('type', '')
+        .field('status', 'available')
+        .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.keys('status', 'error');
+          res.body.error.should.be.an('string');
+          res.body.status.should.equal('Error');
+          done();
+        });
+    });
+
+
+    it('should save property advert details provided without selecting a file (image)', (done) => {
+      chai.request(app)
+        .post('/api/v1/property')
+        .set('x-access-token', testToken)
+        .field('price', 3500000)
+        .field('state', 'Lagos')
+        .field('city', 'Lekki')
+        .field('address', 'Lekki, Lagos State')
+        .field('type', '2 bedroom')
+        .end((err, res) => {
+          if (err) done(err);
+          res.body.should.have.keys('status', 'message', 'data');
+          res.status.should.equal(201);
+          res.body.should.be.an('object');
+          res.body.should.have.property('status').that.equals('success');
+          res.body.should.have.property('data');
+          res.body.data.should.be.an('object')
+          res.body.data.id.should.be.a('number');
+          res.body.data.status.should.be.a('string');
+          res.body.data.state.should.be.a('string');
+          res.body.data.type.should.be.a('string');
+          res.body.data.city.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.image_url.should.be.a('string');
+          res.body.data.price.should.be.a('number');
+          done();
+        });
+    });
+
 
   });
 });
