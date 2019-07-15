@@ -60,7 +60,10 @@ class Property {
         rows
       } = await db.query(createQuery, values);
       if (rows) {
-        Util.setSuccess(201, 'Property created succesfully', rows[0]);
+        const data = {
+          ...rows[0]
+        }
+        Util.setSuccess(201, 'Property created succesfully', data);
         return Util.send(res);
       }
       Util.setError(400, 'failed');
@@ -91,8 +94,11 @@ class Property {
           Util.setError(404, 'No property found');
           return Util.send(res);
         }
+        const data = {
+          ...rows
+        }
         Util.setSuccess(200, 'Succesful', ({
-          rows,
+          data,
           rowCount
         }));
         return Util.send(res);
@@ -108,7 +114,7 @@ class Property {
       }
 
       Util.setSuccess(200, 'Success', ({
-        rows,
+        ...rows,
         rowCount
       }));
       return Util.send(res);

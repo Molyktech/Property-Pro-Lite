@@ -53,15 +53,15 @@ describe('User endpoints', () => {
           res.body.should.have.property('status').that.equals('success');
           res.body.data.should.be.an('object');
           res.body.data.token.should.be.a('string');
-          res.body.data.user.should.be.an('object');
-          res.body.data.user.email.should.be.a('string');
-          res.body.data.user.first_name.should.be.a('string');
-          res.body.data.user.last_name.should.be.a('string');
-          res.body.data.user.address.should.be.a('string');
-          res.body.data.user.phone_number.should.be.a('string');
-          res.body.data.user.is_admin.should.be.a('boolean');
-          res.body.data.user.should.be.an('object');
-          res.body.data.user.id.should.be.a('number');
+          res.body.data.should.be.an('object');
+          res.body.data.email.should.be.a('string');
+          res.body.data.first_name.should.be.a('string');
+          res.body.data.last_name.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.phone_number.should.be.a('string');
+          res.body.data.is_admin.should.be.a('boolean');
+          res.body.data.should.be.an('object');
+          res.body.data.id.should.be.a('number');
           res.body.data.should.have.property('message').that.is.a('string');
           done();
         });
@@ -82,14 +82,14 @@ describe('User endpoints', () => {
           res.body.should.have.property('status').that.equals('success');
           res.body.data.should.be.an('object');
           res.body.data.token.should.be.a('string');
-          res.body.data.user.should.be.an('object');
-          res.body.data.user.id.should.be.a('number');
-          res.body.data.user.email.should.be.a('string');
-          res.body.data.user.first_name.should.be.a('string');
-          res.body.data.user.last_name.should.be.a('string');
-          res.body.data.user.address.should.be.a('string');
-          res.body.data.user.phone_number.should.be.a('string');
-          res.body.data.user.is_admin.should.be.a('boolean');
+          res.body.data.should.be.an('object');
+          res.body.data.id.should.be.a('number');
+          res.body.data.email.should.be.a('string');
+          res.body.data.first_name.should.be.a('string');
+          res.body.data.last_name.should.be.a('string');
+          res.body.data.address.should.be.a('string');
+          res.body.data.phone_number.should.be.a('string');
+          res.body.data.is_admin.should.be.a('boolean');
           res.body.data.should.have.property('message').that.is.a('string');
           testToken = res.body.data.token;
 
@@ -110,7 +110,7 @@ describe('Property endpoints', () => {
         .field('state', 'Lagos')
         .field('city', 'Lekki')
         .field('address', 'No 1 Admiralty way,Lekki')
-        .field('type', '2-bedroom')
+        .field('type', '2 bedroom')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
           if (err) done(err);
@@ -144,7 +144,7 @@ describe('Property endpoints', () => {
         .field('state', 'Lagos')
         .field('city', 'Lekki')
         .field('address', 'No 20 Admiralty way,Lekki')
-        .field('type', '2-bedroom')
+        .field('type', '2 bedroom')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
           if (err) done(err);
@@ -207,24 +207,24 @@ describe('Property endpoints', () => {
           res.body.should.have.keys('status', 'message', 'data');
           res.body.should.have.property('status').that.equals('success');
           res.body.message.should.be.a('string');
-          res.body.data.rows[0].id.should.be.a('number');
-          res.body.data.rows[0].status.should.be.a('string');
-          res.body.data.rows[0].state.should.be.a('string');
-          res.body.data.rows[0].type.should.be.a('string');
-          res.body.data.rows[0].city.should.be.a('string');
-          res.body.data.rows[0].address.should.be.a('string');
-          res.body.data.rows[0].image_url.should.be.a('string');
-          res.body.data.rows[0].price.should.be.a('number');
-          res.body.data.rows[0].owneremail.should.be.a('string');
-          res.body.data.rows[0].ownerphonenumber.should.be.a('string');
-          res.body.data.rows[0].created_on.should.be.a('string');
+          res.body.data[0].id.should.be.a('number');
+          res.body.data[0].status.should.be.a('string');
+          res.body.data[0].state.should.be.a('string');
+          res.body.data[0].type.should.be.a('string');
+          res.body.data[0].city.should.be.a('string');
+          res.body.data[0].address.should.be.a('string');
+          res.body.data[0].image_url.should.be.a('string');
+          res.body.data[0].price.should.be.a('number');
+          res.body.data[0].owneremail.should.be.a('string');
+          res.body.data[0].ownerphonenumber.should.be.a('string');
+          res.body.data[0].created_on.should.be.a('string');
           done();
         });
     });
 
     it('should get all property advert of a specific type posted on the application', (done) => {
       chai.request(app)
-        .get('/api/v1/property?type=2-bedroom')
+        .get('/api/v1/property?type=2 bedroom')
         .set('x-access-token', testToken)
         .end((err, res) => {
           if (err) done(err);
@@ -234,17 +234,17 @@ describe('Property endpoints', () => {
           res.body.should.be.an('object');
           res.body.should.have.property('status').that.equals('success');
           res.body.message.should.be.a('string');
-          res.body.data.rows[0].id.should.be.a('number');
-          res.body.data.rows[0].status.should.be.a('string');
-          res.body.data.rows[0].state.should.be.a('string');
-          res.body.data.rows[0].type.should.be.a('string');
-          res.body.data.rows[0].city.should.be.a('string');
-          res.body.data.rows[0].address.should.be.a('string');
-          res.body.data.rows[0].image_url.should.be.a('string');
-          res.body.data.rows[0].price.should.be.a('number');
-          res.body.data.rows[0].ownerEmail.should.be.a('string');
-          res.body.data.rows[0].ownerPhoneNumber.should.be.a('string');
-          res.body.data.rows[0].created_on.should.be.a('string');
+          res.body.data[0].id.should.be.a('number');
+          res.body.data[0].status.should.be.a('string');
+          res.body.data[0].state.should.be.a('string');
+          res.body.data[0].type.should.be.a('string');
+          res.body.data[0].city.should.be.a('string');
+          res.body.data[0].address.should.be.a('string');
+          res.body.data[0].image_url.should.be.a('string');
+          res.body.data[0].price.should.be.a('number');
+          res.body.data[0].ownerEmail.should.be.a('string');
+          res.body.data[0].ownerPhoneNumber.should.be.a('string');
+          res.body.data[0].created_on.should.be.a('string');
           done();
         });
     });

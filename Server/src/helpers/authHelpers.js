@@ -49,7 +49,7 @@ const Helper = {
                         status: 'success',
                         data: {
                             token,
-                            user,
+                            ...user,
                             message,
 
                         },
