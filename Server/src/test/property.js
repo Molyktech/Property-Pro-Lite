@@ -15,8 +15,8 @@ describe('Property Validation', () => {
       chai.request(app)
         .post('/api/v1/auth/signin')
         .send({
-          email: 'selena@gmail.com',
-          password: 'selenah1',
+          email: 'selraya@gmail.com',
+          password: 'selrayaenah1',
         })
         .end((err, res) => {
           if (err) return done(err);

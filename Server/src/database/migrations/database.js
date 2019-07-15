@@ -26,7 +26,7 @@ const createAllTables = () => {
     const queryText =
         `
         DROP TABLE IF EXISTS Users;
-        CREATE TABLE IF NOT EXISTS
+        CREATE TABLE 
      Users(
         id SERIAL PRIMARY KEY NOT NULL,
         first_name VARCHAR NOT NULL,
@@ -40,7 +40,7 @@ const createAllTables = () => {
      );
 
      DROP TABLE IF EXISTS Properties;
-     CREATE TABLE IF NOT EXISTS Properties(
+     CREATE TABLE Properties (
         id SERIAL PRIMARY KEY NOT NULL,
         owner INTEGER NOT NULL,
         status VARCHAR(45) DEFAULT 'available',
@@ -66,8 +66,6 @@ const createAllTables = () => {
             pool.end();
         });
 }
-
-
 
 pool.on('error', (err) => {
     console.log(err)

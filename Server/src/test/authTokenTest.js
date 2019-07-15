@@ -16,8 +16,8 @@ describe("Testing Token verification on protected routes", () => {
       .request(app)
       .post("/api/v1/auth/signin")
       .send({
-        email: 'selena@gmail.com',
-        password: 'selenah1',
+        email: 'selraya@gmail.com',
+        password: 'selrayaenah1',
       })
       .end(async (err, res) => {
         testToken = await res.body.data.token;
@@ -25,17 +25,7 @@ describe("Testing Token verification on protected routes", () => {
         return done();
       });
   });
-  // it("should return error 400 when a wrong token is used", done => {
-  //   chai
-  //     .request(app)
-  //     .patch("/api/v1/property/1/sold")
-  //     .set("x-access-token", wrongToken)
-  //     .end((err, res) => {
-  //       if (err) done(err);
-  //       res.status.should.equal(400);
-  //       done();
-  //     });
-  // });
+
   it("should return error 403 when there is no token provided", done => {
     chai
       .request(app)
