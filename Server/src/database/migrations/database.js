@@ -22,11 +22,9 @@ pool.on('connect', () => {
     console.log(connectionString)
 });
 /*** CREATE TABLES */
-const createAllTables = () => {
-    const queryText =
-        `
-        DROP TABLE IF EXISTS Users;
-        CREATE TABLE IF NOT EXISTS
+const queryText = `DROP TABLE IF EXISTS Properties, Users CASCADE;
+     
+        CREATE TABLE 
      Users(
         id SERIAL PRIMARY KEY NOT NULL,
         first_name VARCHAR NOT NULL,
@@ -39,10 +37,9 @@ const createAllTables = () => {
 
      );
 
-     DROP TABLE IF EXISTS Properties;
-     CREATE TABLE IF NOT EXISTS Properties(
+     CREATE TABLE Properties (
         id SERIAL PRIMARY KEY NOT NULL,
-        owner INTEGER NOT NULL,
+        owner INTEGER REFERENCES Users(id) NOT NULL,
         status VARCHAR(45) DEFAULT 'available',
         price FLOAT NOT NULL,
         state VARCHAR(45) NOT NULL,
@@ -50,40 +47,18 @@ const createAllTables = () => {
         address TEXT NOT NULL,
         type VARCHAR(128) NOT NULL,
         created_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-        image_url TEXT NOT NULL,
-        FOREIGN KEY (owner) REFERENCES Users(id) ON DELETE CASCADE
+        image_url TEXT NOT NULL
+        
     );
      
      `;
 
-    pool.query(queryText)
-        .then((res) => {
-            console.log(res);
-            pool.end();
-        })
-        .catch((err) => {
-            console.log(err);
-            pool.end();
-        });
-}
-
-
-
-pool.on('error', (err) => {
-    console.log(err)
-});
-
-pool.on('remove', () => {
-    console.log('client removed');
-    process.exit(0);
-});
-
-createAllTables();
-
-
-export {
-
-    createAllTables
-}
-
-require('make-runnable');
+pool.query(queryText)
+    .then((res) => {
+        console.log(res);
+        pool.end();
+    })
+    .catch((err) => {
+        console.log(err);
+        pool.end();
+    });

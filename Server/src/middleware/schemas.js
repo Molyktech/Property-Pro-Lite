@@ -57,7 +57,7 @@ const propertyValidator = (req, res, next) => {
   } = req.body;
   price = Number(price);
   req.body.price = price;
-
+console.log(req.body);
   return Joi.validate(req.body, propertySchema, (err) => {
     if (err) {
       return res.status(400).json({

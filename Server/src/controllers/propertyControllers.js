@@ -1,18 +1,15 @@
 /* eslint-disable class-methods-use-this */
 import {
   Pool
-} from 'pg';
-import dotenv from 'dotenv';
-
-
+} from "pg";
+import dotenv from "dotenv";
 
 import {
-  imageUpload,
-} from '../middleware/multer';
+  imageUpload
+} from "../middleware/multer";
 
-import db from '../models/index';
-import Util from '../utils/Utils';
-
+import db from "../models/index";
+import Util from "../utils/Utils";
 
 dotenv.config();
 
@@ -21,18 +18,16 @@ const pool = new Pool({
 });
 
 class Property {
-
   async createProperty(req, res) {
     try {
-      let imageUrl = 'https://via.placeholder.com/250/92c952';
+      let imageUrl = "https://via.placeholder.com/250/92c952";
       if (req.file) {
         const fileUrl = await imageUpload(req);
         if (fileUrl) {
           imageUrl = fileUrl;
         } else {
-          imageUrl = 'https://via.placeholder.com/250/92c952';
+          imageUrl = "https://via.placeholder.com/250/92c952";
         }
-
       }
 
       const {
@@ -45,100 +40,99 @@ class Property {
       const createQuery = `INSERT INTO Properties( price, state, city, address, type, image_url, owner)
     VALUES( $1, $2, $3, $4, $5, $6, $7)  returning *`;
 
-      const values = [
-        price,
-        state,
-        city,
-        address,
-        type,
-        imageUrl,
-        req.user.id
-
-      ];
+      const values = [price, state, city, address, type, imageUrl, req.user.id];
 
       const {
         rows
       } = await db.query(createQuery, values);
       if (rows) {
-        Util.setSuccess(201, 'Property created succesfully', rows[0]);
+        const data = {
+          ...rows[0]
+        };
+        Util.setSuccess(201, "Property created succesfully", data);
         return Util.send(res);
       }
-      Util.setError(400, 'failed');
+      Util.setError(400, "failed");
       return Util.send(res);
-
     } catch (error) {
       Util.setError(500, error.message);
       return Util.send(res);
-
     }
-
   }
+
+
+
+
 
   async getAllProperty(req, res) {
-
     try {
-      const findTables = 'SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id';
-      if (req.query.type) {
-        const {
-          type
-        } = req.query;
-        const queryTables = `SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id WHERE type = '${type}'`;
-        const {
-          rows,
-          rowCount
-        } = await pool.query(queryTables);
-        if (!rows.length) {
-          Util.setError(404, 'No property found');
+      const type = req.query.type;
+      const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
+      const userResult = await db.query(userQuery, [req.user.id]);
+      if (type) {
+        const propertyQuery = `SELECT * FROM Properties where type = $1`;
+        const propertyResult = await db.query(propertyQuery, [type]);
+        if (propertyResult.rowCount < 1) {
+          Util.setError(404, 'Property not found');
           return Util.send(res);
         }
-        Util.setSuccess(200, 'Succesful', ({
-          rows,
-          rowCount
-        }));
+        const data = {
+          ...propertyResult.rows[0],
+          ...userResult.rows[0]
+        }
+        Util.setSuccess(200, `Succesful`, data)
         return Util.send(res);
       }
-
-      const {
-        rows,
-        rowCount
-      } = await pool.query(findTables);
-      if (!rows.length) {
-        Util.setError(404, 'No property found');
+      const propertyQuery = `SELECT * FROM Properties where owner = $1`;
+      const propertyResult = await db.query(propertyQuery, [req.user.id]);
+      if (propertyResult.rowCount < 1) {
+        Util.setError(404, 'No property available');
         return Util.send(res);
       }
-
-      Util.setSuccess(200, 'Success', ({
-        rows,
-        rowCount
-      }));
+      const data = {
+        ...propertyResult.rows[0],
+        ...userResult.rows[0]
+      }
+      Util.setSuccess(200, `Succesful`, data)
       return Util.send(res);
 
     } catch (error) {
-      Util.setError(500, error.message);
-      return Util.send(res);
-    }
-  }
 
-
-  async getOneProperty(req, res) {
-    const id = parseInt(req.params.id);
-    const queryTables = `SELECT Properties.id, Properties.state, Properties.city, Properties.type, Properties.status, Properties.address, Properties.price, Properties.created_on, Properties.image_url, Users.email AS ownerEmail, Users.phone_number AS ownerPhoneNumber FROM Users JOIN Properties ON Properties.owner = Users.id WHERE Properties.id = '${id}'`;
-    try {
-      const {
-        rows
-      } = await pool.query(queryTables);
-      if (!rows[0]) {
-        Util.setError(404, 'Property not found');
-        return Util.send(res);
-      }
-      Util.setSuccess(200, `Found Property with an id of ${req.params.id}`, rows[0]);
-      return Util.send(res);
-    } catch (error) {
       Util.setError(500, error.message)
       return Util.send(res);
     }
   }
 
+
+
+
+  async getOneProperty(req, res) {
+    try {
+      const id = req.params.id
+      const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
+      const userResult = await db.query(userQuery, [req.user.id]);
+
+      const propertyQuery = `SELECT * FROM Properties where id = $1`;
+      const propertyResult = await db.query(propertyQuery, [id]);
+      if (propertyResult.rowCount < 1) {
+        Util.setError(404, 'Property not found');
+        return Util.send(res);
+      }
+
+      const data = {
+        ...propertyResult.rows[0],
+        ...userResult.rows[0]
+      }
+
+      Util.setSuccess(200, `Found Property with an id of ${req.params.id}`, data)
+      return Util.send(res);
+    } catch (error) {
+
+      Util.setError(500, error.message)
+      return Util.send(res);
+    }
+
+  }
 
   async updateProperty(req, res) {
     const {
@@ -155,17 +149,24 @@ class Property {
       if (fileUrl) {
         imageUrl = fileUrl;
       } else {
-        imageUrl = 'https://via.placeholder.com/250/92c952';
+        imageUrl = "https://via.placeholder.com/250/92c952";
       }
     }
-    const findOneQuery = 'SELECT * FROM Properties WHERE id = $1 AND owner = $2';
+    const findOneQuery =
+      "SELECT * FROM Properties WHERE id = $1 AND owner = $2";
     const updateOneQuery = `UPDATE Properties SET state = $1, price = $2, address = $3, city = $4, type = $5, image_url = $6 WHERE id = $7 AND owner = $8 returning *`;
     try {
       const {
         rows
-      } = await db.query(findOneQuery, [parseInt(req.params.id), req.user.id]);
+      } = await db.query(findOneQuery, [
+        parseInt(req.params.id),
+        req.user.id
+      ]);
       if (!rows[0]) {
-        Util.setError(404, 'Property not found, input a correct id and try again');
+        Util.setError(
+          404,
+          "Property not found, input a correct id and try again"
+        );
         return Util.send(res);
       }
       const values = [
@@ -180,59 +181,58 @@ class Property {
       ];
 
       const response = await db.query(updateOneQuery, values);
-      Util.setSuccess(200, 'Update Successful', response.rows[0]);
+      Util.setSuccess(200, "Update Successful", response.rows[0]);
       return Util.send(res);
-
     } catch (error) {
       Util.setError(500, error.message);
       return Util.send(res);
     }
-
   }
 
   async soldProperty(req, res) {
     const id = parseInt(req.params.id);
-    const findOneQuery = 'SELECT * FROM Properties WHERE id = $1 AND owner = $2';
+    const findOneQuery =
+      "SELECT * FROM Properties WHERE id = $1 AND owner = $2";
     const updateOneQuery = `UPDATE Properties SET status = $1 WHERE id = $2 AND owner = $3 returning *`;
     try {
       const {
         rows
       } = await db.query(findOneQuery, [id, req.user.id]);
       if (!rows[0]) {
-        Util.setError(404, 'Property not found, input a correct id and try again');
+        Util.setError(
+          404,
+          "Property not found, input a correct id and try again"
+        );
         return Util.send(res);
       }
-      const values = [
-        'sold',
-        id,
-        req.user.id
-      ];
+      const values = ["sold", id, req.user.id];
 
       const response = await db.query(updateOneQuery, values);
-      Util.setSuccess(200, 'Status update Successful', response.rows[0]);
+      Util.setSuccess(200, "Status update Successful", response.rows[0]);
       return Util.send(res);
-
     } catch (error) {
       Util.setError(500, error.message);
       return Util.send(res);
     }
-
   }
 
   async deleteProperty(req, res) {
     const id = parseInt(req.params.id);
-    const deleteQuery = 'DELETE FROM Properties WHERE id = $1 AND owner = $2 returning *';
+
+    const deleteQuery =
+      "DELETE FROM Properties WHERE id = $1 AND owner = $2 returning *";
     try {
       const {
         rows
       } = await db.query(deleteQuery, [id, req.user.id]);
       if (!rows[0]) {
-        Util.setError(404, 'Property not found');
+        Util.setError(404, "Property not found");
         return Util.send(res);
       }
-      Util.setSuccess(200, 'Property DELETED')
+      Util.setSuccess(200, "Property DELETED");
       return Util.send(res);
     } catch (error) {
+
       Util.setError(500, error.message);
       return Util.send(res);
     }
