@@ -9,11 +9,6 @@ services:
 addons:
   postgresql: "9.6"
 
-jwt:
-  secure: juficasentimentalityandjabawockweezifeoluwapolorimitobegetikosefienuso
-env:
-  - TOKEN_SECRET=secret
-
 cache:
   directories:
     - "node_modules"
