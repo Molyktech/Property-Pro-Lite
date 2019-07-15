@@ -10,7 +10,7 @@ addons:
   postgresql: "9.6"
 
 jwt:
-  secure: secret
+  secure: juficasentimentalityandjabawockweezifeoluwapolorimitobegetikosefienuso
 env:
   - TOKEN_SECRET=secret
 
