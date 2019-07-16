@@ -12,15 +12,17 @@ const User = {
             email,
             password,
             address,
-            phone_number
+            phone_number,
+            is_admin,
         } = req.body;
+        const admin = is_admin === 'true' ? true : false;
         password = await Helper.hashPassword(password);
         const createQuery = `INSERT INTO Users
           (first_name, last_name, email, password, phone_number, address, is_admin )
-              VALUES($1, $2, $3, $4, $5, $6, DEFAULT)
+              VALUES($1, $2, $3, $4, $5, $6, $7)
               returning *`;
         const values = [
-            first_name, last_name, email, password, phone_number, address
+            first_name, last_name, email, password, phone_number, address, admin
         ];
         try {
             const {
