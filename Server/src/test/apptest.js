@@ -111,7 +111,7 @@ describe('Property endpoints', () => {
     it('should create and a save a property advert provided by registered user to the db', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', 5000000)
         .field('state', 'Lagos')
         .field('city', 'Lekki')
@@ -119,6 +119,7 @@ describe('Property endpoints', () => {
         .field('type', '2-bedroom')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
+          console.log(res)
           if (err) done(err);
           res.should.have.status(201);
           res.body.should.be.an('object');
@@ -145,7 +146,7 @@ describe('Property endpoints', () => {
     it('should update property advert previously created by the user', (done) => {
       chai.request(app)
         .patch('/api/v1/property/1')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', 1000000)
         .field('state', 'Lagos')
         .field('city', 'Lekki')
@@ -177,7 +178,7 @@ describe('Property endpoints', () => {
     it('should get a single property record', (done) => {
       chai.request(app)
         .get('/api/v1/property/1')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
 
           if (err) done(err);
@@ -206,7 +207,7 @@ describe('Property endpoints', () => {
     it('should update a property advert posted by the user as sold', (done) => {
       chai.request(app)
         .patch('/api/v1/property/1/sold')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
           if (err) done(err);
           res.should.have.status(200);
@@ -232,7 +233,7 @@ describe('Property endpoints', () => {
     it('should get all property record', (done) => {
       chai.request(app)
         .get('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
 
           if (err) done(err);
@@ -259,7 +260,7 @@ describe('Property endpoints', () => {
     it('should get all property advert of a specific type posted on the application', (done) => {
       chai.request(app)
         .get('/api/v1/property?type=2-bedroom')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
 
           if (err) done(err);
@@ -288,7 +289,7 @@ describe('Property endpoints', () => {
     it('should not get a property and return a message indicating why', (done) => {
       chai.request(app)
         .get('/api/v1/property/39')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
           if (err) done(err)
 
@@ -309,7 +310,7 @@ describe('Property endpoints', () => {
     it('should not delete a property and return a message indicating why ', (done) => {
       chai.request(app)
         .delete('/api/v1/property/20')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
 
           if (err) done(err);
@@ -327,7 +328,7 @@ describe('Property endpoints', () => {
     it('should delete a property advert provided by the user', (done) => {
       chai.request(app)
         .delete('/api/v1/property/1')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
           if (err) done(err);
 
@@ -343,7 +344,7 @@ describe('Property endpoints', () => {
     it('should check for wrong state formats /empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', 5000000)
         .field('state', '')
         .field('city', 'Lekki')
@@ -364,7 +365,7 @@ describe('Property endpoints', () => {
     it('should check for wrong price formats', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', 'five thousand')
         .field('state', 'lagos')
         .field('city', 'Lekki')
@@ -385,7 +386,7 @@ describe('Property endpoints', () => {
     it('should check if price empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', '')
         .field('state', 'lagos')
         .field('city', 'Lekki')
@@ -406,7 +407,7 @@ describe('Property endpoints', () => {
     it('should check if city empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', '5000000')
         .field('state', 'lagos')
         .field('city', '')
@@ -427,7 +428,7 @@ describe('Property endpoints', () => {
     it('should check if address empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', '3000000')
         .field('state', 'lagos')
         .field('city', 'Lagos')
@@ -448,7 +449,7 @@ describe('Property endpoints', () => {
     it('should check if address is a formatted properly', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', 'five thousand')
         .field('state', 'lagos')
         .field('city', '')
@@ -469,7 +470,7 @@ describe('Property endpoints', () => {
     it('should check if type empty', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', 'five thousand')
         .field('state', 'lagos')
         .field('city', 'Lagos')
@@ -491,7 +492,7 @@ describe('Property endpoints', () => {
     it('should save property advert details provided without selecting a file (image)', (done) => {
       chai.request(app)
         .post('/api/v1/property')
-        .set('x-access-token', testToken)
+        .set('Authorization', `Bearer ${testToken}`)
         .field('price', 3500000)
         .field('state', 'Lagos')
         .field('city', 'Lekki')
@@ -525,7 +526,7 @@ describe('Password Reset', () => {
   it('should save new password set by user and return a success message', (done) => {
     chai.request(app)
       .post('/api/v1/auth/motuswit@gmail.com/reset_password')
-      .set('x-access-token', testToken)
+      .set('Authorization', `Bearer ${testToken}`)
       .send({
         password: 'MoBillionD',
         new_password: 'MogotTrillions'
@@ -544,7 +545,7 @@ describe('Password Reset', () => {
   it('should send an email to user if password is not provided', (done) => {
     chai.request(app)
       .post('/api/v1/auth/motuswit@gmail.com/reset_password')
-      .set('x-access-token', testToken)
+      .set('Authorization', `Bearer ${testToken}`)
       .end((err, res) => {
         if (err) return done(err);
         res.body.should.have.property('status');
