@@ -28,12 +28,11 @@ const signupSchema = Joi.object().keys({
   // accepts alphanumeric strings at least 7 characters long and is not empty
   password,
   email,
+  is_admin: Joi.boolean(),
   address: Joi.string().trim().required(),
   // phone is required
-  // and must be a string of the format XXX-XXX-XXXX
-  // where X is a digit (0-9)
-  phone_number: Joi.string().regex(/^\d{3}-\d{4}-\d{4}$/).required().error(() => ({
-    message: 'Phone is required and must follow the format 070-3331-8186',
+  phone_number: Joi.string().min(11).max(11).required().error(() => ({
+    message: 'Phone is required and must be 11 digits long ',
   })),
 });
 
@@ -57,7 +56,7 @@ const propertyValidator = (req, res, next) => {
   } = req.body;
   price = Number(price);
   req.body.price = price;
-console.log(req.body);
+
   return Joi.validate(req.body, propertySchema, (err) => {
     if (err) {
       return res.status(400).json({
