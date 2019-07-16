@@ -119,7 +119,7 @@ describe('Property endpoints', () => {
         .field('type', '2-bedroom')
         .attach('image', path.join(`${__dirname}/images/apartments.jpg`))
         .end((err, res) => {
-          console.log(res)
+          console.log(err)
           if (err) done(err);
           res.should.have.status(201);
           res.body.should.be.an('object');
@@ -264,8 +264,6 @@ describe('Property endpoints', () => {
         .end((err, res) => {
 
           if (err) done(err);
-
-          console.log(res.body)
           res.should.have.status(200);
           res.body.should.have.keys('status', 'message', 'data');
           res.body.should.be.an('object');
@@ -563,7 +561,6 @@ describe('Password Reset', () => {
       .post('/api/v1/auth/motuswit@gmail.com/reset_password')
       .send(password)
       .end((err, res) => {
-        console.log(err)
         if (err) return done(err);
         res.body.should.have.property('status');
         res.status.should.equal(403);
