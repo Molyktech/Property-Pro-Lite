@@ -275,6 +275,7 @@ describe('Property endpoints', () => {
           res.body.data[0].type.should.be.a('string');
           res.body.data[0].city.should.be.a('string');
           res.body.data[0].address.should.be.a('string');
+          res.body.data[0].owner.should.be.a('number');
           res.body.data[0].image_url.should.be.a('string');
           res.body.data[0].price.should.be.a('number');
           res.body.data[0].owner_email.should.be.a('string');
