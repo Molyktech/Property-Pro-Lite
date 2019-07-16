@@ -22,6 +22,7 @@ const authUser = async (req, res, next) => {
     if (token) {
 
       decoded = await jwt.verify(token, process.env.TOKEN_SECRET);
+
       const text = 'SELECT * FROM Users WHERE id = $1';
       const {
         rows
@@ -35,6 +36,8 @@ const authUser = async (req, res, next) => {
       req.user = {
         id: decoded.id,
         email: decoded.email,
+        phone_number: decoded.phone_number,
+        is_admin: decoded.is_admin
       };
       next();
 

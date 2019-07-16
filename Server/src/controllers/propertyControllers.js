@@ -65,36 +65,82 @@ class Property {
 
 
   async getAllProperty(req, res) {
+    // try {
+    //   const type = req.query.type;
+    //   const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
+    //   const userResult = await db.query(userQuery, [req.user.id]);
+    //   if (type) {
+    //     const propertyQuery = `SELECT * FROM Properties where type = $1 AND owner =$2`;
+    //     const propertyResult = await db.query(propertyQuery, [type, req.user.id]);
+    //     if (propertyResult.rowCount < 1) {
+    //       Util.setError(404, 'Property not found');
+    //       return Util.send(res);
+    //     }
+    //     const data = {
+    //       ...propertyResult.rows[0],
+    //       ...userResult.rows[0]
+    //     }
+    //     Util.setSuccess(200, `Succesful`, data)
+    //     return Util.send(res);
+    //   }
+    //   const propertyQuery = `SELECT * FROM Properties where owner = $1`;
+    //   const propertyResult = await db.query(propertyQuery, [req.user.id]);
+    //   if (propertyResult.rowCount < 1) {
+    //     Util.setError(404, 'No property available');
+    //     return Util.send(res);
+    //   }
+    //   const data = {
+    //     ...propertyResult.rows[0],
+    //     ...userResult.rows[0]
+    //   }
+    //   Util.setSuccess(200, `Succesful`, data)
+    //   return Util.send(res);
+
+    // } catch (error) {
+
+    //   Util.setError(500, error.message)
+    //   return Util.send(res);
+    // }
+
+
+    const {
+      type
+    } = req.query;
+
     try {
-      const type = req.query.type;
-      const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
-      const userResult = await db.query(userQuery, [req.user.id]);
-      if (type) {
-        const propertyQuery = `SELECT * FROM Properties where type = $1`;
-        const propertyResult = await db.query(propertyQuery, [type]);
-        if (propertyResult.rowCount < 1) {
-          Util.setError(404, 'Property not found');
-          return Util.send(res);
-        }
+      if (req.query.type) {
+        const query = `SELECT p.id, p.status, p.type, p.state, p.city, p.address, p.owner, p.price, p.created_on, p.image_url, u.email AS owner_email, u.phone_number AS owner_phone_number FROM Properties AS p
+    JOIN Users AS u ON u.id=p.owner WHERE type = $1`;
+        const {
+          rows
+        } = await db.query(query, [type]);
         const data = {
-          ...propertyResult.rows[0],
-          ...userResult.rows[0]
+          ...rows
         }
-        Util.setSuccess(200, `Succesful`, data)
-        return Util.send(res);
+        console.log(data)
+        if (rows.length) {
+          Util.setSuccess(200, 'success', data)
+          return Util.send(res)
+        } else {
+          Util.setError(404, 'No property available')
+          return Util.send(res)
+        }
       }
-      const propertyQuery = `SELECT * FROM Properties where owner = $1`;
-      const propertyResult = await db.query(propertyQuery, [req.user.id]);
-      if (propertyResult.rowCount < 1) {
+
+      const adminQuery = `SELECT p.id, p.status, p.type, p.state, p.city, p.address, p.owner, p.price, p.created_on, p.image_url, u.email AS owner_email, u.phone_number AS owner_phone_number FROM Properties AS p
+        JOIN Users AS u ON u.id=p.owner`;
+      const {
+        rows,
+        rowCount
+      } = await db.query(adminQuery);
+
+      if (rowCount < 1) {
         Util.setError(404, 'No property available');
         return Util.send(res);
       }
-      const data = {
-        ...propertyResult.rows[0],
-        ...userResult.rows[0]
-      }
-      Util.setSuccess(200, `Succesful`, data)
-      return Util.send(res);
+
+      Util.setSuccess(200, 'success', rows)
+      return Util.send(res)
 
     } catch (error) {
 
@@ -108,7 +154,9 @@ class Property {
 
   async getOneProperty(req, res) {
     try {
-      const id = req.params.id
+      const {
+        id
+      } = req.params
       const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
       const userResult = await db.query(userQuery, [req.user.id]);
 
@@ -127,7 +175,6 @@ class Property {
       Util.setSuccess(200, `Found Property with an id of ${req.params.id}`, data)
       return Util.send(res);
     } catch (error) {
-
       Util.setError(500, error.message)
       return Util.send(res);
     }

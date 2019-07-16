@@ -26,7 +26,8 @@ const Helper = {
         const payload = {
             id: user.id,
             email: user.email,
-            phone_number: user.phone_number
+            phone_number: user.phone_number,
+            is_admin: user.is_admin
 
         };
 

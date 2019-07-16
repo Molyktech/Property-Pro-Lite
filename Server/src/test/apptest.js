@@ -16,8 +16,10 @@ const signupUser = {
   last_name: 'Grey',
   email: 'motuswit@gmail.com',
   password: 'MoBillionD',
-  phone_number: '080-8333-1011',
-  address: 'Hollywood,usa'
+  phone_number: '08083331011',
+  address: 'Hollywood,usa',
+
+
 }
 
 const loginUser = {
@@ -26,7 +28,7 @@ const loginUser = {
 }
 
 const password = {
-  assword: 'Fiyjayc22',
+  password: 'Fiyjayc22',
   new_password: 'hio'
 };
 // user auth test
@@ -49,6 +51,7 @@ describe('Home endpoint', () => {
 });
 
 describe('User endpoints', () => {
+
   describe('POST /auth', () => {
     it('should create a new user/ signup a new user to the database', (done) => {
       chai.request(app)
@@ -180,7 +183,6 @@ describe('Property endpoints', () => {
         .get('/api/v1/property/1')
         .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
-
           if (err) done(err);
           res.should.have.status(200);
           res.body.should.be.an('object');
@@ -242,17 +244,18 @@ describe('Property endpoints', () => {
           res.body.should.have.keys('status', 'message', 'data');
           res.body.should.have.property('status').that.equals('success');
           res.body.message.should.be.a('string');
-          res.body.data.id.should.be.a('number');
-          res.body.data.status.should.be.a('string');
-          res.body.data.state.should.be.a('string');
-          res.body.data.type.should.be.a('string');
-          res.body.data.city.should.be.a('string');
-          res.body.data.address.should.be.a('string');
-          res.body.data.image_url.should.be.a('string');
-          res.body.data.price.should.be.a('number');
-          res.body.data.owneremail.should.be.a('string');
-          res.body.data.ownerphonenumber.should.be.a('string');
-          res.body.data.created_on.should.be.a('string');
+          res.body.data[0].id.should.be.a('number');
+          res.body.data[0].status.should.be.a('string');
+          res.body.data[0].state.should.be.a('string');
+          res.body.data[0].type.should.be.a('string');
+          res.body.data[0].city.should.be.a('string');
+          res.body.data[0].address.should.be.a('string');
+          res.body.data[0].owner.should.be.a('number');
+          res.body.data[0].image_url.should.be.a('string');
+          res.body.data[0].price.should.be.a('number');
+          res.body.data[0].owner_email.should.be.a('string');
+          res.body.data[0].owner_phone_number.should.be.a('string');
+          res.body.data[0].created_on.should.be.a('string');
           done();
         });
     });
@@ -262,23 +265,21 @@ describe('Property endpoints', () => {
         .get('/api/v1/property?type=2-bedroom')
         .set('Authorization', `Bearer ${testToken}`)
         .end((err, res) => {
-
           if (err) done(err);
-          res.should.have.status(200);
           res.body.should.have.keys('status', 'message', 'data');
           res.body.should.be.an('object');
           res.body.message.should.be.a('string');
-          res.body.data.id.should.be.a('number');
-          res.body.data.status.should.be.a('string');
-          res.body.data.state.should.be.a('string');
-          res.body.data.type.should.be.a('string');
-          res.body.data.city.should.be.a('string');
-          res.body.data.address.should.be.a('string');
-          res.body.data.image_url.should.be.a('string');
-          res.body.data.price.should.be.a('number');
-          res.body.data.owneremail.should.be.a('string');
-          res.body.data.ownerphonenumber.should.be.a('string');
-          res.body.data.created_on.should.be.a('string');
+          res.body.data[0].id.should.be.a('number');
+          res.body.data[0].status.should.be.a('string');
+          res.body.data[0].state.should.be.a('string');
+          res.body.data[0].type.should.be.a('string');
+          res.body.data[0].city.should.be.a('string');
+          res.body.data[0].address.should.be.a('string');
+          res.body.data[0].image_url.should.be.a('string');
+          res.body.data[0].price.should.be.a('number');
+          res.body.data[0].owner_email.should.be.a('string');
+          res.body.data[0].owner_phone_number.should.be.a('string');
+          res.body.data[0].created_on.should.be.a('string');
           done();
         });
     });

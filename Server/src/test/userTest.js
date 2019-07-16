@@ -25,7 +25,7 @@ describe('Users Authentication', () => {
         last_name: 'Grey',
         email: 'motuswit@gmail.com',
         password: 'MoBillionD',
-        phone_number: '080-8333-1011',
+        phone_number: '08833331011',
         address: 'Hollywood,usa'
       })
       .then((res) => {

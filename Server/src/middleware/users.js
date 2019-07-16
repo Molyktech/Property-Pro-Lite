@@ -15,6 +15,7 @@ export default class UserMiddleware {
 
         Joi.validate(req.body, signupSchema, (error, value) => {
             if (error) {
+
                 return res.status(400).json({
                     status: 'Error',
                     error: error.details[0].message,
