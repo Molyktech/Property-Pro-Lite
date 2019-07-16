@@ -563,6 +563,7 @@ describe('Password Reset', () => {
       .post('/api/v1/auth/motuswit@gmail.com/reset_password')
       .send(password)
       .end((err, res) => {
+        console.log(err)
         if (err) return done(err);
         res.body.should.have.property('status');
         res.status.should.equal(403);

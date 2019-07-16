@@ -9,10 +9,6 @@ services:
 addons:
   postgresql: "9.6"
 
-env:
-  global:
-    - TOKEN_SECRET=juficasentimentalityandjabawockweezifeoluwapolorimitobegetikosefienuso
-
 cache:
   directories:
     - "node_modules"
