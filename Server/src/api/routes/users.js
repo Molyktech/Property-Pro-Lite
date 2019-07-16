@@ -16,6 +16,6 @@ router.post('/signup', UserMiddleware.checkIsValidBody, User.create);
 
 router.post('/signin', UserMiddleware.checkLogin, User.login);
 
-router.post('/:useremail/reset_password', UserMiddleware.checkEmail, authUser, sendPassword, UserMiddleware.checkPassword, User.resetPassword);
+router.post('/:useremail/reset_password', authUser, UserMiddleware.checkEmail, sendPassword, UserMiddleware.checkPassword, User.resetPassword);
 
 export default router;

@@ -30,6 +30,7 @@ describe("Testing Token verification on protected routes", () => {
       .request(app)
       .patch("/api/v1/property/1/sold")
       .end((err, res) => {
+
         if (err) done(err);
         res.status.should.equal(403);
         done();
