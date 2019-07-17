@@ -1,17 +1,19 @@
 "use strict";
 
-var _require = require('pg'),
-  Pool = _require.Pool;
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var dotenv = require('dotenv');
+var _pg = require("pg");
 
-dotenv.config();
+var _dotenv = _interopRequireDefault(require("dotenv"));
+
+_dotenv["default"].config();
+
 var connectionString = null;
 if (process.env.NODE_ENV === 'test') connectionString = process.env.DATABASE_URL_TEST;
 if (process.env.NODE_ENV === 'PROD') connectionString = process.env.DATABASE_URL;
 if (process.env.NODE_ENV === 'development') connectionString = process.env.DATABASE_URL_DEV;
 console.log(connectionString);
-var pool = new Pool({
+var pool = new _pg.Pool({
   connectionString: connectionString
 });
 pool.on('connect', function () {

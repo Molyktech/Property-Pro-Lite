@@ -1,8 +1,7 @@
-const {
+import {
     Pool
-} = require('pg');
-const dotenv = require('dotenv');
-
+} from 'pg';
+import dotenv from 'dotenv';
 dotenv.config();
 
 let connectionString = null;
