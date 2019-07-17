@@ -1,15 +1,15 @@
 "use strict";
 
 var _require = require('pg'),
-    Pool = _require.Pool;
+  Pool = _require.Pool;
 
 var dotenv = require('dotenv');
 
 dotenv.config();
 var connectionString = null;
 if (process.env.NODE_ENV === 'test') connectionString = process.env.DATABASE_URL_TEST;
-if (process.env.NODE_ENV === 'PROD') connectionString = process.env.DATABASE_URL_PROD;
-if (process.env.NODE_ENV === 'development') connectionString = process.env.DATABASE_URL;
+if (process.env.NODE_ENV === 'PROD') connectionString = process.env.DATABASE_URL;
+if (process.env.NODE_ENV === 'development') connectionString = process.env.DATABASE_URL_DEV;
 console.log(connectionString);
 var pool = new Pool({
   connectionString: connectionString
