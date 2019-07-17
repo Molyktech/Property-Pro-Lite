@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -12,8 +14,6 @@ var _datauri = _interopRequireDefault(require("datauri"));
 var _path = _interopRequireDefault(require("path"));
 
 var _cloudinaryConfig = require("../config/cloudinaryConfig");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var storage = _multer["default"].memoryStorage();
 
