@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -17,16 +19,14 @@ var _cloudinaryConfig = require("../../config/cloudinaryConfig");
 
 var _propertyControllers = _interopRequireDefault(require("../../controllers/propertyControllers"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 /* eslint-disable linebreak-style */
 var router = _express["default"].Router();
 
-router.get('/', _propertyControllers["default"].getAllProperty);
-router.get('/:id', _propertyControllers["default"].getOneProperty);
-router.post('/', _auth.authLoggedIn, _cloudinaryConfig.cloudinaryConfig, _multer.multerUploads, _schemas.propertyValidator, _propertyControllers["default"].createProperty);
-router.patch('/:id', _auth.authLoggedIn, _cloudinaryConfig.cloudinaryConfig, _multer.multerUploads, _schemas.propertyValidator, _propertyControllers["default"].updateProperty);
-router.patch('/:id/sold', _auth.authLoggedIn, _propertyControllers["default"].soldProperty);
-router["delete"]('/:id', _auth.authLoggedIn, _propertyControllers["default"].deleteProperty);
+router.get('/', _auth.authUser, _propertyControllers["default"].getAllProperty);
+router.get('/:id', _auth.authUser, _propertyControllers["default"].getOneProperty);
+router.post('/', _auth.authUser, _cloudinaryConfig.cloudinaryConfig, _multer.multerUploads, _schemas.propertyValidator, _propertyControllers["default"].createProperty);
+router.patch('/:id', _auth.authUser, _cloudinaryConfig.cloudinaryConfig, _multer.multerUploads, _schemas.propertyValidator, _propertyControllers["default"].updateProperty);
+router.patch('/:id/sold', _auth.authUser, _propertyControllers["default"].soldProperty);
+router["delete"]('/:id', _auth.authUser, _propertyControllers["default"].deleteProperty);
 var _default = router;
 exports["default"] = _default;

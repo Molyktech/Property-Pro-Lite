@@ -1,31 +1,59 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.loginSchema = exports.signupSchema = exports.propertyValidator = void 0;
+exports.passwordSchema = exports.email = exports.loginSchema = exports.signupSchema = exports.propertyValidator = void 0;
 
 var _joi = _interopRequireDefault(require("@hapi/joi"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var email = _joi["default"].string().email({
   minDomainSegments: 2
-}).required();
+}).required().error(function () {
+  return {
+    message: 'Please enter a valid email address, it should include an @ sign and a dot'
+  };
+});
 
-var password = _joi["default"].string().min(7).alphanum().trim().required();
+exports.email = email;
+
+var password = _joi["default"].string().min(7).alphanum().trim().required().error(function () {
+  return {
+    message: 'Password is required and should be at least 7 characters long'
+  };
+});
+
+var passwordSchema = _joi["default"].object().keys({
+  password: password,
+  new_password: password
+});
+
+exports.passwordSchema = passwordSchema;
 
 var signupSchema = _joi["default"].object().keys({
-  first_name: _joi["default"].string().regex(/(^[a-zA-Z]+$)/).min(2).max(30).required(),
-  last_name: _joi["default"].string().regex(/(^[a-zA-Z]+$)/).min(2).max(30).required(),
+  first_name: _joi["default"].string().regex(/(^[a-zA-Z]+$)/).min(2).max(30).required().error(function () {
+    return {
+      message: 'First Name is required and cannot be empty'
+    };
+  }),
+  last_name: _joi["default"].string().regex(/(^[a-zA-Z]+$)/).min(2).max(30).required().error(function () {
+    return {
+      message: 'Last Name is required'
+    };
+  }),
   // accepts alphanumeric strings at least 7 characters long and is not empty
   password: password,
   email: email,
+  is_admin: _joi["default"]["boolean"](),
   address: _joi["default"].string().trim().required(),
   // phone is required
-  // and must be a string of the format XXX-XXX-XXXX
-  // where X is a digit (0-9)
-  phone_number: _joi["default"].string().regex(/^\d{3}-\d{3}-\d{5}$/).required()
+  phone_number: _joi["default"].string().min(11).max(11).required().error(function () {
+    return {
+      message: 'Phone is required and must be 11 digits long '
+    };
+  })
 });
 
 exports.signupSchema = signupSchema;
@@ -43,7 +71,7 @@ var propertySchema = _joi["default"].object().keys({
   city: _joi["default"].string().required(),
   type: _joi["default"].string().required(),
   address: _joi["default"].string().required().min(10).max(500),
-  status: _joi["default"].string().valid('sold', 'available').required()
+  status: _joi["default"].string().valid('sold', 'available')
 });
 
 var propertyValidator = function propertyValidator(req, res, next) {
@@ -52,9 +80,9 @@ var propertyValidator = function propertyValidator(req, res, next) {
   req.body.price = price;
   return _joi["default"].validate(req.body, propertySchema, function (err) {
     if (err) {
-      return res.status(422).json({
+      return res.status(400).json({
         status: 'Error',
-        error: err
+        error: err.details[0].message
       });
     }
 
