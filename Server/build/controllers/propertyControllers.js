@@ -1,148 +1,119 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _propertyDb = _interopRequireDefault(require("../models/db/propertyDb"));
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _pg = require("pg");
+
+var _dotenv = _interopRequireDefault(require("dotenv"));
 
 var _multer = require("../middleware/multer");
 
-var _helpers = require("../middleware/helpers");
+var _index = _interopRequireDefault(require("../models/index"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _Utils = _interopRequireDefault(require("../utils/Utils"));
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+/* eslint-disable class-methods-use-this */
+_dotenv["default"].config();
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+var pool = new _pg.Pool({
+  connectionString: process.env.DATABASE_URL
+});
 
 var Property =
 /*#__PURE__*/
 function () {
   function Property() {
-    _classCallCheck(this, Property);
+    (0, _classCallCheck2["default"])(this, Property);
   }
 
-  _createClass(Property, [{
-    key: "getAllProperty",
-    value: function getAllProperty(req, res) {
-      if (req.query.type) {
-        var filteredProperty = _propertyDb["default"].filter(function (property) {
-          return property.type.includes("".concat(req.query.type));
-        });
-
-        return res.status(200).json({
-          status: 'success',
-          data: filteredProperty
-        });
-      }
-
-      return res.status(200).json({
-        status: 'Success',
-        data: _propertyDb["default"]
-      });
-    }
-  }, {
-    key: "getOneProperty",
-    value: function getOneProperty(req, res) {
-      var id = parseInt(req.params.id, 10);
-
-      var foundProperty = _propertyDb["default"].find(function (property) {
-        return property.id === id;
-      });
-
-      if (foundProperty) {
-        return res.status(200).json({
-          status: 'Success',
-          data: foundProperty
-        });
-      }
-
-      return res.status(404).json({
-        status: 'Error',
-        error: 'Property does not exist'
-      });
-    }
-  }, {
+  (0, _createClass2["default"])(Property, [{
     key: "createProperty",
     value: function () {
-      var _createProperty = _asyncToGenerator(
+      var _createProperty = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(req, res) {
-        var imageUrl, fileUrl, newProperty, filterdb;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+      _regenerator["default"].mark(function _callee(req, res) {
+        var imageUrl, fileUrl, _req$body, price, state, city, address, type, createQuery, values, _ref, rows, data;
+
+        return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                _context.prev = 0;
+                imageUrl = "https://via.placeholder.com/250/92c952";
+
                 if (!req.file) {
-                  _context.next = 5;
+                  _context.next = 7;
                   break;
                 }
 
-                _context.next = 3;
+                _context.next = 5;
                 return (0, _multer.imageUpload)(req);
 
-              case 3:
+              case 5:
                 fileUrl = _context.sent;
 
                 if (fileUrl) {
                   imageUrl = fileUrl;
                 } else {
-                  imageUrl = 'https://via.placeholder.com/250/92c952';
+                  imageUrl = "https://via.placeholder.com/250/92c952";
                 }
 
-              case 5:
-                newProperty = {
-                  id: _propertyDb["default"].length + 1,
-                  owner: req.user.id,
-                  status: req.body.status || 'available',
-                  state: req.body.state,
-                  price: req.body.price,
-                  city: req.body.city,
-                  address: req.body.address,
-                  type: req.body.type,
-                  created_on: (0, _helpers.newDate)(),
-                  reason: req.body.reason,
-                  description: req.body.description,
-                  image_url: imageUrl,
-                  owner_email: req.user.email,
-                  owner_phone_number: req.user.phone_number
-                };
-                filterdb = _propertyDb["default"].find(function (property) {
-                  return property.address === req.body.address;
-                });
+              case 7:
+                _req$body = req.body, price = _req$body.price, state = _req$body.state, city = _req$body.city, address = _req$body.address, type = _req$body.type;
+                createQuery = "INSERT INTO Properties( price, state, city, address, type, image_url, owner)\n    VALUES( $1, $2, $3, $4, $5, $6, $7)  returning *";
+                values = [price, state, city, address, type, imageUrl, req.user.id];
+                _context.next = 12;
+                return _index["default"].query(createQuery, values);
 
-                if (filterdb) {
-                  _context.next = 10;
+              case 12:
+                _ref = _context.sent;
+                rows = _ref.rows;
+
+                if (!rows) {
+                  _context.next = 18;
                   break;
                 }
 
-                _propertyDb["default"].push(newProperty);
+                data = (0, _objectSpread2["default"])({}, rows[0]);
 
-                return _context.abrupt("return", res.status(201).json({
-                  status: 'Success',
-                  data: newProperty
-                }));
+                _Utils["default"].setSuccess(201, "Property created succesfully", data);
 
-              case 10:
-                res.status(409).json({
-                  status: 'Error',
-                  error: 'a property advert has already been created with this address'
-                });
+                return _context.abrupt("return", _Utils["default"].send(res));
 
-              case 11:
+              case 18:
+                _Utils["default"].setError(400, "failed");
+
+                return _context.abrupt("return", _Utils["default"].send(res));
+
+              case 22:
+                _context.prev = 22;
+                _context.t0 = _context["catch"](0);
+
+                _Utils["default"].setError(500, _context.t0.message);
+
+                return _context.abrupt("return", _Utils["default"].send(res));
+
+              case 26:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, null, [[0, 22]]);
       }));
 
       function createProperty(_x, _x2) {
@@ -152,87 +123,274 @@ function () {
       return createProperty;
     }()
   }, {
-    key: "updateProperty",
+    key: "getAllProperty",
     value: function () {
-      var _updateProperty = _asyncToGenerator(
+      var _getAllProperty = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee2(req, res) {
-        var imageUrl, fileUrl, id, foundProperty, propertyIndex, updatedProperty;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      _regenerator["default"].mark(function _callee2(req, res) {
+        var type, query, _ref2, _rows, data, adminQuery, _ref3, rows, rowCount;
+
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!req.file) {
-                  _context2.next = 5;
+                // try {
+                //   const type = req.query.type;
+                //   const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
+                //   const userResult = await db.query(userQuery, [req.user.id]);
+                //   if (type) {
+                //     const propertyQuery = `SELECT * FROM Properties where type = $1 AND owner =$2`;
+                //     const propertyResult = await db.query(propertyQuery, [type, req.user.id]);
+                //     if (propertyResult.rowCount < 1) {
+                //       Util.setError(404, 'Property not found');
+                //       return Util.send(res);
+                //     }
+                //     const data = {
+                //       ...propertyResult.rows[0],
+                //       ...userResult.rows[0]
+                //     }
+                //     Util.setSuccess(200, `Succesful`, data)
+                //     return Util.send(res);
+                //   }
+                //   const propertyQuery = `SELECT * FROM Properties where owner = $1`;
+                //   const propertyResult = await db.query(propertyQuery, [req.user.id]);
+                //   if (propertyResult.rowCount < 1) {
+                //     Util.setError(404, 'No property available');
+                //     return Util.send(res);
+                //   }
+                //   const data = {
+                //     ...propertyResult.rows[0],
+                //     ...userResult.rows[0]
+                //   }
+                //   Util.setSuccess(200, `Succesful`, data)
+                //   return Util.send(res);
+                // } catch (error) {
+                //   Util.setError(500, error.message)
+                //   return Util.send(res);
+                // }
+                type = req.query.type;
+                _context2.prev = 1;
+
+                if (!req.query.type) {
+                  _context2.next = 17;
                   break;
                 }
 
-                _context2.next = 3;
-                return (0, _multer.imageUpload)(req);
+                query = "SELECT p.id, p.status, p.type, p.state, p.city, p.address, p.owner, p.price, p.created_on, p.image_url, u.email AS owner_email, u.phone_number AS owner_phone_number FROM Properties AS p\n    JOIN Users AS u ON u.id=p.owner WHERE type = $1";
+                _context2.next = 6;
+                return _index["default"].query(query, [type]);
 
-              case 3:
-                fileUrl = _context2.sent;
+              case 6:
+                _ref2 = _context2.sent;
+                _rows = _ref2.rows;
+                data = (0, _objectSpread2["default"])({}, _rows);
+                console.log(data);
 
-                if (fileUrl) {
-                  imageUrl = fileUrl;
-                } else {
-                  imageUrl = 'https://via.placeholder.com/250/92c952';
-                }
-
-              case 5:
-                id = parseInt(req.params.id, 10);
-
-                _propertyDb["default"].map(function (property, index) {
-                  if (property.id === id) {
-                    foundProperty = property;
-                    propertyIndex = index;
-                  }
-                });
-
-                if (foundProperty) {
-                  _context2.next = 9;
+                if (!_rows.length) {
+                  _context2.next = 15;
                   break;
                 }
 
-                return _context2.abrupt("return", res.status(404).json({
-                  status: 'Error',
-                  error: 'Property not found'
-                }));
+                _Utils["default"].setSuccess(200, 'success', data);
 
-              case 9:
-                updatedProperty = {
-                  id: foundProperty.id,
-                  owner: req.user.id || foundProperty.owner,
-                  status: req.body.status || foundProperty.status,
-                  state: req.body.state || foundProperty.state,
-                  price: req.body.price || foundProperty.price,
-                  city: req.body.city || foundProperty.city,
-                  address: req.body.address || foundProperty.address,
-                  type: req.body.type || foundProperty.type,
-                  created_on: req.body.created_on || foundProperty.created_on,
-                  reason: req.body.reason || foundProperty.reason,
-                  description: req.body.description || foundProperty.description,
-                  image_url: imageUrl || foundProperty.image_url,
-                  owner_email: req.user.email || foundProperty.owner_email,
-                  owner_phone_number: req.user.phone_number || foundProperty.owner_phone_number
-                };
+                return _context2.abrupt("return", _Utils["default"].send(res));
 
-                _propertyDb["default"].splice(propertyIndex, 1, updatedProperty);
+              case 15:
+                _Utils["default"].setError(404, 'No property available');
 
-                return _context2.abrupt("return", res.status(201).json({
-                  status: 'success',
-                  data: updatedProperty
-                }));
+                return _context2.abrupt("return", _Utils["default"].send(res));
 
-              case 12:
+              case 17:
+                adminQuery = "SELECT p.id, p.status, p.type, p.state, p.city, p.address, p.owner, p.price, p.created_on, p.image_url, u.email AS owner_email, u.phone_number AS owner_phone_number FROM Properties AS p\n        JOIN Users AS u ON u.id=p.owner";
+                _context2.next = 20;
+                return _index["default"].query(adminQuery);
+
+              case 20:
+                _ref3 = _context2.sent;
+                rows = _ref3.rows;
+                rowCount = _ref3.rowCount;
+
+                if (!(rowCount < 1)) {
+                  _context2.next = 26;
+                  break;
+                }
+
+                _Utils["default"].setError(404, 'No property available');
+
+                return _context2.abrupt("return", _Utils["default"].send(res));
+
+              case 26:
+                _Utils["default"].setSuccess(200, 'success', rows);
+
+                return _context2.abrupt("return", _Utils["default"].send(res));
+
+              case 30:
+                _context2.prev = 30;
+                _context2.t0 = _context2["catch"](1);
+
+                _Utils["default"].setError(500, _context2.t0.message);
+
+                return _context2.abrupt("return", _Utils["default"].send(res));
+
+              case 34:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2);
+        }, _callee2, null, [[1, 30]]);
       }));
 
-      function updateProperty(_x3, _x4) {
+      function getAllProperty(_x3, _x4) {
+        return _getAllProperty.apply(this, arguments);
+      }
+
+      return getAllProperty;
+    }()
+  }, {
+    key: "getOneProperty",
+    value: function () {
+      var _getOneProperty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee3(req, res) {
+        var id, userQuery, userResult, propertyQuery, propertyResult, data;
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                id = req.params.id;
+                userQuery = "SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1";
+                _context3.next = 5;
+                return _index["default"].query(userQuery, [req.user.id]);
+
+              case 5:
+                userResult = _context3.sent;
+                propertyQuery = "SELECT * FROM Properties where id = $1";
+                _context3.next = 9;
+                return _index["default"].query(propertyQuery, [id]);
+
+              case 9:
+                propertyResult = _context3.sent;
+
+                if (!(propertyResult.rowCount < 1)) {
+                  _context3.next = 13;
+                  break;
+                }
+
+                _Utils["default"].setError(404, 'Property not found');
+
+                return _context3.abrupt("return", _Utils["default"].send(res));
+
+              case 13:
+                data = (0, _objectSpread2["default"])({}, propertyResult.rows[0], userResult.rows[0]);
+
+                _Utils["default"].setSuccess(200, "Found Property with an id of ".concat(req.params.id), data);
+
+                return _context3.abrupt("return", _Utils["default"].send(res));
+
+              case 18:
+                _context3.prev = 18;
+                _context3.t0 = _context3["catch"](0);
+
+                _Utils["default"].setError(500, _context3.t0.message);
+
+                return _context3.abrupt("return", _Utils["default"].send(res));
+
+              case 22:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 18]]);
+      }));
+
+      function getOneProperty(_x5, _x6) {
+        return _getOneProperty.apply(this, arguments);
+      }
+
+      return getOneProperty;
+    }()
+  }, {
+    key: "updateProperty",
+    value: function () {
+      var _updateProperty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee4(req, res) {
+        var _req$body2, state, city, address, type, price, id, imageUrl, fileUrl, findOneQuery, updateOneQuery, _ref4, rows, values, response;
+
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _req$body2 = req.body, state = _req$body2.state, city = _req$body2.city, address = _req$body2.address, type = _req$body2.type, price = _req$body2.price;
+                id = parseInt(req.params.id);
+
+                if (!req.file) {
+                  _context4.next = 7;
+                  break;
+                }
+
+                _context4.next = 5;
+                return (0, _multer.imageUpload)(req);
+
+              case 5:
+                fileUrl = _context4.sent;
+
+                if (fileUrl) {
+                  imageUrl = fileUrl;
+                } else {
+                  imageUrl = "https://via.placeholder.com/250/92c952";
+                }
+
+              case 7:
+                findOneQuery = "SELECT * FROM Properties WHERE id = $1 AND owner = $2";
+                updateOneQuery = "UPDATE Properties SET state = $1, price = $2, address = $3, city = $4, type = $5, image_url = $6 WHERE id = $7 AND owner = $8 returning *";
+                _context4.prev = 9;
+                _context4.next = 12;
+                return _index["default"].query(findOneQuery, [parseInt(req.params.id), req.user.id]);
+
+              case 12:
+                _ref4 = _context4.sent;
+                rows = _ref4.rows;
+
+                if (rows[0]) {
+                  _context4.next = 17;
+                  break;
+                }
+
+                _Utils["default"].setError(404, "Property not found, input a correct id and try again");
+
+                return _context4.abrupt("return", _Utils["default"].send(res));
+
+              case 17:
+                values = [state || rows[0].state, price || rows[0].price, address || rows[0].address, city || rows[0].city, type || rows[0].type, imageUrl || rows[0].image_url, id, req.user.id];
+                _context4.next = 20;
+                return _index["default"].query(updateOneQuery, values);
+
+              case 20:
+                response = _context4.sent;
+
+                _Utils["default"].setSuccess(200, "Update Successful", response.rows[0]);
+
+                return _context4.abrupt("return", _Utils["default"].send(res));
+
+              case 25:
+                _context4.prev = 25;
+                _context4.t0 = _context4["catch"](9);
+
+                _Utils["default"].setError(500, _context4.t0.message);
+
+                return _context4.abrupt("return", _Utils["default"].send(res));
+
+              case 29:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[9, 25]]);
+      }));
+
+      function updateProperty(_x7, _x8) {
         return _updateProperty.apply(this, arguments);
       }
 
@@ -240,76 +398,129 @@ function () {
     }()
   }, {
     key: "soldProperty",
-    value: function soldProperty(req, res) {
-      var id = parseInt(req.params.id, 10);
-      var foundProperty;
-      var propertyIndex;
+    value: function () {
+      var _soldProperty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee5(req, res) {
+        var id, findOneQuery, updateOneQuery, _ref5, rows, values, response;
 
-      _propertyDb["default"].map(function (property, index) {
-        if (property.id === id) {
-          foundProperty = property;
-          propertyIndex = index;
-        }
-      });
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                id = parseInt(req.params.id);
+                findOneQuery = "SELECT * FROM Properties WHERE id = $1 AND owner = $2";
+                updateOneQuery = "UPDATE Properties SET status = $1 WHERE id = $2 AND owner = $3 returning *";
+                _context5.prev = 3;
+                _context5.next = 6;
+                return _index["default"].query(findOneQuery, [id, req.user.id]);
 
-      if (!foundProperty) {
-        return res.status(404).json({
-          status: 'error',
-          data: {
-            message: 'property not found'
+              case 6:
+                _ref5 = _context5.sent;
+                rows = _ref5.rows;
+
+                if (rows[0]) {
+                  _context5.next = 11;
+                  break;
+                }
+
+                _Utils["default"].setError(404, "Property not found, input a correct id and try again");
+
+                return _context5.abrupt("return", _Utils["default"].send(res));
+
+              case 11:
+                values = ["sold", id, req.user.id];
+                _context5.next = 14;
+                return _index["default"].query(updateOneQuery, values);
+
+              case 14:
+                response = _context5.sent;
+
+                _Utils["default"].setSuccess(200, "Status update Successful", response.rows[0]);
+
+                return _context5.abrupt("return", _Utils["default"].send(res));
+
+              case 19:
+                _context5.prev = 19;
+                _context5.t0 = _context5["catch"](3);
+
+                _Utils["default"].setError(500, _context5.t0.message);
+
+                return _context5.abrupt("return", _Utils["default"].send(res));
+
+              case 23:
+              case "end":
+                return _context5.stop();
+            }
           }
-        });
+        }, _callee5, null, [[3, 19]]);
+      }));
+
+      function soldProperty(_x9, _x10) {
+        return _soldProperty.apply(this, arguments);
       }
 
-      var updatedProperty = {
-        id: foundProperty.id,
-        owner: foundProperty.owner,
-        status: 'sold',
-        state: foundProperty.state,
-        price: foundProperty.price,
-        city: foundProperty.city,
-        address: foundProperty.address,
-        type: foundProperty.type,
-        created_on: foundProperty.created_on,
-        reason: foundProperty.reason,
-        description: foundProperty.description,
-        owner_email: foundProperty.owner_email,
-        owner_phone_number: foundProperty.owner_phone_number,
-        image_url: foundProperty.image_url
-      };
-
-      _propertyDb["default"].splice(propertyIndex, 1, updatedProperty);
-
-      return res.status(201).json({
-        status: 'success',
-        data: updatedProperty
-      });
-    }
+      return soldProperty;
+    }()
   }, {
     key: "deleteProperty",
-    value: function deleteProperty(req, res) {
-      var id = parseInt(req.params.id, 10);
+    value: function () {
+      var _deleteProperty = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee6(req, res) {
+        var id, deleteQuery, _ref6, rows;
 
-      _propertyDb["default"].map(function (property, index) {
-        if (property.id === id) {
-          _propertyDb["default"].splice(index, 1);
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                id = parseInt(req.params.id);
+                deleteQuery = "DELETE FROM Properties WHERE id = $1 AND owner = $2 returning *";
+                _context6.prev = 2;
+                _context6.next = 5;
+                return _index["default"].query(deleteQuery, [id, req.user.id]);
 
-          return res.status(200).json({
-            status: 'Success',
-            data: {
-              message: 'Property deleted'
+              case 5:
+                _ref6 = _context6.sent;
+                rows = _ref6.rows;
+
+                if (rows[0]) {
+                  _context6.next = 10;
+                  break;
+                }
+
+                _Utils["default"].setError(404, "Property not found");
+
+                return _context6.abrupt("return", _Utils["default"].send(res));
+
+              case 10:
+                _Utils["default"].setSuccess(200, "Property DELETED");
+
+                return _context6.abrupt("return", _Utils["default"].send(res));
+
+              case 14:
+                _context6.prev = 14;
+                _context6.t0 = _context6["catch"](2);
+
+                _Utils["default"].setError(500, _context6.t0.message);
+
+                return _context6.abrupt("return", _Utils["default"].send(res));
+
+              case 18:
+              case "end":
+                return _context6.stop();
             }
-          });
-        }
-      });
+          }
+        }, _callee6, null, [[2, 14]]);
+      }));
 
-      return res.status(404).json({
-        status: 'Error',
-        error: 'Property not found'
-      });
-    }
+      function deleteProperty(_x11, _x12) {
+        return _deleteProperty.apply(this, arguments);
+      }
+
+      return deleteProperty;
+    }()
   }]);
-
   return Property;
 }();
 
