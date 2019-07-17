@@ -12,6 +12,8 @@
     "dev": "nodemon --exec babel-node ./src/server.js",
     "create": "babel-node ./src/database/migrations/database createAllTables",
     "migrations": "node ./build/database/migrations/database createAllTables",
+    "seed": " node ./build/database/seeders/seed",
+    "heroku-postbuild": "npm run migrate:reset && npm run migrate && npm run seed",
     "drop": "babel-node ./src/database/migrations/database dropAllTables"
 
   },
