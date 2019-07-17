@@ -8,8 +8,8 @@ dotenv.config();
 let connectionString = null;
 
 if (process.env.NODE_ENV === 'test') connectionString = process.env.DATABASE_URL_TEST;
-if (process.env.NODE_ENV === 'PROD') connectionString = process.env.DATABASE_URL_PROD;
-if (process.env.NODE_ENV === 'development') connectionString = process.env.DATABASE_URL;
+if (process.env.NODE_ENV === 'PROD') connectionString = process.env.DATABASE_URL;
+if (process.env.NODE_ENV === 'development') connectionString = process.env.DATABASE_URL_DEV;
 
 console.log(connectionString)
 const pool = new Pool({
