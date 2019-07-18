@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/Molyktech/Property-Pro-Lite.svg?branch=develop)](https://travis-ci.org/Molyktech/Property-Pro-Lite)
-
-[![Coverage Status](https://coveralls.io/repos/github/Molyktech/Property-Pro-Lite/badge.svg)](https://coveralls.io/github/Molyktech/Property-Pro-Lite)
+[![Build Status](https://travis-ci.org/Molyktech/Property-Pro-Lite.svg?branch=develop)](https://travis-ci.org/Molyktech/Property-Pro-Lite)[![Coverage Status](https://coveralls.io/repos/github/Molyktech/Property-Pro-Lite/badge.svg)](https://coveralls.io/github/Molyktech/Property-Pro-Lite) [![Maintainability](https://api.codeclimate.com/v1/badges/1840a5f9e4ca12a65153/maintainability)](https://codeclimate.com/github/Molyktech/Property-Pro-Lite/maintainability)
 
 # Property Pro Lite
 
@@ -70,7 +68,7 @@ run npm run dev
 
 #### API
 
-Heroku: [Property-Pro Lite](https://propertymo.herokuapp.com/api/v1/)
+Heroku: [Property-Pro Lite](https://propertymo.herokuapp.com/)
 
 Documentation:
 
@@ -87,7 +85,7 @@ Documentation:
 
 #### API Documentation
 
-- http://localhost:8080/api-docs/
+- [Documentation](https://propertymo.herokuapp.com/api-docs/)
 
 #### UI
 
