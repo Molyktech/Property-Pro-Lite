@@ -134,40 +134,6 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                // try {
-                //   const type = req.query.type;
-                //   const userQuery = `SELECT email as ownerEmail, phone_number as ownerPhoneNumber FROM Users where id = $1`;
-                //   const userResult = await db.query(userQuery, [req.user.id]);
-                //   if (type) {
-                //     const propertyQuery = `SELECT * FROM Properties where type = $1 AND owner =$2`;
-                //     const propertyResult = await db.query(propertyQuery, [type, req.user.id]);
-                //     if (propertyResult.rowCount < 1) {
-                //       Util.setError(404, 'Property not found');
-                //       return Util.send(res);
-                //     }
-                //     const data = {
-                //       ...propertyResult.rows[0],
-                //       ...userResult.rows[0]
-                //     }
-                //     Util.setSuccess(200, `Succesful`, data)
-                //     return Util.send(res);
-                //   }
-                //   const propertyQuery = `SELECT * FROM Properties where owner = $1`;
-                //   const propertyResult = await db.query(propertyQuery, [req.user.id]);
-                //   if (propertyResult.rowCount < 1) {
-                //     Util.setError(404, 'No property available');
-                //     return Util.send(res);
-                //   }
-                //   const data = {
-                //     ...propertyResult.rows[0],
-                //     ...userResult.rows[0]
-                //   }
-                //   Util.setSuccess(200, `Succesful`, data)
-                //   return Util.send(res);
-                // } catch (error) {
-                //   Util.setError(500, error.message)
-                //   return Util.send(res);
-                // }
                 type = req.query.type;
                 _context2.prev = 1;
 

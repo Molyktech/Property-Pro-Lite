@@ -29,7 +29,7 @@ var User = {
           switch (_context.prev = _context.next) {
             case 0:
               _req$body = req.body, first_name = _req$body.first_name, last_name = _req$body.last_name, email = _req$body.email, password = _req$body.password, address = _req$body.address, phone_number = _req$body.phone_number, is_admin = _req$body.is_admin;
-              admin = is_admin === 'true' ? true : false;
+              admin = is_admin === true || 'true' ? true : false;
               _context.next = 4;
               return _authHelpers["default"].hashPassword(password);
 
