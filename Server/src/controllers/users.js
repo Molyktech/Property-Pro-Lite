@@ -15,7 +15,7 @@ const User = {
             phone_number,
             is_admin,
         } = req.body;
-        const admin = is_admin === 'true' ? true : false;
+        const admin = is_admin === true || 'true' ? true : false;
         password = await Helper.hashPassword(password);
         const createQuery = `INSERT INTO Users
           (first_name, last_name, email, password, phone_number, address, is_admin )

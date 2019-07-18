@@ -4,16 +4,16 @@
   "description": "A Node.js restful api and project back end",
   "main": "server.js",
   "scripts": {
-    "clean": "rm -rf build && mkdir build",
+    "clean": "del -f build && mkdir build",
     "build": "babel ./src --out-dir build",
-    "start": "set cross-env NODE_ENV='PROD' && npm run migrations && node ./build/server.js",
+    "start": "set cross-env NODE_ENV='PROD' && npm run heroku-postbuild && node ./build/server.js",
     "test": "set cross-env NODE_ENV=test npm run drop && cross-env NODE_ENV=test npm run create && cross-env NODE_ENV=test nyc mocha ./src/test/index.js --recursive --require @babel/register --require @babel/polyfill --timeout=100000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "dev": "nodemon --exec babel-node ./src/server.js",
     "create": "babel-node ./src/database/migrations/database createAllTables",
     "migrations": "node ./build/database/migrations/database createAllTables",
     "seed": " node ./build/database/seeders/seed",
-    "heroku-postbuild": "npm run migrate:reset && npm run migrate && npm run seed",
+    "heroku-postbuild": "npm run migrate && npm run seed",
     "drop": "babel-node ./src/database/migrations/database dropAllTables"
 
   },
