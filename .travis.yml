@@ -15,13 +15,23 @@ cache:
 
 before_install: cd ./Server
 
+env:
+  global:
+    - TOKEN_SECRET=juficasentimentalityandjabawockweezifeoluwapolorimitobegetikosefienuso
+    - CC_TEST_REPORTER_ID=cef4b8106477fa5bcc688159552e83d22f0d7e7abf0c89dada697b98c3e13ab2
+
 install:
   - npm install
 
 before_script:
   - psql -c 'create database dbfor_test;' -U postgres
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 
 script:
   - npm run test
 
-after_success: npm run coverage
+after_script:
+  - npm run coverage
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
