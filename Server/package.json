@@ -36,7 +36,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.5.1",
-    "@hapi/joi": "^15.1.0",
+    "@hapi/joi": "^15.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.14.0",
